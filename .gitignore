@@ -4,5 +4,5 @@ bower_components
 Rdatasets
 /vendor/
 composer.lock
-
+.npmrc
 yarn.lock

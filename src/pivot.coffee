@@ -137,7 +137,9 @@ callWithJQuery ($) ->
             inner: wrapped(x...)(data, rowKey, colKey)
             push: (record) -> @inner.push record
             format: formatter
-            value: -> @inner.value() / data.getAggregator(@selector...).inner.value()
+            value: (id) ->
+                agg = data.getAggregator([@selector...,id]...)
+                return @inner.value() / agg.inner.value()
             numInputs: wrapped(x...)().numInputs
 
     aggregatorTemplates.countUnique = (f) -> aggregatorTemplates.uniques(((x) -> x.length), f)
@@ -200,6 +202,11 @@ callWithJQuery ($) ->
                 totals: "Totals" #for table renderer
                 vs: "vs" #for gchart renderer
                 by: "by" #for gchart renderer
+                rendererLabel: "Renderer"
+                valuesLabel: "Values"
+                fieldsLabel: "Fields"
+                colsLabel: "Columns"
+                rowsLabel: "Rows"
 
     #dateFormat deriver l10n requires month and day names to be passed in directly
     mthNamesEn = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
@@ -303,7 +310,10 @@ callWithJQuery ($) ->
     class PivotData
         constructor: (input, opts = {}) ->
             @input = input
-            @aggregator = opts.aggregator ? aggregatorTemplates.count()()
+            if !Array.isArray(opts.aggregator)
+                opts.aggregator = opts.aggregator ? aggregatorTemplates.count()()
+                opts.aggregator = [opts.aggregator]
+            @aggregator = opts.aggregator ? [aggregatorTemplates.count()()]
             @aggregatorName = opts.aggregatorName ? "Count"
             @colAttrs = opts.cols ? []
             @rowAttrs = opts.rows ? []
@@ -318,8 +328,9 @@ callWithJQuery ($) ->
             @colKeys = []
             @rowTotals = {}
             @colTotals = {}
-            @allTotal = @aggregator(this, [], [])
+            @allTotal = @aggregator.map( (agg) => agg(this, [], []))
             @sorted = false
+            @aggregatorsLabel = opts.aggregatorsLabel ? []
 
             # iterate through input, accumulating data for cells
             PivotData.forEachRecord @input, @derivedAttributes, (record) =>
@@ -399,38 +410,39 @@ callWithJQuery ($) ->
             flatRowKey = rowKey.join(String.fromCharCode(0))
             flatColKey = colKey.join(String.fromCharCode(0))
 
-            @allTotal.push record
+            @aggregator.forEach (agg,id) =>
+                @allTotal[id].push record
 
             if rowKey.length != 0
                 if not @rowTotals[flatRowKey]
                     @rowKeys.push rowKey
-                    @rowTotals[flatRowKey] = @aggregator(this, rowKey, [])
-                @rowTotals[flatRowKey].push record
+                    @rowTotals[flatRowKey] = @aggregator.map( (agg) => agg(this, rowKey, []))
+                @rowTotals[flatRowKey].forEach (agg,id) => agg.push record
 
             if colKey.length != 0
                 if not @colTotals[flatColKey]
                     @colKeys.push colKey
-                    @colTotals[flatColKey] = @aggregator(this, [], colKey)
-                @colTotals[flatColKey].push record
+                    @colTotals[flatColKey] = @aggregator.map( (agg) => agg(this, [], colKey))
+                @colTotals[flatColKey].forEach (agg,id) => agg.push record
 
             if colKey.length != 0 and rowKey.length != 0
                 if not @tree[flatRowKey]
                     @tree[flatRowKey] = {}
                 if not @tree[flatRowKey][flatColKey]
-                    @tree[flatRowKey][flatColKey] = @aggregator(this, rowKey, colKey)
-                @tree[flatRowKey][flatColKey].push record
+                    @tree[flatRowKey][flatColKey] = @aggregator.map( (agg) => agg(this, rowKey, colKey))
+                @tree[flatRowKey][flatColKey].forEach (agg,id) => agg.push record
 
-        getAggregator: (rowKey, colKey) =>
+        getAggregator: (rowKey, colKey, id = 0) =>
             flatRowKey = rowKey.join(String.fromCharCode(0))
             flatColKey = colKey.join(String.fromCharCode(0))
             if rowKey.length == 0 and colKey.length == 0
-                agg = @allTotal
+                agg = @allTotal[id]
             else if rowKey.length == 0
-                agg = @colTotals[flatColKey]
+                agg = @colTotals[flatColKey] && @colTotals[flatColKey][id]
             else if colKey.length == 0
-                agg = @rowTotals[flatRowKey]
+                agg = @rowTotals[flatRowKey] && @rowTotals[flatRowKey][id]
             else
-                agg = @tree[flatRowKey][flatColKey]
+                agg = @tree[flatRowKey][flatColKey] && @tree[flatRowKey][flatColKey][id]
             return agg ? {value: (-> null), format: -> ""}
 
     #expose these to the outside world
@@ -505,7 +517,7 @@ callWithJQuery ($) ->
                     th = document.createElement("th")
                     th.className = "pvtColLabel"
                     th.textContent = colKey[j]
-                    th.setAttribute("colspan", x)
+                    th.setAttribute("colspan", Math.max(x, pivotData.aggregator.length))
                     if parseInt(j) == colAttrs.length-1 and rowAttrs.length != 0
                         th.setAttribute("rowspan", 2)
                     tr.appendChild th
@@ -514,6 +526,7 @@ callWithJQuery ($) ->
                 th.className = "pvtTotalLabel pvtRowTotalLabel"
                 th.innerHTML = opts.localeStrings.totals
                 th.setAttribute("rowspan", colAttrs.length + (if rowAttrs.length ==0 then 0 else 1))
+                th.setAttribute("colspan", pivotData.aggregator.length)
                 tr.appendChild th
             thead.appendChild tr
 
@@ -529,12 +542,36 @@ callWithJQuery ($) ->
             if colAttrs.length ==0
                 th.className = "pvtTotalLabel pvtRowTotalLabel"
                 th.innerHTML = opts.localeStrings.totals
+                th.setAttribute("colspan", pivotData.aggregator.length)
             tr.appendChild th
             thead.appendChild tr
         result.appendChild thead
 
         #now the actual data rows, with their row headers and totals
         tbody = document.createElement("tbody")
+
+        if pivotData.aggregatorsLabel and pivotData.aggregatorsLabel.length > 1
+            tr = document.createElement("tr")
+            th = document.createElement("th")
+            colspan = rowAttrs.length + (if colAttrs.length == 0 then 0 else 1)
+            th.setAttribute('colspan', colspan)
+            tr.appendChild th
+
+            for own j, colKey of colKeys #this is the tight loop
+                for lbl in pivotData.aggregatorsLabel
+                    th = document.createElement("th")
+                    th.className = 'pvtAggregatorLabel'
+                    th.textContent = lbl
+                    tr.appendChild th
+
+            for lbl in pivotData.aggregatorsLabel
+                th = document.createElement("th")
+                th.className = 'pvtAggregatorLabel'
+                th.textContent = lbl
+                tr.appendChild th
+
+            tbody.appendChild tr
+
         for own i, rowKey of rowKeys
             tr = document.createElement("tr")
             for own j, txt of rowKey
@@ -547,28 +584,31 @@ callWithJQuery ($) ->
                     if parseInt(j) == rowAttrs.length-1 and colAttrs.length !=0
                         th.setAttribute("colspan",2)
                     tr.appendChild th
+
             for own j, colKey of colKeys #this is the tight loop
-                aggregator = pivotData.getAggregator(rowKey, colKey)
-                val = aggregator.value()
-                td = document.createElement("td")
-                td.className = "pvtVal row#{i} col#{j}"
-                td.textContent = aggregator.format(val)
-                td.setAttribute("data-value", val)
-                if getClickHandler?
-                    td.onclick = getClickHandler(val, rowKey, colKey)
-                tr.appendChild td
+                for agg, id in pivotData.aggregator
+                    aggregator = pivotData.getAggregator(rowKey, colKey, id)
+                    val = aggregator.value(id)
+                    td = document.createElement("td")
+                    td.className = "pvtVal row#{i} col#{j}"
+                    td.textContent = aggregator.format(val)
+                    td.setAttribute("data-value", val)
+                    if getClickHandler?
+                        td.onclick = getClickHandler(val, rowKey, colKey)
+                    tr.appendChild td
 
             if opts.table.rowTotals || colAttrs.length == 0
-                totalAggregator = pivotData.getAggregator(rowKey, [])
-                val = totalAggregator.value()
-                td = document.createElement("td")
-                td.className = "pvtTotal rowTotal"
-                td.textContent = totalAggregator.format(val)
-                td.setAttribute("data-value", val)
-                if getClickHandler?
-                    td.onclick = getClickHandler(val, rowKey, [])
-                td.setAttribute("data-for", "row"+i)
-                tr.appendChild td
+                for agg, id in pivotData.aggregator
+                    totalAggregator = pivotData.getAggregator(rowKey, [], id)
+                    val = totalAggregator.value(id)
+                    td = document.createElement("td")
+                    td.className = "pvtTotal rowTotal"
+                    td.textContent = totalAggregator.format(val)
+                    td.setAttribute("data-value", val)
+                    if getClickHandler?
+                        td.onclick = getClickHandler(val, rowKey, [])
+                    td.setAttribute("data-for", "row"+i)
+                    tr.appendChild td
             tbody.appendChild tr
 
         #finally, the row for col totals, and a grand total
@@ -581,26 +621,28 @@ callWithJQuery ($) ->
                 th.setAttribute("colspan", rowAttrs.length + (if colAttrs.length == 0 then 0 else 1))
                 tr.appendChild th
             for own j, colKey of colKeys
-                totalAggregator = pivotData.getAggregator([], colKey)
-                val = totalAggregator.value()
-                td = document.createElement("td")
-                td.className = "pvtTotal colTotal"
-                td.textContent = totalAggregator.format(val)
-                td.setAttribute("data-value", val)
-                if getClickHandler?
-                    td.onclick = getClickHandler(val, [], colKey)
-                td.setAttribute("data-for", "col"+j)
-                tr.appendChild td
+                for agg, id in pivotData.aggregator
+                    totalAggregator = pivotData.getAggregator([], colKey, id)
+                    val = totalAggregator.value(id)
+                    td = document.createElement("td")
+                    td.className = "pvtTotal colTotal"
+                    td.textContent = totalAggregator.format(val)
+                    td.setAttribute("data-value", val)
+                    if getClickHandler?
+                        td.onclick = getClickHandler(val, [], colKey)
+                    td.setAttribute("data-for", "col"+j)
+                    tr.appendChild td
             if opts.table.rowTotals || colAttrs.length == 0
-                totalAggregator = pivotData.getAggregator([], [])
-                val = totalAggregator.value()
-                td = document.createElement("td")
-                td.className = "pvtGrandTotal"
-                td.textContent = totalAggregator.format(val)
-                td.setAttribute("data-value", val)
-                if getClickHandler?
-                    td.onclick = getClickHandler(val, [], [])
-                tr.appendChild td
+                for agg, id in pivotData.aggregator
+                    totalAggregator = pivotData.getAggregator([], [], id)
+                    val = totalAggregator.value(id)
+                    td = document.createElement("td")
+                    td.className = "pvtGrandTotal"
+                    td.textContent = totalAggregator.format(val)
+                    td.setAttribute("data-value", val)
+                    if getClickHandler?
+                        td.onclick = getClickHandler(val, [], [])
+                    tr.appendChild td
             tbody.appendChild tr
         result.appendChild tbody
 
@@ -635,10 +677,12 @@ callWithJQuery ($) ->
         opts = $.extend(true, {}, localeDefaults, $.extend({}, defaults, inputOpts))
 
         result = null
+        inputOpts.pivotData = null;
         try
             pivotData = new opts.dataClass(input, opts)
             try
                 result = opts.renderer(pivotData, opts.rendererOptions)
+                inputOpts.pivotData = pivotData;
             catch e
                 console.error(e.stack) if console?
                 result = $("<span>").html opts.localeStrings.renderError
@@ -649,7 +693,6 @@ callWithJQuery ($) ->
         x = this[0]
         x.removeChild(x.lastChild) while x.hasChildNodes()
         return @append result
-
 
     ###
     Pivot Table UI: calls Pivot Table core above with options set by user
@@ -676,11 +719,19 @@ callWithJQuery ($) ->
             showUI: true
             filter: -> true
             sorters: {}
+            multiple: true
 
+        itemsId = 0;
+        aggregators = []
+        parametersActive = true;
         localeStrings = $.extend(true, {}, locales.en.localeStrings, locales[locale].localeStrings)
         localeDefaults =
             rendererOptions: {localeStrings}
             localeStrings: localeStrings
+
+        renameAggregators = ->
+            for agg, id in aggregators
+                agg.displayName = String.fromCharCode(97 + id).toUpperCase()
 
         existingOpts = @data "pivotUIOptions"
         if not existingOpts? or overwrite
@@ -708,26 +759,54 @@ callWithJQuery ($) ->
                     attrValues[attr][value]++
                 recordsProcessed++
 
-            #start building the output
-            uiTable = $("<table>", "class": "pvtUi").attr("cellpadding", 5)
+            uiContainer = $("<div>").addClass('pvtUi')
 
-            #renderer control
-            rendererControl = $("<td>").addClass("pvtUiCell")
+            uiMenu = $("<div>").addClass('pvtUiMenu')
+            uiParameters = $("<div>").addClass('pvtUiParameters')
+            uiPivotContainer = $("<div>").addClass('pvtUiContainer')
 
+            uiButtonColumns = $("<div>")
+                .addClass('pvtUiVerticalButton')
+                .addClass('pvtUiButtonColumns')
+                .addClass('active')
+                .text('Columns')
+                .on('click', ->
+                    parametersActive = !parametersActive
+                    if parametersActive
+                        uiButtonColumns.addClass('active')
+                        uiParameters.show()
+                    else
+                        uiButtonColumns.removeClass('active')
+                        uiParameters.hide()
+                )
+                .appendTo(uiMenu)
+
+            uiContainer
+                .append(uiMenu)
+                .append(uiParameters)
+                .append(uiPivotContainer);
+
+            ## Render type
+            pvtRenderType = $('<div>')
+                .addClass('pvtParameterLabel')
+                .appendTo(uiParameters)
+                .text(localeStrings.rendererLabel)
+            pvtRenderType = $('<div>')
+                .addClass('pvtRendererType')
+                .addClass('pvtParameter')
+                .appendTo(uiParameters)
             renderer = $("<select>")
                 .addClass('pvtRenderer')
-                .appendTo(rendererControl)
+                .appendTo(pvtRenderType)
                 .bind "change", -> refresh() #capture reference
             for own x of opts.renderers
                 $("<option>").val(x).html(x).appendTo(renderer)
 
-
             #axis list, including the double-click menu
-            unused = $("<td>").addClass('pvtAxisContainer pvtUnused pvtUiCell')
+            unused = $("<div>").addClass('pvtAxisContainer pvtUnused')
             shownAttributes = (a for a of attrValues when a not in opts.hiddenAttributes)
             shownInAggregators = (c for c in shownAttributes when c not in opts.hiddenFromAggregators)
             shownInDragDrop = (c for c in shownAttributes when c not in opts.hiddenFromDragDrop)
-
 
             unusedAttrsVerticalAutoOverride = false
             if opts.unusedAttrsVertical == "auto"
@@ -739,11 +818,6 @@ callWithJQuery ($) ->
                 attrLength = 0
                 attrLength += a.length for a in shownInDragDrop
                 unusedAttrsVerticalAutoOverride = attrLength > unusedAttrsVerticalAutoCutoff
-
-            if opts.unusedAttrsVertical == true or unusedAttrsVerticalAutoOverride
-                unused.addClass('pvtVertList')
-            else
-                unused.addClass('pvtHorizList')
 
             for own i, attr of shownInDragDrop
                 do (attr) ->
@@ -826,9 +900,10 @@ callWithJQuery ($) ->
                             else
                                 attrElem.removeClass "pvtFilteredAttribute"
 
-                            valueList.find('.pvtSearch').val('')
-                            valueList.find('.pvtCheckContainer p').show()
-                            valueList.hide()
+                        valueList.find('.pvtSearch').val('')
+                        valueList.find('.pvtCheckContainer p').show()
+                        valueList.hide()
+
 
                     finalButtons = $("<p>").appendTo(valueList)
 
@@ -858,77 +933,101 @@ callWithJQuery ($) ->
                     attrElem.addClass('pvtFilteredAttribute') if hasExcludedItem
                     unused.append(attrElem).append(valueList)
 
-            tr1 = $("<tr>").appendTo(uiTable)
+            pvtRenderType = $('<div>')
+                .addClass('pvtParameterLabel')
+                .appendTo(uiParameters)
+                .text(localeStrings.valuesLabel)
 
             #aggregator menu and value area
+            divAggregator = $("<div>")
+                .addClass('pvtAggregatorChoose')
+                .addClass('pvtParameter')
+                .appendTo(uiParameters)
 
-            aggregator = $("<select>").addClass('pvtAggregator')
-                .bind "change", -> refresh() #capture reference
+            aggregator = $("<select>")
+                .addClass('pvtAggregator')
+                .appendTo(divAggregator)
+                .bind "change", =>
+                    if !opts.multiple
+                        @find(".pvtVals .pvtAttrDropdown").each -> this.remove()
+                        aggregators = [{value: aggregator.val()}]
+                        refresh() #capture reference
             for own x of opts.aggregators
                 aggregator.append $("<option>").val(x).html(x)
+
+            if opts.multiple
+                $("<a>", role: "button")
+                    .addClass("pvtAddAggregator")
+                    .addClass("pvtToolButton")
+                    .appendTo(divAggregator)
+                    .html('+')
+                    .bind "click", ->
+                        aggregators.push {id: ++itemsId, value: aggregator.val()}
+                        renameAggregators()
+                        refresh()
 
             ordering =
                 key_a_to_z:   {rowSymbol: "&varr;", colSymbol: "&harr;", next: "value_a_to_z"}
                 value_a_to_z: {rowSymbol: "&darr;", colSymbol: "&rarr;", next: "value_z_to_a"}
                 value_z_to_a: {rowSymbol: "&uarr;", colSymbol: "&larr;", next: "key_a_to_z"}
 
-            rowOrderArrow = $("<a>", role: "button").addClass("pvtRowOrder")
+            rowOrderArrow = $("<a>", role: "button")
+                .addClass("pvtRowOrder")
+                .addClass("pvtToolButton")
+                .appendTo(divAggregator)
                 .data("order", opts.rowOrder).html(ordering[opts.rowOrder].rowSymbol)
                 .bind "click", ->
                     $(this).data("order", ordering[$(this).data("order")].next)
                     $(this).html(ordering[$(this).data("order")].rowSymbol)
                     refresh()
 
-            colOrderArrow = $("<a>", role: "button").addClass("pvtColOrder")
+            colOrderArrow = $("<a>", role: "button")
+                .addClass("pvtColOrder")
+                .addClass("pvtToolButton")
+                .appendTo(divAggregator)
                 .data("order", opts.colOrder).html(ordering[opts.colOrder].colSymbol)
                 .bind "click", ->
                     $(this).data("order", ordering[$(this).data("order")].next)
                     $(this).html(ordering[$(this).data("order")].colSymbol)
                     refresh()
 
-            $("<td>").addClass('pvtVals pvtUiCell')
-              .appendTo(tr1)
-              .append(aggregator)
-              .append(rowOrderArrow)
-              .append(colOrderArrow)
-              .append($("<br>"))
+            pvVals = $("<div>").addClass('pvtVals')
+                .addClass('pvtParameter')
+                .appendTo(uiParameters)
+
+            uiParameters.append(pvVals)
+
+            # Available fields
+            pvtRenderType = $('<div>')
+                .addClass('pvtParameterLabel')
+                .appendTo(uiParameters)
+                .text(localeStrings.fieldsLabel)
+
+            uiParameters.append(unused)
 
             #column axes
-            $("<td>").addClass('pvtAxisContainer pvtHorizList pvtCols pvtUiCell').appendTo(tr1)
-
-            tr2 = $("<tr>").appendTo(uiTable)
+            pvtRenderType = $('<div>')
+                .addClass('pvtParameterLabel')
+                .appendTo(uiParameters)
+                .text(localeStrings.colsLabel)
+            $("<div>").addClass('pvtAxisContainer pvtCols').appendTo(uiParameters)
 
             #row axes
-            tr2.append $("<td>").addClass('pvtAxisContainer pvtRows pvtUiCell').attr("valign", "top")
+            pvtRenderType = $('<div>')
+                .addClass('pvtParameterLabel')
+                .appendTo(uiParameters)
+                .text(localeStrings.rowsLabel)
+            $("<div>").addClass('pvtAxisContainer pvtRows').appendTo(uiParameters)
 
             #the actual pivot table container
-            pivotTable = $("<td>")
-                .attr("valign", "top")
+            pivotTable = $("<div>")
                 .addClass('pvtRendererArea')
-                .appendTo(tr2)
-
-            #finally the renderer dropdown and unused attribs are inserted at the requested location
-            if opts.unusedAttrsVertical == true or unusedAttrsVerticalAutoOverride
-                uiTable.find('tr:nth-child(1)').prepend rendererControl
-                uiTable.find('tr:nth-child(2)').prepend unused
-            else
-                uiTable.prepend $("<tr>").append(rendererControl).append(unused)
+                .appendTo(uiPivotContainer)
 
             #render the UI in its default state
-            @html uiTable
+            @html uiContainer
 
             #set up the UI initial state as requested by moving elements around
-
-            for x in opts.cols
-                @find(".pvtCols").append @find(".axis_#{$.inArray(x, shownInDragDrop)}")
-            for x in opts.rows
-                @find(".pvtRows").append @find(".axis_#{$.inArray(x, shownInDragDrop)}")
-            if opts.aggregatorName?
-                @find(".pvtAggregator").val opts.aggregatorName
-            if opts.rendererName?
-                @find(".pvtRenderer").val opts.rendererName
-
-            @find(".pvtUiCell").hide() unless opts.showUI
 
             initialRender = true
 
@@ -942,42 +1041,93 @@ callWithJQuery ($) ->
                     cols: [], rows: []
                     dataClass: opts.dataClass
 
-                numInputsToProcess = opts.aggregators[aggregator.val()]([])().numInputs ? 0
-                vals = []
                 @find(".pvtRows li span.pvtAttr").each -> subopts.rows.push $(this).data("attrName")
                 @find(".pvtCols li span.pvtAttr").each -> subopts.cols.push $(this).data("attrName")
-                @find(".pvtVals select.pvtAttrDropdown").each ->
-                    if numInputsToProcess == 0
-                        $(this).remove()
-                    else
-                        numInputsToProcess--
-                        vals.push $(this).val() if $(this).val() != ""
 
-                if numInputsToProcess != 0
+                numInputsToProcess = 0
+
+                aggVals = []
+                for agg, idx in aggregators
+                    aggregatorType = agg.value if typeof agg == "object"
+                    aggIdx = agg.id
+                    initialVals = agg.vals
+
+                    numInputsToProcess = opts.aggregators[aggregatorType]([])().numInputs ? 0
+                    vals = []
+                    @find('.pvtVals select.pvtAttrDropdown'+aggIdx).each ->
+                        if numInputsToProcess != 0
+                            numInputsToProcess--
+                            vals.push $(this).val() if $(this).val() != ""
+
+
                     pvtVals = @find(".pvtVals")
-                    for x in [0...numInputsToProcess]
-                        newDropdown = $("<select>")
-                            .addClass('pvtAttrDropdown')
-                            .append($("<option>"))
-                            .bind "change", -> refresh()
-                        for attr in shownInAggregators
-                            newDropdown.append($("<option>").val(attr).text(attr))
-                        pvtVals.append(newDropdown)
+                    container =  @find('.pvtVals .pvtAttrDropdownContainer'+aggIdx)
+                    found = container.length > 0
+                    if opts.multiple
+                        if !found
+                            container = $("<div>")
+                                .addClass('pvtAttrDropdownContainer')
+                                .addClass("pvtAttrDropdownContainer"+aggIdx)
+                                .appendTo(pvtVals)
+                            $("<label>")
+                                .addClass('pvtAttrDropdown')
+                                .addClass("pvtAttrDropdown"+aggIdx)
+                                .appendTo(container)
+                                .html('<b>' + agg.displayName + '</b>) ' + aggregatorType)
+                            initialRender = true
 
-                if initialRender
-                    vals = opts.vals
-                    i = 0
-                    @find(".pvtVals select.pvtAttrDropdown").each ->
-                        $(this).val vals[i]
-                        i++
-                    initialRender = false
+                        if !initialRender
+                            @find('.pvtVals .pvtAttrDropdownContainer'+ aggIdx + ' label.pvtAttrDropdown')
+                                .each( -> $(this).html('<b>' + agg.displayName + '</b>) ' + aggregatorType) )
+                    else
+                        container = pvtVals
 
-                subopts.aggregatorName = aggregator.val()
-                subopts.vals = vals
-                subopts.aggregator = opts.aggregators[aggregator.val()](vals)
+                    if numInputsToProcess != 0
+                        for x in [0...numInputsToProcess]
+                            newDropdown = $("<select>")
+                                .addClass("pvtAttrDropdown"+aggIdx)
+                                .addClass('pvtAttrDropdown')
+                                .append($("<option>"))
+                                .bind "change", -> refresh()
+                            for attr in shownInAggregators
+                                newDropdown.append($("<option>").val(attr).text(attr))
+                            container.append(newDropdown)
+
+
+                    if opts.multiple && !found
+                        $("<a>")
+                            .html('x')
+                            .addClass('pvtRemoveAggregator')
+                            .addClass('pvtToolButton')
+                            .addClass("pvtAttrDropdown"+aggIdx)
+                            .appendTo(container)
+                            .bind "click", (->
+                                    this.instance.find(".pvtVals .pvtAttrDropdownContainer"+this.aggIdx).remove()
+                                    idx = aggregators.findIndex( (agg) => agg.id == this.aggIdx);
+                                    aggregators.splice(idx, 1)
+                                    renameAggregators();
+                                    refresh()
+                                ).bind({instance: this, aggIdx})
+
+                    if initialRender
+                        vals = initialVals ? opts.vals
+                        i = 0
+                        @find(".pvtVals select.pvtAttrDropdown"+aggIdx).each ->
+                            $(this).val vals[i]
+                            i++
+                        initialRender = false
+
+                    aggVals.push vals
+
+                subopts.aggregatorName = aggregators.map((agg) -> agg.value)
+                subopts.vals = aggVals
+                subopts.aggregator = aggregators.map((agg, i) -> opts.aggregators[agg.value](aggVals[i]))
                 subopts.renderer = opts.renderers[renderer.val()]
                 subopts.rowOrder = rowOrderArrow.data("order")
                 subopts.colOrder = colOrderArrow.data("order")
+                if opts.multiple
+                    subopts.aggregatorsLabel = aggregators.map((agg) -> agg.displayName)
+
                 #construct filter here
                 exclusions = {}
                 @find('input.pvtFilter').not(':checked').each ->
@@ -1008,13 +1158,15 @@ callWithJQuery ($) ->
                     rows: subopts.rows
                     colOrder: subopts.colOrder
                     rowOrder: subopts.rowOrder
-                    vals: vals
+                    vals: aggVals
                     exclusions: exclusions
                     inclusions: inclusions
                     inclusionsInfo: inclusions #duplicated for backwards-compatibility
-                    aggregatorName: aggregator.val()
+                    aggregatorName: aggregators.map((agg) -> agg.value)
                     rendererName: renderer.val()
 
+                currentPivotData = subopts.pivotData
+                delete subopts.pivotData
                 @data "pivotUIOptions", pivotUIOptions
 
                 # if requested make sure unused columns are in alphabetical order
@@ -1025,11 +1177,31 @@ callWithJQuery ($) ->
                         .appendTo unusedAttrsContainer
 
                 pivotTable.css("opacity", 1)
-                opts.onRefresh(pivotUIOptions) if opts.onRefresh?
+                opts.onRefresh(pivotUIOptions, currentPivotData) if opts.onRefresh?
 
             refresh = =>
                 pivotTable.css("opacity", 0.5)
                 setTimeout refreshDelayed, 10
+
+            for x in opts.cols
+                @find(".pvtCols").append @find(".axis_#{$.inArray(x, shownInDragDrop)}")
+            for x in opts.rows
+                @find(".pvtRows").append @find(".axis_#{$.inArray(x, shownInDragDrop)}")
+            if opts.aggregatorName?
+                if opts.multiple
+                    opts.aggregatorName = if Array.isArray(opts.aggregatorName) then opts.aggregatorName else [opts.aggregatorName]
+                    for agg, idx in opts.aggregatorName
+                        aggregators.push {id: ++itemsId, value: agg, vals: opts.vals?[idx]}
+                        renameAggregators()
+                else
+                    @find(".pvtVals").append @find(".pvtAttrDropdown")
+                    @find(".pvtAggregator").val(opts.aggregatorName).change()
+            else
+                @find(".pvtAggregator").change()
+            if opts.rendererName?
+                @find(".pvtRenderer").val opts.rendererName
+
+            @find(".pvtUiCell").hide() unless opts.showUI
 
             #the very first refresh will actually display the table
             refresh()
@@ -1138,3 +1310,5 @@ callWithJQuery ($) ->
         barcharter ".pvtTotal.colTotal"
 
         return this
+
+

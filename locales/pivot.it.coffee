@@ -29,6 +29,11 @@ callWithJQuery ($) ->
       totals: "Totali"
       vs: "su"
       by: "da"
+      rendererLabel: "Visualizza come"
+      valuesLabel: "Valori"
+      fieldsLabel: "Campi"
+      colsLabel: "Colonne"
+      rowsLabel: "Righe"
 
     aggregators:
       "Numero":                             tpl.count(frFmtInt)

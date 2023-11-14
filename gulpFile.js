@@ -14,16 +14,16 @@ var gulp = require('gulp'),
     minifyCSS = require('gulp-minify-css'),
     serve = require('gulp-serve');
 
-gulp.task('makeCss', function() {
+gulp.task('makeCss', function(done) {
     gulp.src('./dist/pivot.css')
         .pipe(minifyCSS())
         .pipe(concat('pivot.min.css'))//trick to output to new file
         .pipe(gulp.dest('./dist/'))
+    done();
 });
 
 
-gulp.task('makeJs', function() {
-
+gulp.task('makeJs', function(done) {
     gulp.src(['./src/*.coffee', './locales/*.coffee', './tests/*.coffee'])
         //compile to js (and create map files)
         .pipe(sourcemaps.init())
@@ -40,6 +40,7 @@ gulp.task('makeJs', function() {
         .pipe(uglify())
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('./dist'));
+    done();
 });
 
 
@@ -60,6 +61,7 @@ gulp.task('publish', function (done) {
 gulp.task('push', function (done) {
   git.push('origin', 'master', {args: '--tags'}, function (err) {
     if (err) throw err;
+    done();
   });
 });
 
@@ -71,7 +73,6 @@ gulp.task('tag', function() {
     .pipe(filter('package.json'))
     .pipe(tag_version());
 });
-
 
 gulp.task('bumpPatch', function() { return inc('patch'); })
 gulp.task('bumpMinor', function() { return inc('minor'); })
@@ -90,9 +91,9 @@ gulp.task('major', function() {
 gulp.task('serve', serve('.'));
 
 gulp.task('watch', function() {
-  gulp.watch(['./src/*.coffee', './locales/*.coffee', './tests/*.coffee'], ['makeJs']);
-  gulp.watch('./dist/pivot.css', ['makeCss']);
+  gulp.watch(['./src/**/*.coffee', './locales/*.coffee', './tests/*.coffee'], {usePolling: true}, gulp.series('makeJs'));
+  gulp.watch('./dist/pivot.css',  gulp.series('makeCss'));
 });
 
-gulp.task('default', ['makeJs', 'makeCss']);
+gulp.task('default', gulp.series('makeJs', 'makeCss'));
 

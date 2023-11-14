@@ -9,6 +9,22 @@ callWithJQuery = (pivotModule) ->
 
 callWithJQuery ($) ->
 
+    exportFile = (content, filename, type) ->
+        file = new Blob([content], {type: type})
+        if window.navigator.msSaveOrOpenBlob
+            window.navigator.msSaveOrOpenBlob(file, filename)
+        else
+            a = document.createElement("a")
+            url = URL.createObjectURL(file)
+            a.href = url
+            a.download = filename
+            document.body.appendChild(a)
+            a.click()
+            setTimeout(->
+                document.body.removeChild(a)
+                window.URL.revokeObjectURL(url)
+            , 0)
+
     $.pivotUtilities.export_renderers = "TSV Export": (pivotData, opts) ->
         defaults = localeStrings: {}
 
@@ -50,7 +66,8 @@ callWithJQuery ($) ->
         for r in result
             text += r.join("\t")+"\n"
 
-        return $("<textarea>").text(text).css(
+        exportFile(text, opts.filename || "pivottable.tsv", "text/tsv")
+
+        return  $("<textarea>").text(text).css(
                 width: ($(window).width() / 2) + "px",
                 height: ($(window).height() / 2) + "px")
-

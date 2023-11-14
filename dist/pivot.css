@@ -1,5 +1,6 @@
-.pvtUi { color: #333; }
-
+.pvtUi {
+    display: flex;
+}
 
 table.pvtTable {
     font-size: 8pt;
@@ -7,7 +8,7 @@ table.pvtTable {
     border-collapse: collapse;
 }
 table.pvtTable thead tr th, table.pvtTable tbody tr th {
-    background-color: #e6EEEE;
+    background-color: rgb(246,246,246);
     border: 1px solid #CDCDCD;
     font-size: 8pt;
     padding: 5px;
@@ -27,26 +28,19 @@ table.pvtTable tbody tr td {
 
 .pvtTotal, .pvtGrandTotal { font-weight: bold; }
 
-.pvtVals { text-align: center; white-space: nowrap;}
-.pvtRowOrder, .pvtColOrder {
-    cursor:pointer;
-    width: 15px;
-    margin-left: 5px;
-    display: inline-block; }
-.pvtAggregator { margin-bottom: 5px ;}
+.pvtVals { text-align: left; white-space: nowrap;}
+
+.pvtAggregator {
+    white-space: normal;
+    text-align: left;
+    display: inline-block;
+    margin-right: .5em;
+}
 
 .pvtAxisContainer, .pvtVals {
-    border: 1px solid gray;
-    background: #EEE;
-    padding: 5px;
     min-width: 20px;
     min-height: 20px;
-
     user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -ms-user-select: none;
 }
 .pvtAxisContainer li {
     padding: 8px 6px;
@@ -63,13 +57,13 @@ table.pvtTable tbody tr td {
 
 .pvtAxisContainer li span.pvtAttr {
     -webkit-text-size-adjust: 100%;
-    background: #F3F3F3;
+    background: white;
     border: 1px solid #DEDEDE;
-    padding: 2px 5px;
-    white-space:nowrap;
+    padding: 4px 8px;
+    white-space: nowrap;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
-    border-radius: 5px;
+    border-radius: 13px;
 }
 
 .pvtTriangle {
@@ -100,7 +94,6 @@ table.pvtTable tbody tr td {
 
 .pvtCheckContainer{
     text-align: left;
-    font-size: 14px;
     white-space: nowrap;
     overflow-y: scroll;
     width: 100%;
@@ -111,4 +104,127 @@ table.pvtTable tbody tr td {
 
 .pvtCheckContainer p{ margin: 5px; }
 
-.pvtRendererArea { padding: 5px;}
+select {
+    padding: .2em;
+}
+
+.pvtRendererArea {
+    padding-left: 4px;
+}
+
+.pvtUiMenu {
+    background: rgb(246,246,246);
+    border: 1px solid #CCC;
+    padding-top: 24px;
+    width: 30px;
+    min-width: 30px;
+    position: relative;
+    color: #181d1f;
+    overflow: hidden;
+    min-height: 300px;
+}
+
+.pvtUiVerticalButton {
+    -ms-writing-mode: tb-lr;
+    writing-mode: vertical-lr;
+    font-size: 10px;
+    font-weight: lighter;
+    width: 27px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    outline: none;
+    cursor: pointer;
+}
+
+.pvtUiVerticalButton.active {
+    border-right: 2px solid #2196f3;
+}
+
+.pvtUiParameters {
+    background: rgb(246,246,246);
+    border-right: 1px solid #CCC;
+    border-bottom: 1px solid #CCC;
+}
+
+.pvtParameter {
+    padding-left: 4px;
+    padding-bottom: 4px;
+}
+
+.pvtParameterLabel {
+    padding-top: 4pt;
+    padding-bottom: 4pt;
+    padding-left: 4pt;
+    font-weight: bold;
+    border-top: 1px solid #CCC;
+}
+
+.pvtAttrDropdownContainer {
+    display: flex;
+    align-items: center;
+}
+
+select.pvtAttrDropdown {
+    display: inline-block;
+    margin-right: .5em;
+}
+
+label.pvtAttrDropdown {
+    display: block;
+    text-align: left;
+    margin-right: .5em;
+}
+
+.pvtToolButton {
+    cursor: pointer;
+    width: 24px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 50%;
+    background: white;
+    height: 24px;
+    font-size: 16px;
+    margin-right: 0.5em;
+    border: 1px solid #DEDEDE;
+}
+
+.pvtUiButtonColumns::before {
+    width: 13px;
+    height: 13px;
+    content: '';
+    display: inline-block;
+    background-image: url('data:image/svg+xml,%3Csvg xmlns="http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg" width="13" height="13" viewBox="0 0 24 24"%3E%3Cpath fill="currentColor" d="M4 20V4h16v16H4ZM5 9.154h14V5H5v4.154Zm4.998 4.923h4.004v-3.923H9.998v3.923Zm0 4.923h4.004v-3.923H9.998V19ZM5 14.077h3.998v-3.923H5v3.923Zm10.002 0H19v-3.923h-3.998v3.923ZM5 19h3.998v-3.923H5V19Zm10.002 0H19v-3.923h-3.998V19Z"%2F%3E%3C%2Fsvg%3E')
+
+}
+
+.pvtAddAggregator {
+    font-weight: bold;
+}
+
+th.pvtAggregatorLabel {
+    text-align: center;
+}
+
+th.pvtAxisLabel {
+    white-space: nowrap;
+}
+
+.pvtAggregatorChoose {
+    display: flex;
+    align-items: center;
+}
+
+.pvtUnused {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 25em;
+}
+
+.pvtRows, .pvtCols {
+    min-height: 4em;
+}
