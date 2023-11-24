@@ -12,27 +12,6 @@
   };
 
   callWithJQuery(function($) {
-    var exportFile;
-    exportFile = function(content, filename, type) {
-      var a, file, url;
-      file = new Blob([content], {
-        type: type
-      });
-      if (window.navigator.msSaveOrOpenBlob) {
-        return window.navigator.msSaveOrOpenBlob(file, filename);
-      } else {
-        a = document.createElement("a");
-        url = URL.createObjectURL(file);
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        return setTimeout(function() {
-          document.body.removeChild(a);
-          return window.URL.revokeObjectURL(url);
-        }, 0);
-      }
-    };
     return $.pivotUtilities.export_renderers = {
       "TSV Export": function(pivotData, opts) {
         var agg, colAttrs, colKey, colKeys, defaults, i, j, k, l, len, len1, len2, len3, len4, len5, m, n, r, result, row, rowAttr, rowAttrs, rowKey, rowKeys, text;
@@ -88,7 +67,6 @@
           r = result[n];
           text += r.join("\t") + "\n";
         }
-        exportFile(text, opts.filename || "pivottable.tsv", "text/tsv");
         return $("<textarea>").text(text).css({
           width: ($(window).width() / 2) + "px",
           height: ($(window).height() / 2) + "px"
