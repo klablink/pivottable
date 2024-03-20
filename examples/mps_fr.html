@@ -24,11 +24,10 @@
         <script type="text/javascript">
     // This example shows French localization
     // using the "Canadian Parliament 2012" dataset.
-
     $(function(){
         $.getJSON("mps.json", function(mps) {
             $("#output").pivotUI(mps,
-                { rows: ["Province"], cols: ["Party"] },
+                { rows: ["Province"], cols: ["Party"], aggregatorName: ['Count'] },
                 false, "fr"
             );
         });

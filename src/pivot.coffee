@@ -1030,7 +1030,7 @@ callWithJQuery ($) ->
                 .bind "change", =>
                     if !opts.multiple
                         @find(".pvtVals .pvtAttrDropdown").each -> this.remove()
-                        aggregators = [{value: aggregator.val()}]
+                        aggregators = [{id: 1, value: aggregator.val()}]
                         refresh() #capture reference
 
             for own x of opts.aggregators

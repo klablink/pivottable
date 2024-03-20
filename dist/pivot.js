@@ -1713,6 +1713,7 @@
               });
               aggregators = [
                 {
+                  id: 1,
                   value: aggregator.val()
                 }
               ];
