@@ -6,16 +6,16 @@ callWithJQuery = (pivotModule) ->
     # Plain browser env
     else
         pivotModule jQuery
-        
+
 callWithJQuery ($) ->
     nf = $.pivotUtilities.numberFormat
     tpl = $.pivotUtilities.aggregatorTemplates
 
-    frFmt =    nf(thousandsSep: " ", decimalSep: ",")
-    frFmtInt = nf(digitsAfterDecimal: 0, thousandsSep: " ", decimalSep: ",")
-    frFmtPct = nf(digitsAfterDecimal: 1, scaler: 100, suffix: "%", thousandsSep: " ", decimalSep: ",")
+    frFmt =    nf(thousandsSep: ".", decimalSep: ",")
+    frFmtInt = nf(digitsAfterDecimal: 0, thousandsSep: ".", decimalSep: ",")
+    frFmtPct = nf(digitsAfterDecimal: 1, scaler: 100, suffix: "%", thousandsSep: ".", decimalSep: ",")
 
-    $.pivotUtilities.locales.sq = 
+    $.pivotUtilities.locales.sq =
         localeStrings:
             renderError: "Ka ndodhur një gabim gjatë shfaqjes së rezultateve të PivotTable."
             computeError: "Ka ndodhur një gabim gjatë llogaritjes së rezultateve të PivotTable."
@@ -27,8 +27,14 @@ callWithJQuery ($) ->
             totals: "Totalet"
             vs: "kundër"
             by: "për"
+            rendererLabel: "Shfaq si"
+            valuesLabel: "Vlerat"
+            fieldsLabel: "Fushat"
+            colsLabel: "Kolonat"
+            rowsLabel: "Rreshtat"
+            groupsLabel: "Grupet"
 
-        aggregators: 
+        aggregators:
             "Numëro":                       tpl.count(frFmtInt)
             "Numëro vlerat unike":     tpl.countUnique(frFmtInt)
             "Listo vlerat unike":      tpl.listUnique(", ")
@@ -46,7 +52,7 @@ callWithJQuery ($) ->
             "Numërimi si thyesë e totalit": tpl.fractionOf(tpl.count(), "total", frFmtPct)
             "Numërimi si thyesë e rreshtave":  tpl.fractionOf(tpl.count(), "row",   frFmtPct)
             "Numërimi si thyesë e kolonave": tpl.fractionOf(tpl.count(), "col",   frFmtPct)
-        
+
         renderers:
             "Tabela":                      $.pivotUtilities.renderers["Table"]
             "Tabela me diagram vertikal":   $.pivotUtilities.renderers["Table Barchart"]

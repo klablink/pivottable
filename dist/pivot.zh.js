@@ -46,7 +46,13 @@
         filterResults: "输入值帮助筛选",
         totals: "合计",
         vs: "于",
-        by: "分组于"
+        by: "分组于",
+        rendererLabel: "渲染器",
+        valuesLabel: "值",
+        fieldsLabel: "字段",
+        colsLabel: "列",
+        rowsLabel: "行",
+        groupsLabel: "分组"
       },
       aggregators: {
         "频数": tpl.count(frFmtInt),

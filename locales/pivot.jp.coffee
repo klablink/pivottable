@@ -29,8 +29,15 @@ callWithJQuery ($) ->
             by: "per"
             apply: "適用する"
             cancel: "キャンセル"
+            rendererLabel: "レンダラー"
+            valuesLabel: "値"
+            fieldsLabel: "フィールド"
+            colsLabel: "列"
+            rowsLabel: "行"
+            groupsLabel: "グループ"
 
-        aggregators:
+
+    aggregators:
             "件数":                             tpl.count(jpFmtInt)
             "件数（ユニーク）":          tpl.countUnique(jpFmtInt)
             "ユニーク値を表示 (CSV)":           tpl.listUnique(", ")
@@ -48,6 +55,7 @@ callWithJQuery ($) ->
             "件数割合":     tpl.fractionOf(tpl.count(), "total", jpFmtPct)
             "件数割合（行）":   tpl.fractionOf(tpl.count(), "row",   jpFmtPct)
             "件数割合（列）": tpl.fractionOf(tpl.count(), "col",   jpFmtPct)
+
 
         renderers:
             "表":                           $.pivotUtilities.renderers["Table"]

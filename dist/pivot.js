@@ -462,7 +462,8 @@
           valuesLabel: "Values",
           fieldsLabel: "Fields",
           colsLabel: "Columns",
-          rowsLabel: "Rows"
+          rowsLabel: "Rows",
+          groupsLabel: "Groups"
         }
       }
     };
@@ -1482,7 +1483,7 @@
         uiMenu = $("<div>").addClass('pvtUiMenu');
         uiParameters = $("<div>").addClass('pvtUiParameters');
         uiPivotContainer = $("<div>").addClass('pvtUiContainer');
-        uiButtonColumns = $("<div>").addClass('pvtUiVerticalButton').addClass('pvtUiButtonColumns').addClass('active').text('Columns').on('click', function() {
+        uiButtonColumns = $("<div>").addClass('pvtUiVerticalButton').addClass('pvtUiButtonColumns').addClass('active').text(localeStrings.colsLabel).on('click', function() {
           opts.parametersActive = !opts.parametersActive;
           if (opts.parametersActive) {
             uiButtonColumns.addClass('active');
@@ -1496,7 +1497,7 @@
           uiButtonColumns.removeClass('active');
           uiParameters.hide();
         }
-        uiButtonGroups = $("<div>").addClass('pvtUiVerticalButton').addClass('pvtUiButtonGroups').text('Groups').on('click', function() {
+        uiButtonGroups = $("<div>").addClass('pvtUiVerticalButton').addClass('pvtUiButtonGroups').text(localeStrings.groupsLabel).on('click', function() {
           if (opts.grouping) {
             uiButtonGroups.removeClass('active');
             opts.grouping = false;

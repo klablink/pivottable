@@ -8,7 +8,7 @@ callWithJQuery = (pivotModule) ->
     # Plain browser env
     else
         pivotModule jQuery
-        
+
 callWithJQuery ($) ->
     nf = $.pivotUtilities.numberFormat
     tpl = $.pivotUtilities.aggregatorTemplates
@@ -21,7 +21,7 @@ callWithJQuery ($) ->
     frFmtInt = nf(digitsAfterDecimal: 0, thousandsSep: ",", decimalSep: ".")
     frFmtPct = nf(digitsAfterDecimal: 2, scaler: 100, suffix: "%", thousandsSep: ",", decimalSep: ".")
 
-    $.pivotUtilities.locales.zh = 
+    $.pivotUtilities.locales.zh =
 
         localeStrings:
             renderError: "展示结果时出错。"
@@ -34,6 +34,12 @@ callWithJQuery ($) ->
             totals: "合计"
             vs: "于"
             by: "分组于"
+            rendererLabel: "渲染器"
+            valuesLabel: "值"
+            fieldsLabel: "字段"
+            colsLabel: "列"
+            rowsLabel: "行"
+            groupsLabel: "分组"
 
         aggregators:
             "频数":                                     tpl.count(frFmtInt)
@@ -65,7 +71,7 @@ callWithJQuery ($) ->
             "热图": r["Heatmap"]
             "行热图": r["Row Heatmap"]
             "列热图": r["Col Heatmap"]
-            
+
     if gcr
         $.pivotUtilities.locales.zh.gchart_renderers =
             "折线图(g)":            gcr["Line Chart"]
@@ -84,7 +90,7 @@ callWithJQuery ($) ->
             $.pivotUtilities.locales.zh.d3_renderers)
 
     if c3r
-        $.pivotUtilities.locales.zh.c3_renderers = 
+        $.pivotUtilities.locales.zh.c3_renderers =
             "折线图": c3r["Line Chart"]
             "柱形图": c3r["Bar Chart"]
             "堆栈柱形图": c3r["Stacked Bar Chart"]

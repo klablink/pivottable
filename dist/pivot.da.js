@@ -42,7 +42,13 @@
         filterResults: "Filter værdier",
         totals: "I alt",
         vs: "vs",
-        by: "af"
+        by: "af",
+        rendererLabel: "Renderering",
+        valuesLabel: "Værdier",
+        fieldsLabel: "Felter",
+        colsLabel: "Kolonner",
+        rowsLabel: "Rækker",
+        groupsLabel: "Grupper"
       },
       aggregators: {
         "Antal": tpl.count(t),

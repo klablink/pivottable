@@ -6,14 +6,14 @@ callWithJQuery = (pivotModule) ->
     # Plain browser env
     else
         pivotModule jQuery
-        
+
 callWithJQuery ($) ->
     nf = $.pivotUtilities.numberFormat
     tpl = $.pivotUtilities.aggregatorTemplates
 
-    plFmt =    nf(thousandsSep: " ", decimalSep: ",")
-    plFmtInt = nf(digitsAfterDecimal: 0, thousandsSep: " ", decimalSep: ",")
-    plFmtPct = nf(digitsAfterDecimal: 1, scaler: 100, suffix: "%", thousandsSep: " ", decimalSep: ",")
+    plFmt =    nf(thousandsSep: ".", decimalSep: ",")
+    plFmtInt = nf(digitsAfterDecimal: 0, thousandsSep: ".", decimalSep: ",")
+    plFmtPct = nf(digitsAfterDecimal: 1, scaler: 100, suffix: "%", thousandsSep: ".", decimalSep: ",")
 
     $.pivotUtilities.locales.pl =
         localeStrings:
@@ -29,8 +29,14 @@ callWithJQuery ($) ->
             totals: "Podsumowanie"
             vs: "vs"
             by: "przez"
+            rendererLabel: "Renderowanie"
+            valuesLabel: "Wartości"
+            fieldsLabel: "Pola"
+            colsLabel: "Kolumny"
+            rowsLabel: "Wiersze"
+            groupsLabel: "Grupy"
 
-        aggregators: 
+        aggregators:
             "Liczba":                       tpl.count(plFmtInt)
             "Liczba Unikatowych Wartości":  tpl.countUnique(plFmtInt)
             "Lista Unikatowych Wartości":   tpl.listUnique(", ")

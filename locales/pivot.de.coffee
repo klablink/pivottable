@@ -6,16 +6,16 @@ callWithJQuery = (pivotModule) ->
     # Plain browser env
     else
         pivotModule jQuery
-        
+
 callWithJQuery ($) ->
     nf = $.pivotUtilities.numberFormat
     tpl = $.pivotUtilities.aggregatorTemplates
 
-    frFmt =    nf(thousandsSep: " ", decimalSep: ",")
-    frFmtInt = nf(digitsAfterDecimal: 0, thousandsSep: " ", decimalSep: ",")
-    frFmtPct = nf(digitsAfterDecimal: 1, scaler: 100, suffix: "%", thousandsSep: " ", decimalSep: ",")
+    frFmt =    nf(thousandsSep: ".", decimalSep: ",")
+    frFmtInt = nf(digitsAfterDecimal: 0, thousandsSep: ".", decimalSep: ",")
+    frFmtPct = nf(digitsAfterDecimal: 1, scaler: 100, suffix: "%", thousandsSep: ".", decimalSep: ",")
 
-    $.pivotUtilities.locales.de = 
+    $.pivotUtilities.locales.de =
         localeStrings:
             renderError: "Bei der Darstellung der Pivot-Tabelle ist ein Fehler aufgetreten."
             computeError: "Bei der Berechnung der Pivot-Tabelle ist ein Fehler aufgetreten."
@@ -27,8 +27,14 @@ callWithJQuery ($) ->
             totals: "Gesamt"
             vs: "gegen"
             by: "pro"
+            rendererLabel: "Darstellung"
+            valuesLabel: "Werte"
+            fieldsLabel: "Felder"
+            colsLabel: "Spalten"
+            rowsLabel: "Zeilen"
+            groupsLabel: "Gruppen"
 
-        aggregators: 
+        aggregators:
             "Anzahl":                       tpl.count(frFmtInt)
             "Anzahl eindeutiger Werte":     tpl.countUnique(frFmtInt)
             "Liste eindeutiger Werte":      tpl.listUnique(", ")

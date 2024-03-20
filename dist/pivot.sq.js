@@ -16,19 +16,19 @@
     nf = $.pivotUtilities.numberFormat;
     tpl = $.pivotUtilities.aggregatorTemplates;
     frFmt = nf({
-      thousandsSep: " ",
+      thousandsSep: ".",
       decimalSep: ","
     });
     frFmtInt = nf({
       digitsAfterDecimal: 0,
-      thousandsSep: " ",
+      thousandsSep: ".",
       decimalSep: ","
     });
     frFmtPct = nf({
       digitsAfterDecimal: 1,
       scaler: 100,
       suffix: "%",
-      thousandsSep: " ",
+      thousandsSep: ".",
       decimalSep: ","
     });
     return $.pivotUtilities.locales.sq = {
@@ -42,7 +42,13 @@
         filterResults: "Filtro vlerat",
         totals: "Totalet",
         vs: "kundër",
-        by: "për"
+        by: "për",
+        rendererLabel: "Shfaq si",
+        valuesLabel: "Vlerat",
+        fieldsLabel: "Fushat",
+        colsLabel: "Kolonat",
+        rowsLabel: "Rreshtat",
+        groupsLabel: "Grupet"
       },
       aggregators: {
         "Numëro": tpl.count(frFmtInt),

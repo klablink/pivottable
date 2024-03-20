@@ -209,6 +209,7 @@ callWithJQuery ($) ->
                 fieldsLabel: "Fields"
                 colsLabel: "Columns"
                 rowsLabel: "Rows"
+                groupsLabel: "Groups"
 
     #dateFormat deriver l10n requires month and day names to be passed in directly
     mthNamesEn = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
@@ -825,7 +826,7 @@ callWithJQuery ($) ->
                 .addClass('pvtUiVerticalButton')
                 .addClass('pvtUiButtonColumns')
                 .addClass('active')
-                .text('Columns')
+                .text(localeStrings.colsLabel)
                 .on('click', ->
                     opts.parametersActive = !opts.parametersActive
                     if opts.parametersActive
@@ -844,7 +845,7 @@ callWithJQuery ($) ->
             uiButtonGroups = $("<div>")
                 .addClass('pvtUiVerticalButton')
                 .addClass('pvtUiButtonGroups')
-                .text('Groups')
+                .text(localeStrings.groupsLabel)
                 .on('click', ->
                     if opts.grouping
                         uiButtonGroups.removeClass('active')

@@ -16,19 +16,19 @@
     nf = $.pivotUtilities.numberFormat;
     tpl = $.pivotUtilities.aggregatorTemplates;
     plFmt = nf({
-      thousandsSep: " ",
+      thousandsSep: ".",
       decimalSep: ","
     });
     plFmtInt = nf({
       digitsAfterDecimal: 0,
-      thousandsSep: " ",
+      thousandsSep: ".",
       decimalSep: ","
     });
     plFmtPct = nf({
       digitsAfterDecimal: 1,
       scaler: 100,
       suffix: "%",
-      thousandsSep: " ",
+      thousandsSep: ".",
       decimalSep: ","
     });
     return $.pivotUtilities.locales.pl = {
@@ -44,7 +44,13 @@
         cancel: "Anuluj",
         totals: "Podsumowanie",
         vs: "vs",
-        by: "przez"
+        by: "przez",
+        rendererLabel: "Renderowanie",
+        valuesLabel: "Wartości",
+        fieldsLabel: "Pola",
+        colsLabel: "Kolumny",
+        rowsLabel: "Wiersze",
+        groupsLabel: "Grupy"
       },
       aggregators: {
         "Liczba": tpl.count(plFmtInt),

@@ -16,7 +16,7 @@
     nf = $.pivotUtilities.numberFormat;
     tpl = $.pivotUtilities.aggregatorTemplates;
     frFmt = nf({
-      thousandsSep: " ",
+      thousandsSep: ".",
       decimalSep: ","
     });
     frFmtInt = nf({
@@ -44,7 +44,13 @@
         vs: "vs",
         by: "por",
         apply: "Aplicar",
-        cancel: "Cancelar"
+        cancel: "Cancelar",
+        rendererLabel: "Renderizador",
+        valuesLabel: "Valores",
+        fieldsLabel: "Campos",
+        colsLabel: "Columnas",
+        rowsLabel: "Filas",
+        groupsLabel: "Grupos"
       },
       aggregators: {
         "Cuenta": tpl.count(frFmtInt),

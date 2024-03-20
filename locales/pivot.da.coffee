@@ -6,7 +6,7 @@ callWithJQuery = (pivotModule) ->
     # Plain browser env
     else
         pivotModule jQuery
-        
+
 callWithJQuery ($) ->
     nf = $.pivotUtilities.numberFormat
     tpl = $.pivotUtilities.aggregatorTemplates
@@ -30,8 +30,8 @@ callWithJQuery ($) ->
             decimalSep: ","
         })
 
-    $.pivotUtilities.locales.da = 
-        localeStrings: 
+    $.pivotUtilities.locales.da =
+        localeStrings:
             renderError: "Der opstod en fejl, mens du trak i feltet",
             computeError: "Der opstod en fejl ved beregningen af feltet",
             uiRenderError: "Der opstod en fejl, mens den grafiske brugerflade blev beregnet",
@@ -41,8 +41,15 @@ callWithJQuery ($) ->
             filterResults: "Filter værdier",
             totals: "I alt",
             vs: "vs",
-            by: "af"
-        aggregators: 
+            by: "af",
+            rendererLabel: "Renderering"
+            valuesLabel: "Værdier"
+            fieldsLabel: "Felter"
+            colsLabel: "Kolonner"
+            rowsLabel: "Rækker"
+            groupsLabel: "Grupper"
+
+        aggregators:
             "Antal": tpl.count(t),
             "Antal Unikke værdier": tpl.countUnique(t),
             "Liste unikke værdier": tpl.listUnique(", "),
@@ -60,7 +67,7 @@ callWithJQuery ($) ->
             "Andel af i alt antal": tpl.fractionOf(tpl.count(), "total", o),
             "Andel af række antal": tpl.fractionOf(tpl.count(), "row", o),
             "Andel af kolonner antal": tpl.fractionOf(tpl.count(), "col", o)
-        renderers: 
+        renderers:
             "Tabel": $.pivotUtilities.renderers.Table,
             "Tabel med søjler": $.pivotUtilities.renderers["Table Barchart"],
             "Heatmap": $.pivotUtilities.renderers.Heatmap,

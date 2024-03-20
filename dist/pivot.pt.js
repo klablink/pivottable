@@ -48,7 +48,13 @@
         apply: "Aplicar",
         cancel: "Cancelar",
         vs: "vs",
-        by: "por"
+        by: "por",
+        rendererLabel: "Renderizador",
+        valuesLabel: "Valores",
+        fieldsLabel: "Campos",
+        colsLabel: "Colunas",
+        rowsLabel: "Linhas",
+        groupsLabel: "Grupos"
       },
       aggregators: {
         "Contagem": tpl.count(frFmtInt),

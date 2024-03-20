@@ -16,19 +16,19 @@
     nf = $.pivotUtilities.numberFormat;
     tpl = $.pivotUtilities.aggregatorTemplates;
     frFmt = nf({
-      thousandsSep: " ",
+      thousandsSep: ".",
       decimalSep: ","
     });
     frFmtInt = nf({
       digitsAfterDecimal: 0,
-      thousandsSep: " ",
+      thousandsSep: ".",
       decimalSep: ","
     });
     frFmtPct = nf({
       digitsAfterDecimal: 1,
       scaler: 100,
       suffix: "%",
-      thousandsSep: " ",
+      thousandsSep: ".",
       decimalSep: ","
     });
     return $.pivotUtilities.locales.nl = {
@@ -42,7 +42,13 @@
         filterResults: "Filter resultaten",
         totals: "Totaal",
         vs: "versus",
-        by: "per"
+        by: "per",
+        rendererLabel: "Weergeven als",
+        valuesLabel: "Waarden",
+        fieldsLabel: "Velden",
+        colsLabel: "Kolommen",
+        rowsLabel: "Rijen",
+        groupsLabel: "Groepen"
       },
       aggregators: {
         "Aantal": tpl.count(frFmtInt),

@@ -46,8 +46,16 @@
         filterResults: "Sonuçları filtrele",
         totals: "Toplam",
         vs: "vs",
-        by: "ile"
-      },
+        by: "ile",
+        rendererLabel: "Gösterim",
+        valuesLabel: "Değerler",
+        fieldsLabel: "Alanlar",
+        colsLabel: "Kolonlar",
+        rowsLabel: "Satırlar",
+        groupsLabel: "Gruplar"
+      }
+    };
+    ({
       aggregators: {
         "Sayı": tpl.count(frFmtInt),
         "Benzersiz değerler sayısı": tpl.countUnique(frFmtInt),
@@ -74,7 +82,7 @@
         "Satır ilgi haritası": r["Row Heatmap"],
         "Sütun ilgi haritası": r["Col Heatmap"]
       }
-    };
+    });
     if (gcr) {
       $.pivotUtilities.locales.tr.gchart_renderers = {
         "Çizgi Grafiği": gcr["Line Chart"],

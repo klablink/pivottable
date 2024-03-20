@@ -6,16 +6,16 @@ callWithJQuery = (pivotModule) ->
     # Plain browser env
     else
         pivotModule jQuery
-        
+
 callWithJQuery ($) ->
     nf = $.pivotUtilities.numberFormat
     tpl = $.pivotUtilities.aggregatorTemplates
 
-    frFmt =    nf(thousandsSep: " ", decimalSep: ",")
-    frFmtInt = nf(digitsAfterDecimal: 0, thousandsSep: " ", decimalSep: ",")
-    frFmtPct = nf(digitsAfterDecimal: 1, scaler: 100, suffix: "%", thousandsSep: " ", decimalSep: ",")
+    frFmt =    nf(thousandsSep: ".", decimalSep: ",")
+    frFmtInt = nf(digitsAfterDecimal: 0, thousandsSep: ".", decimalSep: ",")
+    frFmtPct = nf(digitsAfterDecimal: 1, scaler: 100, suffix: "%", thousandsSep: ".", decimalSep: ",")
 
-    $.pivotUtilities.locales.ru = 
+    $.pivotUtilities.locales.ru =
         localeStrings:
             renderError: "Ошибка рендеринга страницы.",
             computeError: "Ошибка табличных расчетов.",
@@ -27,8 +27,14 @@ callWithJQuery ($) ->
             totals: "Всего",
             vs: "на",
             by: "с"
+            rendererLabel: "Тип отображения"
+            valuesLabel: "Значения"
+            fieldsLabel: "Поля"
+            colsLabel: "Колонки"
+            rowsLabel: "Строки"
+            groupsLabel: "Группы"
 
-        aggregators: 
+        aggregators:
             "Кол-во": tpl.count(frFmtInt),
             "Кол-во уникальных": tpl.countUnique(frFmtInt),
             "Список уникальных": tpl.listUnique(", "),

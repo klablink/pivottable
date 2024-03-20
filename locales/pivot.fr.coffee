@@ -11,9 +11,9 @@ callWithJQuery ($) ->
     nf = $.pivotUtilities.numberFormat
     tpl = $.pivotUtilities.aggregatorTemplates
 
-    frFmt =    nf(thousandsSep: " ", decimalSep: ",")
-    frFmtInt = nf(digitsAfterDecimal: 0, thousandsSep: " ", decimalSep: ",")
-    frFmtPct = nf(digitsAfterDecimal: 1, scaler: 100, suffix: "%", thousandsSep: " ", decimalSep: ",")
+    frFmt =    nf(thousandsSep: ".", decimalSep: ",")
+    frFmtInt = nf(digitsAfterDecimal: 0, thousandsSep: ".", decimalSep: ",")
+    frFmtPct = nf(digitsAfterDecimal: 1, scaler: 100, suffix: "%", thousandsSep: ".", decimalSep: ",")
 
     $.pivotUtilities.locales.fr =
         localeStrings:
@@ -29,6 +29,12 @@ callWithJQuery ($) ->
             by: "par"
             apply: "Appliquer"
             cancel: "Annuler"
+            rendererLabel: "Moteur de rendu"
+            valuesLabel: "Valeurs"
+            fieldsLabel: "Champs"
+            colsLabel: "Colonnes"
+            rowsLabel: "Lignes"
+            groupsLabel: "Groupes"
 
         aggregators:
             "Nombre":                             tpl.count(frFmtInt)

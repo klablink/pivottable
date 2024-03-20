@@ -6,7 +6,7 @@ callWithJQuery = (pivotModule) ->
     # Plain browser env
     else
         pivotModule jQuery
-        
+
 callWithJQuery ($) ->
     nf = $.pivotUtilities.numberFormat
     tpl = $.pivotUtilities.aggregatorTemplates
@@ -19,7 +19,7 @@ callWithJQuery ($) ->
     frFmtInt = nf(digitsAfterDecimal: 0, thousandsSep: ".", decimalSep: ",")
     frFmtPct = nf(digitsAfterDecimal: 2, scaler: 100, suffix: "%", thousandsSep: ".", decimalSep: ",")
 
-    $.pivotUtilities.locales.pt = 
+    $.pivotUtilities.locales.pt =
 
         localeStrings:
             renderError: "Ocorreu um error ao renderizar os resultados da Tabela Dinâmica."
@@ -34,6 +34,12 @@ callWithJQuery ($) ->
             cancel: "Cancelar",
             vs: "vs"
             by: "por"
+            rendererLabel: "Renderizador"
+            valuesLabel: "Valores"
+            fieldsLabel: "Campos"
+            colsLabel: "Colunas"
+            rowsLabel: "Linhas"
+            groupsLabel: "Grupos"
 
         aggregators:
             "Contagem":                                     tpl.count(frFmtInt)

@@ -16,19 +16,19 @@
     nf = $.pivotUtilities.numberFormat;
     tpl = $.pivotUtilities.aggregatorTemplates;
     frFmt = nf({
-      thousandsSep: " ",
+      thousandsSep: ".",
       decimalSep: ","
     });
     frFmtInt = nf({
       digitsAfterDecimal: 0,
-      thousandsSep: " ",
+      thousandsSep: ".",
       decimalSep: ","
     });
     frFmtPct = nf({
       digitsAfterDecimal: 1,
       scaler: 100,
       suffix: "%",
-      thousandsSep: " ",
+      thousandsSep: ".",
       decimalSep: ","
     });
     return $.pivotUtilities.locales.ru = {
@@ -42,7 +42,13 @@
         filterResults: "Возможные значения",
         totals: "Всего",
         vs: "на",
-        by: "с"
+        by: "с",
+        rendererLabel: "Тип отображения",
+        valuesLabel: "Значения",
+        fieldsLabel: "Поля",
+        colsLabel: "Колонки",
+        rowsLabel: "Строки",
+        groupsLabel: "Группы"
       },
       aggregators: {
         "Кол-во": tpl.count(frFmtInt),

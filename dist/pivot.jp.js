@@ -31,7 +31,7 @@
       thousandsSep: ",",
       decimalSep: "."
     });
-    return $.pivotUtilities.locales.ja = {
+    $.pivotUtilities.locales.ja = {
       localeStrings: {
         renderError: "描画処理でエラーが発生しました。",
         computeError: "処理中にエラーが発生しました。",
@@ -44,8 +44,16 @@
         vs: "vs",
         by: "per",
         apply: "適用する",
-        cancel: "キャンセル"
-      },
+        cancel: "キャンセル",
+        rendererLabel: "レンダラー",
+        valuesLabel: "値",
+        fieldsLabel: "フィールド",
+        colsLabel: "列",
+        rowsLabel: "行",
+        groupsLabel: "グループ"
+      }
+    };
+    return {
       aggregators: {
         "件数": tpl.count(jpFmtInt),
         "件数（ユニーク）": tpl.countUnique(jpFmtInt),

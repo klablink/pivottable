@@ -3,17 +3,17 @@ callWithJQuery = (pivotModule) ->
         pivotModule require("jquery")
     else if typeof define is "function" and define.amd # AMD
         define ["jquery"], pivotModule
-    # Plain browser env
+# Plain browser env
     else
         pivotModule jQuery
-        
+
 callWithJQuery ($) ->
     nf = $.pivotUtilities.numberFormat
     tpl = $.pivotUtilities.aggregatorTemplates
 
-    csFmt =    nf(thousandsSep: " ", decimalSep: ",")
-    csFmtInt = nf(digitsAfterDecimal: 0, thousandsSep: " ", decimalSep: ",")
-    csFmtPct = nf(digitsAfterDecimal: 1, scaler: 100, suffix: "%", thousandsSep: " ", decimalSep: ",")
+    csFmt = nf(thousandsSep: ".", decimalSep: ",")
+    csFmtInt = nf(digitsAfterDecimal: 0, thousandsSep: ".", decimalSep: ",")
+    csFmtPct = nf(digitsAfterDecimal: 1, scaler: 100, suffix: "%", thousandsSep: ".", decimalSep: ",")
 
     $.pivotUtilities.locales.cs =
         localeStrings:
@@ -29,34 +29,40 @@ callWithJQuery ($) ->
             totals: "Celkem"
             vs: "ku"
             by: "z"
+            rendererLabel: "Vykreslování"
+            valuesLabel: "Hodnoty"
+            fieldsLabel: "Pole"
+            colsLabel: "Sloupce"
+            rowsLabel: "Řádky"
+            groupsLabel: "Skupiny"
 
-        aggregators: 
-            "Počet":                        tpl.count(csFmtInt)
-            "Počet unikátních hodnot":      tpl.countUnique(csFmtInt)
-            "Výčet unikátních hodnot":      tpl.listUnique(", ")
-            "Součet":                       tpl.sum(csFmt)
-            "Celočíselný součet":           tpl.sum(csFmtInt)
-            "Průměr":                       tpl.average(csFmt)
-            "Medián":                       tpl.median(csFmt),
-            "Rozptyl":                      tpl["var"](1, csFmt),
-            "Směrodatná odchylka":          tpl.stdev(1, csFmt),
-            "Minimum":                      tpl.min(csFmt)
-            "Maximum":                      tpl.max(csFmt)
-            "První":                        tpl.first(csFmt)
-            "Poslední":                     tpl.last(csFmt)
-            "Součet přes součet":           tpl.sumOverSum(csFmt)
-            "80% horní hranice":            tpl.sumOverSumBound80(true, csFmt)
-            "80% spodní hranice":           tpl.sumOverSumBound80(false, csFmt)
-            "Součet jako poměr z celku":    tpl.fractionOf(tpl.sum(),       "total", csFmtPct)
-            "Součet jako poměr z řádků":    tpl.fractionOf(tpl.sum(),   "row",   csFmtPct)
-            "Součet jako poměr ze sloupců": tpl.fractionOf(tpl.sum(),   "col",   csFmtPct)
-            "Počet jako poměr z celku":     tpl.fractionOf(tpl.count(), "total", csFmtPct)
-            "Počet jako poměr z řádků":     tpl.fractionOf(tpl.count(), "row",   csFmtPct)
-            "Počet jako poměr ze sloupců":  tpl.fractionOf(tpl.count(), "col",   csFmtPct)
+        aggregators:
+            "Počet": tpl.count(csFmtInt)
+            "Počet unikátních hodnot": tpl.countUnique(csFmtInt)
+            "Výčet unikátních hodnot": tpl.listUnique(", ")
+            "Součet": tpl.sum(csFmt)
+            "Celočíselný součet": tpl.sum(csFmtInt)
+            "Průměr": tpl.average(csFmt)
+            "Medián": tpl.median(csFmt),
+            "Rozptyl": tpl["var"](1, csFmt),
+            "Směrodatná odchylka": tpl.stdev(1, csFmt),
+            "Minimum": tpl.min(csFmt)
+            "Maximum": tpl.max(csFmt)
+            "První": tpl.first(csFmt)
+            "Poslední": tpl.last(csFmt)
+            "Součet přes součet": tpl.sumOverSum(csFmt)
+            "80% horní hranice": tpl.sumOverSumBound80(true, csFmt)
+            "80% spodní hranice": tpl.sumOverSumBound80(false, csFmt)
+            "Součet jako poměr z celku": tpl.fractionOf(tpl.sum(), "total", csFmtPct)
+            "Součet jako poměr z řádků": tpl.fractionOf(tpl.sum(), "row", csFmtPct)
+            "Součet jako poměr ze sloupců": tpl.fractionOf(tpl.sum(), "col", csFmtPct)
+            "Počet jako poměr z celku": tpl.fractionOf(tpl.count(), "total", csFmtPct)
+            "Počet jako poměr z řádků": tpl.fractionOf(tpl.count(), "row", csFmtPct)
+            "Počet jako poměr ze sloupců": tpl.fractionOf(tpl.count(), "col", csFmtPct)
 
         renderers:
-            "Tabulka":                      $.pivotUtilities.renderers["Table"]
+            "Tabulka": $.pivotUtilities.renderers["Table"]
             "Tabulka se sloupcovým grafem": $.pivotUtilities.renderers["Table Barchart"]
-            "Teplotní mapa":                $.pivotUtilities.renderers["Heatmap"]
-            "Teplotní mapa z řádků":        $.pivotUtilities.renderers["Row Heatmap"]
-            "Teplotní mapa ze sloupců":     $.pivotUtilities.renderers["Col Heatmap"]
+            "Teplotní mapa": $.pivotUtilities.renderers["Heatmap"]
+            "Teplotní mapa z řádků": $.pivotUtilities.renderers["Row Heatmap"]
+            "Teplotní mapa ze sloupců": $.pivotUtilities.renderers["Col Heatmap"]

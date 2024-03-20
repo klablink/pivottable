@@ -16,19 +16,19 @@
     nf = $.pivotUtilities.numberFormat;
     tpl = $.pivotUtilities.aggregatorTemplates;
     csFmt = nf({
-      thousandsSep: " ",
+      thousandsSep: ".",
       decimalSep: ","
     });
     csFmtInt = nf({
       digitsAfterDecimal: 0,
-      thousandsSep: " ",
+      thousandsSep: ".",
       decimalSep: ","
     });
     csFmtPct = nf({
       digitsAfterDecimal: 1,
       scaler: 100,
       suffix: "%",
-      thousandsSep: " ",
+      thousandsSep: ".",
       decimalSep: ","
     });
     return $.pivotUtilities.locales.cs = {
@@ -44,7 +44,13 @@
         cancel: "Zrušit",
         totals: "Celkem",
         vs: "ku",
-        by: "z"
+        by: "z",
+        rendererLabel: "Vykreslování",
+        valuesLabel: "Hodnoty",
+        fieldsLabel: "Pole",
+        colsLabel: "Sloupce",
+        rowsLabel: "Řádky",
+        groupsLabel: "Skupiny"
       },
       aggregators: {
         "Počet": tpl.count(csFmtInt),
