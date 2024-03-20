@@ -16,7 +16,6 @@ callWithJQuery ($) ->
     frFmtPct = nf(digitsAfterDecimal: 1, scaler: 100, suffix: "%", thousandsSep: " ", decimalSep: ",")
 
     $.pivotUtilities.locales.es =
-
         localeStrings:
             renderError: "Ocurrió un error durante la interpretación de la tabla dinámica."
             computeError: "Ocurrió un error durante el cálculo de la tabla dinámica."
@@ -25,41 +24,40 @@ callWithJQuery ($) ->
             selectNone: "Deseleccionar todo"
             tooMany: "(demasiados valores)"
             filterResults: "Filtrar resultados"
+            apply: "Aplicar"
+            cancel: "Cancelar"
             totals: "Totales"
             vs: "vs"
             by: "por"
-            apply: "Aplicar"
-            cancel: "Cancelar"
             rendererLabel: "Renderizador"
             valuesLabel: "Valores"
             fieldsLabel: "Campos"
             colsLabel: "Columnas"
             rowsLabel: "Filas"
             groupsLabel: "Grupos"
+            "Count": "Cuenta"
+            "Count Unique Values": "Cuenta de valores únicos"
+            "List Unique Values": "Lista de valores únicos"
+            "Sum": "Suma"
+            "Integer Sum": "Suma de enteros"
+            "Average": "Promedio"
+            "Median": "Mediana"
+            "Sample Variance": "Diferencia"
+            "Sample Standard Deviation": "Desviación estándar de la muestra"
+            "Minimum": "Mínimo"
+            "Maximum": "Máximo"
+            "First": "Primero"
+            "Last": "Pasado"
+            "Sum over Sum": "Suma de sumas"
+            "80% Upper Bound": "Cota 80% superior"
+            "80% Lower Bound": "Cota 80% inferior"
+            "Sum as Fraction of Total": "Suma como fracción del total"
+            "Sum as Fraction of Rows": "Suma como fracción de filas"
+            "Sum as Fraction of Columns": "Suma como fracción de columnas"
+            "Count as Fraction of Total": "Contar como fracción del total"
+            "Count as Fraction of Rows": "Contar como fracción de filas"
+            "Count as Fraction of Columns": "Contar como fracción de columnas"
 
-        aggregators:
-            "Cuenta":                             tpl.count(frFmtInt)
-            "Cuenta de valores únicos":          tpl.countUnique(frFmtInt)
-            "Lista de valores únicos":           tpl.listUnique(", ")
-            "Suma":                              tpl.sum(frFmt)
-            "Suma de enteros":                   tpl.sum(frFmtInt)
-            "Promedio":                            tpl.average(frFmt)
-            "Mediana":                             tpl.median(frFmt)
-            "Diferencia":                          tpl.var(1, frFmt)
-            "Desviación estándar de la muestra":            tpl.stdev(1, frFmt)
-            "Mínimo":                                       tpl.min(frFmt)
-            "Máximo":                                       tpl.max(frFmt)
-            "Primero":                                     tpl.first(frFmt),
-            "Pasado":                                      tpl.last(frFmt),
-            "Suma de sumas":                    tpl.sumOverSum(frFmt)
-            "Cota 80% superior":        tpl.sumOverSumBound80(true, frFmt)
-            "Cota 80% inferior":        tpl.sumOverSumBound80(false, frFmt)
-            "Proporción del total (suma)":      tpl.fractionOf(tpl.sum(),   "total", frFmtPct)
-            "Proporción de la fila (suma)":    tpl.fractionOf(tpl.sum(),   "row",   frFmtPct)
-            "Proporción de la columna (suma)":  tpl.fractionOf(tpl.sum(),   "col",   frFmtPct)
-            "Proporción del total (cuenta)":     tpl.fractionOf(tpl.count(), "total", frFmtPct)
-            "Proporción de la fila (cuenta)":   tpl.fractionOf(tpl.count(), "row",   frFmtPct)
-            "Proporción de la columna (cuenta)": tpl.fractionOf(tpl.count(), "col",   frFmtPct)
 
         renderers:
             "Tabla":                           $.pivotUtilities.renderers["Table"]

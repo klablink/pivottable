@@ -24,6 +24,8 @@ callWithJQuery ($) ->
             selectNone: "Nichts auswählen"
             tooMany: "(zu viele für Liste)"
             filterResults: "Ergebnisse filtern"
+            apply: "Anwenden"
+            cancel: "Abbrechen"
             totals: "Gesamt"
             vs: "gegen"
             by: "pro"
@@ -33,25 +35,28 @@ callWithJQuery ($) ->
             colsLabel: "Spalten"
             rowsLabel: "Zeilen"
             groupsLabel: "Gruppen"
-
-        aggregators:
-            "Anzahl":                       tpl.count(frFmtInt)
-            "Anzahl eindeutiger Werte":     tpl.countUnique(frFmtInt)
-            "Liste eindeutiger Werte":      tpl.listUnique(", ")
-            "Summe":                        tpl.sum(frFmt)
-            "Ganzzahlige Summe":			tpl.sum(frFmtInt)
-            "Durchschnitt":                 tpl.average(frFmt)
-            "Minimum":                      tpl.min(frFmt)
-            "Maximum":                      tpl.max(frFmt)
-            "Summe über Summe":             tpl.sumOverSum(frFmt)
-            "80% Obergrenze":               tpl.sumOverSumBound80(true, frFmt)
-            "80% Untergrenze":        		tpl.sumOverSumBound80(false, frFmt)
-            "Summe als Anteil von Gesamt":  tpl.fractionOf(tpl.sum(),   "total", frFmtPct)
-            "Summe als Anteil von Zeile":   tpl.fractionOf(tpl.sum(),   "row",   frFmtPct)
-            "Summe als Anteil von Spalte":  tpl.fractionOf(tpl.sum(),   "col",   frFmtPct)
-            "Anzahl als Anteil von Gesamt": tpl.fractionOf(tpl.count(), "total", frFmtPct)
-            "Anzahl als Anteil von Zeile":  tpl.fractionOf(tpl.count(), "row",   frFmtPct)
-            "Anzahl als Anteil von Spalte": tpl.fractionOf(tpl.count(), "col",   frFmtPct)
+            "Count": "Anzahl"
+            "Count Unique Values": "Anzahl eindeutiger Werte"
+            "List Unique Values": "Liste eindeutiger Werte"
+            "Sum": "Summe"
+            "Integer Sum": "Ganzzahlige Summe"
+            "Average": "Durchschnitt"
+            "Median": "Median"
+            "Sample Variance": "Stichprobenvarianz"
+            "Sample Standard Deviation": "Stichprobenstandardabweichung"
+            "Minimum": "Minimum"
+            "Maximum": "Maximum"
+            "First": "Erste"
+            "Last": "Letzte"
+            "Sum over Sum": "Summe über Summe"
+            "80% Upper Bound": "80% Obergrenze"
+            "80% Lower Bound": "80% Untergrenze"
+            "Sum as Fraction of Total": "Summe als Anteil von Gesamt"
+            "Sum as Fraction of Rows": "Summe als Anteil von Zeile"
+            "Sum as Fraction of Columns": "Summe als Anteil von Spalte"
+            "Count as Fraction of Total": "Anzahl als Anteil von Gesamt"
+            "Count as Fraction of Rows": "Anzahl als Anteil von Zeile"
+            "Count as Fraction of Columns": "Anzahl als Anteil von Spalte"
 
         renderers:
             "Tabelle":                      $.pivotUtilities.renderers["Table"]

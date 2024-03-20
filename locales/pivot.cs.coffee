@@ -35,30 +35,28 @@ callWithJQuery ($) ->
             colsLabel: "Sloupce"
             rowsLabel: "Řádky"
             groupsLabel: "Skupiny"
-
-        aggregators:
-            "Počet": tpl.count(csFmtInt)
-            "Počet unikátních hodnot": tpl.countUnique(csFmtInt)
-            "Výčet unikátních hodnot": tpl.listUnique(", ")
-            "Součet": tpl.sum(csFmt)
-            "Celočíselný součet": tpl.sum(csFmtInt)
-            "Průměr": tpl.average(csFmt)
-            "Medián": tpl.median(csFmt),
-            "Rozptyl": tpl["var"](1, csFmt),
-            "Směrodatná odchylka": tpl.stdev(1, csFmt),
-            "Minimum": tpl.min(csFmt)
-            "Maximum": tpl.max(csFmt)
-            "První": tpl.first(csFmt)
-            "Poslední": tpl.last(csFmt)
-            "Součet přes součet": tpl.sumOverSum(csFmt)
-            "80% horní hranice": tpl.sumOverSumBound80(true, csFmt)
-            "80% spodní hranice": tpl.sumOverSumBound80(false, csFmt)
-            "Součet jako poměr z celku": tpl.fractionOf(tpl.sum(), "total", csFmtPct)
-            "Součet jako poměr z řádků": tpl.fractionOf(tpl.sum(), "row", csFmtPct)
-            "Součet jako poměr ze sloupců": tpl.fractionOf(tpl.sum(), "col", csFmtPct)
-            "Počet jako poměr z celku": tpl.fractionOf(tpl.count(), "total", csFmtPct)
-            "Počet jako poměr z řádků": tpl.fractionOf(tpl.count(), "row", csFmtPct)
-            "Počet jako poměr ze sloupců": tpl.fractionOf(tpl.count(), "col", csFmtPct)
+            "Count": "Počet"
+            "Count Unique Values": "Počet unikátních hodnot"
+            "List Unique Values": "Výčet unikátních hodnot"
+            "Sum": "Součet"
+            "Integer Sum": "Celočíselný součet"
+            "Average": "Průměr"
+            "Median": "Medián"
+            "Sample Variance": "Rozptyl"
+            "Sample Standard Deviation": "Směrodatná odchylka"
+            "Minimum": "Minimum"
+            "Maximum": "Maximum"
+            "First": "První"
+            "Last": "Poslední"
+            "Sum over Sum": "Součet přes součet"
+            "80% Upper Bound": "80% Horní Hranice"
+            "80% Lower Bound": "80% Spodní Hranice"
+            "Sum as Fraction of Total": "Součet jako zlomek součtu"
+            "Sum as Fraction of Rows": "Součet jako zlomek řádků"
+            "Sum as Fraction of Columns": "Součet jako zlomek sloupců"
+            "Count as Fraction of Total": "Počítejte jako zlomek z celkového počtu"
+            "Count as Fraction of Rows": "Počítejte jako zlomek řádků"
+            "Count as Fraction of Columns": "Počítejte jako zlomek sloupců"
 
         renderers:
             "Tabulka": $.pivotUtilities.renderers["Table"]

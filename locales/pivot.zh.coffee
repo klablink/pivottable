@@ -40,30 +40,28 @@ callWithJQuery ($) ->
             colsLabel: "列"
             rowsLabel: "行"
             groupsLabel: "分组"
-
-        aggregators:
-            "频数":                                     tpl.count(frFmtInt)
-            "非重复值的个数":            tpl.countUnique(frFmtInt)
-            "列出非重复值":               tpl.listUnique(", ")
-            "求和":                                         tpl.sum(frFmt)
-            "求和后取整":                             tpl.sum(frFmtInt)
-            "平均值":                                        tpl.average(frFmt)
-            "中位数":                                       tpl.median(frFmt)
-            "方差":                                     tpl.var(1, frFmt)
-            "样本标准偏差":                      tpl.stdev(1, frFmt)
-            "最小值":                                       tpl.min(frFmt)
-            "最大值":                                       tpl.max(frFmt)
-            "第一":                                     tpl.first(frFmt)
-            "最后":                                       tpl.last(frFmt)
-            "两和之比":                              tpl.sumOverSum(frFmt)
-            "二项分布：置信度为80%时的区间上限":                        tpl.sumOverSumBound80(true, frFmt)
-            "二项分布：置信度为80%时的区间下限":                        tpl.sumOverSumBound80(false, frFmt)
-            "和在总计中的比例":      tpl.fractionOf(tpl.sum(),   "total", frFmtPct)
-            "和在行合计中的比例":      tpl.fractionOf(tpl.sum(),   "row",   frFmtPct)
-            "和在列合计中的比例":     tpl.fractionOf(tpl.sum(),   "col",   frFmtPct)
-            "频数在总计中的比例":  tpl.fractionOf(tpl.count(), "total", frFmtPct)
-            "频数在行合计中的比例":  tpl.fractionOf(tpl.count(), "row",   frFmtPct)
-            "频数在列合计中的比例": tpl.fractionOf(tpl.count(), "col",   frFmtPct)
+            "Count": "频数"
+            "Count Unique Values": "非重复值的个数"
+            "List Unique Values": "列出非重复值"
+            "Sum": "求和"
+            "Integer Sum": "求和后取整"
+            "Average": "平均值"
+            "Median": "中位数"
+            "Sample Variance": "方差"
+            "Sample Standard Deviation": "样本标准偏差"
+            "Minimum": "最小值"
+            "Maximum": "最大值"
+            "First": "第一"
+            "Last": "最后"
+            "Sum over Sum": "两和之比"
+            "80% Upper Bound": "二项分布：置信度为80%时的区间上限"
+            "80% Lower Bound": "二项分布：置信度为80%时的区间下限"
+            "Sum as Fraction of Total": "和在总计中的比例"
+            "Sum as Fraction of Rows": "和在行合计中的比例"
+            "Sum as Fraction of Columns": "和在列合计中的比例"
+            "Count as Fraction of Total": "频数在总计中的比例"
+            "Count as Fraction of Rows": "频数在行合计中的比例"
+            "Count as Fraction of Columns": "频数在列合计中的比例"
 
         renderers:
             "表格": r["Table"]

@@ -755,11 +755,11 @@ callWithJQuery ($) ->
     Pivot Table UI: calls Pivot Table core above with options set by user
     ###
 
-    $.fn.pivotUI = (input, inputOpts, overwrite = false, locale="en") ->
+    $.fn.pivotUI = (input, inputOpts, overwrite = false, locale="fr") ->
         locale = "en" if not locales[locale]?
         defaults =
             derivedAttributes: {}
-            aggregators: locales[locale].aggregators
+            aggregators: locales['en'].aggregators
             renderers: locales[locale].renderers
             hiddenAttributes: []
             hiddenFromAggregators: []
@@ -1032,8 +1032,9 @@ callWithJQuery ($) ->
                         @find(".pvtVals .pvtAttrDropdown").each -> this.remove()
                         aggregators = [{value: aggregator.val()}]
                         refresh() #capture reference
+
             for own x of opts.aggregators
-                aggregator.append $("<option>").val(x).html(x)
+                aggregator.append $("<option>").val(x).html(locales[locale].localeStrings[x] || locales['en'].localeStrings[id])
 
             if opts.multiple
                 $("<a>", role: "button")
@@ -1150,16 +1151,19 @@ callWithJQuery ($) ->
                                 .addClass('pvtAttrDropdownContainer')
                                 .addClass("pvtAttrDropdownContainer"+aggIdx)
                                 .appendTo(pvtVals)
+                            labelAggregator = locales[locale].localeStrings[aggregatorType] || locales['en'].localeStrings[aggregatorType]
                             $("<label>")
                                 .addClass('pvtAttrDropdown')
                                 .addClass("pvtAttrDropdown"+aggIdx)
                                 .appendTo(container)
-                                .html('<b>' + agg.displayName + '</b>) ' + aggregatorType)
+                                .html('<b>' + agg.displayName + '</b>) ' + labelAggregator)
                             initialRender = true
 
                         if !initialRender
                             @find('.pvtVals .pvtAttrDropdownContainer'+ aggIdx + ' label.pvtAttrDropdown')
-                                .each( -> $(this).html('<b>' + agg.displayName + '</b>) ' + aggregatorType) )
+                                .each( ->
+                                    labelAggregator = locales[locale].localeStrings[aggregatorType] || locales['en'].localeStrings[aggregatorType]
+                                    $(this).html('<b>' + agg.displayName + '</b>) ' + labelAggregator) )
                     else
                         container = pvtVals
 

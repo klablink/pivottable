@@ -31,7 +31,7 @@
       thousandsSep: ".",
       decimalSep: ","
     });
-    return $.pivotUtilities.locales.it = {
+    $.pivotUtilities.locales.it = {
       localeStrings: {
         renderError: "Si è verificato un errore durante la creazione della tabella.",
         computeError: "Si è verificato un errore di calcolo nella tabella.",
@@ -50,27 +50,32 @@
         fieldsLabel: "Campi",
         colsLabel: "Colonne",
         rowsLabel: "Righe",
-        groupsLabel: "Gruppi"
-      },
-      aggregators: {
-        "Numero": tpl.count(frFmtInt),
-        "Numero di valori unici": tpl.countUnique(frFmtInt),
-        "Elenco di valori unici": tpl.listUnique(", "),
-        "Somma": tpl.sum(frFmt),
-        "Somma intera": tpl.sum(frFmtInt),
-        "Media": tpl.average(frFmt),
-        "Minimo": tpl.min(frFmt),
-        "Massimo": tpl.max(frFmt),
-        "Rapporto": tpl.sumOverSum(frFmt),
-        "Limite superiore 80%": tpl.sumOverSumBound80(true, frFmt),
-        "limite inferiore 80%": tpl.sumOverSumBound80(false, frFmt),
-        "Somma proporzionale al totale": tpl.fractionOf(tpl.sum(), "total", frFmtPct),
-        "Somma proporzionale alla riga": tpl.fractionOf(tpl.sum(), "row", frFmtPct),
-        "Somma proporzionale alla colonna": tpl.fractionOf(tpl.sum(), "col", frFmtPct),
-        "Numero proporzionale al totale": tpl.fractionOf(tpl.count(), "total", frFmtPct),
-        "Numero proporzionale alla riga": tpl.fractionOf(tpl.count(), "row", frFmtPct),
-        "Numero proporzionale alla colonna": tpl.fractionOf(tpl.count(), "col", frFmtPct)
-      },
+        groupsLabel: "Gruppi",
+        "Count": "Conteggio",
+        "Count Unique Values": "Conteggio valori unici",
+        "List Unique Values": "Elenco valori unici",
+        "Sum": "Somma",
+        "Integer Sum": "Somma intera",
+        "Average": "Media",
+        "Median": "Mediana",
+        "Sample Variance": "Variazione standard",
+        "Sample Standard Deviation": "Deviazione standard",
+        "Minimum": "Minimo",
+        "Maximum": "Massimo",
+        "First": "Primo",
+        "Last": "Ultimo",
+        "Sum over Sum": "Somma su somma",
+        "80% Upper Bound": "Limite superiore 80%",
+        "80% Lower Bound": "Limite inferiore 80%",
+        "Sum as Fraction of Total": "Somma come frazione del totale",
+        "Sum as Fraction of Rows": "Somma come frazione di righe",
+        "Sum as Fraction of Columns": "Somma come frazione di colonne",
+        "Count as Fraction of Total": "Conteggio come frazione del totale",
+        "Count as Fraction of Rows": "Conteggio come frazione di righe",
+        "Count as Fraction of Columns": "Conteggio come frazione di colonne"
+      }
+    };
+    return {
       renderers: {
         "Tabella": $.pivotUtilities.renderers["Table"],
         "Tabella con grafico": $.pivotUtilities.renderers["Table Barchart"],

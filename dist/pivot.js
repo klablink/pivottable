@@ -1395,14 +1395,14 @@
         overwrite = false;
       }
       if (locale == null) {
-        locale = "en";
+        locale = "fr";
       }
       if (locales[locale] == null) {
         locale = "en";
       }
       defaults = {
         derivedAttributes: {},
-        aggregators: locales[locale].aggregators,
+        aggregators: locales['en'].aggregators,
         renderers: locales[locale].renderers,
         hiddenAttributes: [],
         hiddenFromAggregators: [],
@@ -1723,7 +1723,7 @@
         ref1 = opts.aggregators;
         for (x in ref1) {
           if (!hasProp.call(ref1, x)) continue;
-          aggregator.append($("<option>").val(x).html(x));
+          aggregator.append($("<option>").val(x).html(locales[locale].localeStrings[x] || locales['en'].localeStrings[id]));
         }
         if (opts.multiple) {
           $("<a>", {
@@ -1781,7 +1781,7 @@
         initialRender = true;
         refreshDelayed = (function(_this) {
           return function() {
-            var agg, aggIdx, aggVals, aggregatorType, container, currentPivotData, exclusions, found, idx, inclusions, initialVals, len2, len3, newDropdown, numInputsToProcess, o, pivotUIOptions, pvtVals, ref2, ref3, subopts, t, u, unusedAttrsContainer, vals;
+            var agg, aggIdx, aggVals, aggregatorType, container, currentPivotData, exclusions, found, idx, inclusions, initialVals, labelAggregator, len2, len3, newDropdown, numInputsToProcess, o, pivotUIOptions, pvtVals, ref2, ref3, subopts, t, u, unusedAttrsContainer, vals;
             subopts = {
               derivedAttributes: opts.derivedAttributes,
               localeStrings: opts.localeStrings,
@@ -1823,12 +1823,14 @@
               if (opts.multiple) {
                 if (!found) {
                   container = $("<div>").addClass('pvtAttrDropdownContainer').addClass("pvtAttrDropdownContainer" + aggIdx).appendTo(pvtVals);
-                  $("<label>").addClass('pvtAttrDropdown').addClass("pvtAttrDropdown" + aggIdx).appendTo(container).html('<b>' + agg.displayName + '</b>) ' + aggregatorType);
+                  labelAggregator = locales[locale].localeStrings[aggregatorType] || locales['en'].localeStrings[aggregatorType];
+                  $("<label>").addClass('pvtAttrDropdown').addClass("pvtAttrDropdown" + aggIdx).appendTo(container).html('<b>' + agg.displayName + '</b>) ' + labelAggregator);
                   initialRender = true;
                 }
                 if (!initialRender) {
                   _this.find('.pvtVals .pvtAttrDropdownContainer' + aggIdx + ' label.pvtAttrDropdown').each(function() {
-                    return $(this).html('<b>' + agg.displayName + '</b>) ' + aggregatorType);
+                    labelAggregator = locales[locale].localeStrings[aggregatorType] || locales['en'].localeStrings[aggregatorType];
+                    return $(this).html('<b>' + agg.displayName + '</b>) ' + labelAggregator);
                   });
                 }
               } else {

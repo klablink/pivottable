@@ -3,7 +3,7 @@ callWithJQuery = (pivotModule) ->
         pivotModule require("jquery")
     else if typeof define is "function" and define.amd # AMD
         define ["jquery"], pivotModule
-    # Plain browser env
+# Plain browser env
     else
         pivotModule jQuery
 
@@ -11,7 +11,7 @@ callWithJQuery ($) ->
     nf = $.pivotUtilities.numberFormat
     tpl = $.pivotUtilities.aggregatorTemplates
 
-    jpFmt =    nf(thousandsSep: ",", decimalSep: ".")
+    jpFmt = nf(thousandsSep: ",", decimalSep: ".")
     jpFmtInt = nf(digitsAfterDecimal: 0, thousandsSep: ",", decimalSep: ".")
     jpFmtPct = nf(digitsAfterDecimal: 1, scaler: 100, suffix: "%", thousandsSep: ",", decimalSep: ".")
 
@@ -35,33 +35,35 @@ callWithJQuery ($) ->
             colsLabel: "列"
             rowsLabel: "行"
             groupsLabel: "グループ"
+            "Count": "件数"
+            "Count Unique Values": "件数（ユニーク"
+            "List Unique Values": "ユニーク値を表示 (CSV)"
+            "Sum": "合計"
+            "Integer Sum": "合計（整数"
+            "Average": "平均"
+            "Median": "中央値"
+            "Sample Variance": "分散"
+            "Sample Standard Deviation": "標準偏差"
+            "Minimum": "最小"
+            "Maximum": "最大"
+            "First": "最初"
+            "Last": "最後"
+            "Sum over Sum": "選択２項目の比率"
+            "80% Upper Bound": "選択２項目の比率（上限80%）"
+            "80% Lower Bound": "選択２項目の比率（下限80%）"
+            "Sum as Fraction of Total": "合計割合"
+            "Sum as Fraction of Rows": "合計割合（行）"
+            "Sum as Fraction of Columns": "合計割合（列）"
+            "Count as Fraction of Total": "件数割合"
+            "Count as Fraction of Rows": "件数割合（行"
+            "Count as Fraction of Columns": "件数割合（列）"
 
 
-    aggregators:
-            "件数":                             tpl.count(jpFmtInt)
-            "件数（ユニーク）":          tpl.countUnique(jpFmtInt)
-            "ユニーク値を表示 (CSV)":           tpl.listUnique(", ")
-            "合計":                              tpl.sum(jpFmt)
-            "合計（整数）":                   tpl.sum(jpFmtInt)
-            "平均":                            tpl.average(jpFmt)
-            "最小":                            tpl.min(jpFmt)
-            "最大":                            tpl.max(jpFmt)
-            "選択２項目の比率":                    tpl.sumOverSum(jpFmt)
-            "選択２項目の比率（上限80%）":               tpl.sumOverSumBound80(true, jpFmt)
-            "選択２項目の比率（下限80%）":               tpl.sumOverSumBound80(false, jpFmt)
-            "合計割合":      tpl.fractionOf(tpl.sum(),   "total", jpFmtPct)
-            "合計割合（行）":    tpl.fractionOf(tpl.sum(),   "row",   jpFmtPct)
-            "合計割合（列）":  tpl.fractionOf(tpl.sum(),   "col",   jpFmtPct)
-            "件数割合":     tpl.fractionOf(tpl.count(), "total", jpFmtPct)
-            "件数割合（行）":   tpl.fractionOf(tpl.count(), "row",   jpFmtPct)
-            "件数割合（列）": tpl.fractionOf(tpl.count(), "col",   jpFmtPct)
-
-
-        renderers:
-            "表":                           $.pivotUtilities.renderers["Table"]
-            "表（棒グラフ）":               $.pivotUtilities.renderers["Table Barchart"]
-            "ヒートマップ":                $.pivotUtilities.renderers["Heatmap"]
-            "ヒートマップ（行）":      $.pivotUtilities.renderers["Row Heatmap"]
-            "ヒートマップ（列）":    $.pivotUtilities.renderers["Col Heatmap"]
+    renderers:
+        "表": $.pivotUtilities.renderers["Table"]
+        "表（棒グラフ）": $.pivotUtilities.renderers["Table Barchart"]
+        "ヒートマップ": $.pivotUtilities.renderers["Heatmap"]
+        "ヒートマップ（行）": $.pivotUtilities.renderers["Row Heatmap"]
+        "ヒートマップ（列）": $.pivotUtilities.renderers["Col Heatmap"]
 
 

@@ -35,27 +35,28 @@ callWithJQuery ($) ->
             colsLabel: "Kolumny"
             rowsLabel: "Wiersze"
             groupsLabel: "Grupy"
-
-        aggregators:
-            "Liczba":                       tpl.count(plFmtInt)
-            "Liczba Unikatowych Wartości":  tpl.countUnique(plFmtInt)
-            "Lista Unikatowych Wartości":   tpl.listUnique(", ")
-            "Suma":                         tpl.sum(plFmt)
-            "Całkowita Suma":               tpl.sum(plFmtInt)
-            "Średnia":                      tpl.average(plFmt)
-            "Minimum":                      tpl.min(plFmt)
-            "Maksimum":                     tpl.max(plFmt)
-            "Pierwszy":                     tpl.first(plFmt)
-            "Ostatni":                      tpl.last(plFmt)
-            "Suma po Sumie":                tpl.sumOverSum(plFmt)
-            "80% Kres Dolny":               tpl.sumOverSumBound80(true, plFmt)
-            "80% Kres Górny":               tpl.sumOverSumBound80(false, plFmt)
-            "Suma jako Ułamek Całości":     tpl.fractionOf(tpl.sum(),       "total", plFmtPct)
-            "Suma jako Ułamek w Wierszach":     tpl.fractionOf(tpl.sum(),   "row",   plFmtPct)
-            "Suma jako Ułamek w Kolumnach":     tpl.fractionOf(tpl.sum(),   "col",   plFmtPct)
-            "Liczba jako Ułamek Całości":       tpl.fractionOf(tpl.count(), "total", plFmtPct)
-            "Liczba jako Ułamek w Wierszach":   tpl.fractionOf(tpl.count(), "row",   plFmtPct)
-            "Liczba jako Ułamek w Kolumnach":   tpl.fractionOf(tpl.count(), "col",   plFmtPct)
+            "Count": "Liczba"
+            "Count Unique Values": "Liczba unikatowych wartości"
+            "List Unique Values": "Lista unikatowych wartości"
+            "Sum": "Suma"
+            "Integer Sum": "Suma całkowita"
+            "Average": "Średnia"
+            "Median": "Mediana"
+            "Sample Variance": "Wariancja próbki"
+            "Sample Standard Deviation": "Odchylenie standardowe próbki"
+            "Minimum": "Minimum"
+            "Maximum": "Maksimum"
+            "First": "Pierwszy"
+            "Last": "Ostatni"
+            "Sum over Sum": "Suma po sumie"
+            "80% Upper Bound": "80% Kres Dolny"
+            "80% Lower Bound": "80% Kres Górny"
+            "Sum as Fraction of Total": "Suma jako Ułamek Całości"
+            "Sum as Fraction of Rows": "Suma jako Ułamek w Wierszach"
+            "Sum as Fraction of Columns": "Suma jako Ułamek w Kolumnach"
+            "Count as Fraction of Total": "Liczba jako Ułamek Całości"
+            "Count as Fraction of Rows": "Liczba jako Ułamek w Wierszach"
+            "Count as Fraction of Columns": "Liczba jako Ułamek w Kolumnach"
 
         renderers:
             "Tabela":                       $.pivotUtilities.renderers["Table"]

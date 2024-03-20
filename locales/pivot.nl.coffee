@@ -24,6 +24,8 @@ callWithJQuery ($) ->
             selectNone: "Niets selecteren"
             tooMany: "(te veel waarden om weer te geven)"
             filterResults: "Filter resultaten"
+            apply: "Toepassen"
+            cancel: "Annuleren"
             totals: "Totaal"
             vs: "versus"
             by: "per"
@@ -33,27 +35,29 @@ callWithJQuery ($) ->
             colsLabel: "Kolommen"
             rowsLabel: "Rijen"
             groupsLabel: "Groepen"
+            "Count": "Aantal"
+            "Count Unique Values": "Aantal unieke waarden"
+            "List Unique Values": "Lijst unieke waarden"
+            "Sum": "Som"
+            "Integer Sum": "Som van gehele getallen"
+            "Average": "Gemiddelde"
+            "Median": "Mediaan"
+            "Sample Variance": "Steekproefvariantie"
+            "Sample Standard Deviation": "Steekproefstandaardafwijking"
+            "Minimum": "Minimum"
+            "Maximum": "Maximum"
+            "First": "Eerste"
+            "Last": "Laatste"
+            "Sum over Sum": "Som over som"
+            "80% Upper Bound": "80% Bovengrens"
+            "80% Lower Bound": "80% Ondergrens"
+            "Sum as Fraction of Total": "Som als fractie van totaal"
+            "Sum as Fraction of Rows": "Som als fractie van rijen"
+            "Sum as Fraction of Columns": "Som als fractie van kolommen"
+            "Count as Fraction of Total": "Aantal in verhouding tot het totaal"
+            "Count as Fraction of Rows": "Aantal in verhouding tot de rij"
+            "Count as Fraction of Columns": "Aantal in verhouding tot de kolom"
 
-        aggregators:
-            "Aantal":                              tpl.count(frFmtInt)
-            "Aantal unieke waarden":               tpl.countUnique(frFmtInt)
-            "Lijst unieke waarden":                tpl.listUnique(", ")
-            "Som":                                 tpl.sum(frFmt)
-            "Som van gehele getallen":             tpl.sum(frFmtInt)
-            "Gemiddelde":                          tpl.average(frFmt)
-            "Minimum":                             tpl.min(frFmt)
-            "Maximum":                             tpl.max(frFmt)
-            "Eerste":                              tpl.first(frFmt)
-            "Laatste":                             tpl.last(frFmt)
-            "Som over som":                        tpl.sumOverSum(frFmt)
-            "80% bovengrens":                      tpl.sumOverSumBound80(true, frFmt)
-            "80% ondergrens":        			   tpl.sumOverSumBound80(false, frFmt)
-            "Som in verhouding tot het totaal":    tpl.fractionOf(tpl.sum(),   "total", frFmtPct)
-            "Som in verhouding tot de rij":        tpl.fractionOf(tpl.sum(),   "row",   frFmtPct)
-            "Som in verhouding tot de kolom":      tpl.fractionOf(tpl.sum(),   "col",   frFmtPct)
-            "Aantal in verhouding tot het totaal": tpl.fractionOf(tpl.count(), "total", frFmtPct)
-            "Aantal in verhouding tot de rij":     tpl.fractionOf(tpl.count(), "row",   frFmtPct)
-            "Aantal in verhouding tot de kolom":   tpl.fractionOf(tpl.count(), "col",   frFmtPct)
 
         renderers:
             "Tabel":                           $.pivotUtilities.renderers["Table"]

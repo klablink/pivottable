@@ -33,25 +33,28 @@ callWithJQuery ($) ->
             colsLabel: "Колонки"
             rowsLabel: "Строки"
             groupsLabel: "Группы"
-
-        aggregators:
-            "Кол-во": tpl.count(frFmtInt),
-            "Кол-во уникальных": tpl.countUnique(frFmtInt),
-            "Список уникальных": tpl.listUnique(", "),
-            "Сумма": tpl.sum(frFmt),
-            "Сумма целых": tpl.sum(frFmtInt),
-            "Среднее": tpl.average(frFmt),
-            "Минимум": tpl.min(frFmt),
-            "Максимум": tpl.max(frFmt),
-            "Сумма по сумме": tpl.sumOverSum(frFmt),
-            "80% верхней границы": tpl.sumOverSumBound80(true, frFmt),
-            "80% нижней границы": tpl.sumOverSumBound80(false, frFmt),
-            "Доля по всему": tpl.fractionOf(tpl.sum(), "total", frFmtPct),
-            "Доля по строке": tpl.fractionOf(tpl.sum(), "row", frFmtPct),
-            "Доля по столбцу": tpl.fractionOf(tpl.sum(), "col", frFmtPct),
-            "Кол-во по всему": tpl.fractionOf(tpl.count(), "total", frFmtPct),
-            "Кол-во по строке": tpl.fractionOf(tpl.count(), "row", frFmtPct),
-            "Кол-во по столбцу": tpl.fractionOf(tpl.count(), "col", frFmtPct)
+            "Count": "Количество"
+            "Count Unique Values": "Количество уникальных значений"
+            "List Unique Values": "Список уникальных значений"
+            "Sum": "Сумма"
+            "Integer Sum": "Целая сумма"
+            "Average": "Среднее"
+            "Median": "Медиана"
+            "Sample Variance": "Выборочная дисперсия"
+            "Sample Standard Deviation": "Выборочное стандартное отклонение"
+            "Minimum": "Минимум"
+            "Maximum": "Максимум"
+            "First": "Первый"
+            "Last": "Последний"
+            "Sum over Sum": "Сумма по сумме"
+            "80% Upper Bound": "80% Верхняя граница"
+            "80% Lower Bound": "80% Нижняя граница"
+            "Sum as Fraction of Total": "Сумма как Доля от Общего"
+            "Sum as Fraction of Rows": "Сумма как Доля от Строк"
+            "Sum as Fraction of Columns": "Сумма как Доля от Колонок"
+            "Count as Fraction of Total": "Кол-во как Доля от Общего"
+            "Count as Fraction of Rows": "Кол-во как Доля от Строк"
+            "Count as Fraction of Columns": "Кол-во как Доля от Колонок"
 
         renderers:
             "Таблица": $.pivotUtilities.renderers["Table"]
