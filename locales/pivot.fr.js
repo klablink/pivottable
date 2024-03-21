@@ -5,16 +5,6 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
-const callWithJQuery = function(pivotModule) {
-    if ((typeof exports === "object") && (typeof module === "object")) { // CommonJS
-        return pivotModule(require("jquery"));
-    } else if ((typeof define === "function") && define.amd) { // AMD
-        return define(["jquery"], pivotModule);
-    // Plain browser env
-    } else {
-        return pivotModule(jQuery);
-    }
-};
 
 callWithJQuery(function($) {
     const nf = $.pivotUtilities.numberFormat;
@@ -25,6 +15,11 @@ callWithJQuery(function($) {
     const frFmtPct = nf({digitsAfterDecimal: 1, scaler: 100, suffix: "%", thousandsSep: ".", decimalSep: ","});
 
     return $.pivotUtilities.locales.fr = {
+        formatters: {
+            format:     frFmt,
+            formatInt:  frFmtInt,
+            formatPct:  frFmtPct
+        },
         localeStrings: {
             renderError: "Une erreur est survenue en dessinant le tableau croisé.",
             computeError: "Une erreur est survenue en calculant le tableau croisé.",

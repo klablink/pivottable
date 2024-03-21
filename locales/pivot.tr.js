@@ -5,16 +5,6 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
-const callWithJQuery = function(pivotModule) {
-    if ((typeof exports === "object") && (typeof module === "object")) { // CommonJS
-        return pivotModule(require("jquery"));
-    } else if ((typeof define === "function") && define.amd) { // AMD
-        return define(["jquery"], pivotModule);
-// Plain browser env
-    } else {
-        return pivotModule(jQuery);
-    }
-};
 
 callWithJQuery(function($) {
     const nf = $.pivotUtilities.numberFormat;
@@ -29,6 +19,11 @@ callWithJQuery(function($) {
     const frFmtPct = nf({digitsAfterDecimal: 2, scaler: 100, suffix: "%", thousandsSep: ".", decimalSep: ","});
 
     $.pivotUtilities.locales.tr = {
+        formatters: {
+            format: frFmt,
+            formatInt: frFmtInt,
+            formatPct: frFmtPct
+        },
         localeStrings: {
             renderError: "PivotTable sonuçlarını oluştuturken hata oluştu",
             computeError: "PivotTable sonuçlarını işlerken hata oluştu",

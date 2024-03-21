@@ -7,16 +7,6 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
-const callWithJQuery = function(pivotModule) {
-    if ((typeof exports === "object") && (typeof module === "object")) { // CommonJS
-        return pivotModule(require("jquery"), require("plotly.js"));
-    } else if ((typeof define === "function") && define.amd) { // AMD
-        return define(["jquery", "plotly.js"], pivotModule);
-    // Plain browser env
-    } else {
-        return pivotModule(jQuery, Plotly);
-    }
-};
 
 callWithJQuery(function($, Plotly) {
 

@@ -5,26 +5,21 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
-const callWithJQuery = function(pivotModule) {
-    if ((typeof exports === "object") && (typeof module === "object")) { // CommonJS
-        return pivotModule(require("jquery"));
-    } else if ((typeof define === "function") && define.amd) { // AMD
-        return define(["jquery"], pivotModule);
-// Plain browser env
-    } else {
-        return pivotModule(jQuery);
-    }
-};
 
 callWithJQuery(function($) {
     const nf = $.pivotUtilities.numberFormat;
-    const tpl = $.pivotUtilities.aggregatorTemplates;
+    const tpl = $.pivotUtilities.tpl;
 
-    const csFmt = nf({thousandsSep: ".", decimalSep: ","});
-    const csFmtInt = nf({digitsAfterDecimal: 0, thousandsSep: ".", decimalSep: ","});
-    const csFmtPct = nf({digitsAfterDecimal: 1, scaler: 100, suffix: "%", thousandsSep: ".", decimalSep: ","});
+    const fmt = nf({thousandsSep: ".", decimalSep: ","});
+    const fmtInt = nf({digitsAfterDecimal: 0, thousandsSep: ".", decimalSep: ","});
+    const fmtPct = nf({digitsAfterDecimal: 1, scaler: 100, suffix: "%", thousandsSep: ".", decimalSep: ","});
 
     return $.pivotUtilities.locales.cs = {
+        formatters: {
+            format: fmt,
+            formatInt: fmtInt,
+            formatPct: fmtPct
+        },
         localeStrings: {
             renderError: "Došlo k chybě při vykreslování výsledků PivotTable.",
             computeError: "Došlo k chybě při výpočtu výsledků PivotTable.",

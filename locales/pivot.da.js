@@ -5,16 +5,6 @@
  * DS102: Remove unnecessary code created because of implicit returns
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
-const callWithJQuery = function(pivotModule) {
-    if ((typeof exports === "object") && (typeof module === "object")) { // CommonJS
-        return pivotModule(require("jquery"));
-    } else if ((typeof define === "function") && define.amd) { // AMD
-        return define(["jquery"], pivotModule);
-    // Plain browser env
-    } else {
-        return pivotModule(jQuery);
-    }
-};
 
 callWithJQuery(function($) {
     const nf = $.pivotUtilities.numberFormat;
@@ -40,6 +30,11 @@ callWithJQuery(function($) {
         });
 
     return $.pivotUtilities.locales.da = {
+        formatters: {
+            format: r,
+            formatInt: t,
+            formatPct: o
+        },
         localeStrings: {
             renderError: "Der opstod en fejl, mens du trak i feltet",
             computeError: "Der opstod en fejl ved beregningen af feltet",

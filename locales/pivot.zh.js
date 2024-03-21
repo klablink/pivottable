@@ -7,17 +7,6 @@
  */
 // example: http://zhoulvjun.github.io/2016/02/08/pivottable/
 
-const callWithJQuery = function(pivotModule) {
-    if ((typeof exports === "object") && (typeof module === "object")) { // CommonJS
-        return pivotModule(require("jquery"));
-    } else if ((typeof define === "function") && define.amd) { // AMD
-        return define(["jquery"], pivotModule);
-    // Plain browser env
-    } else {
-        return pivotModule(jQuery);
-    }
-};
-
 callWithJQuery(function($) {
     const nf = $.pivotUtilities.numberFormat;
     const tpl = $.pivotUtilities.aggregatorTemplates;
@@ -31,7 +20,11 @@ callWithJQuery(function($) {
     const frFmtPct = nf({digitsAfterDecimal: 2, scaler: 100, suffix: "%", thousandsSep: ",", decimalSep: "."});
 
     $.pivotUtilities.locales.zh = {
-
+        formatters: {
+            format: frFmt,
+            formatInt: frFmtInt,
+            formatPct: frFmtPct
+        },
         localeStrings: {
             renderError: "展示结果时出错。",
             computeError: "计算结果时出错。",

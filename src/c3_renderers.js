@@ -8,16 +8,6 @@
  * DS207: Consider shorter variations of null checks
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
-const callWithJQuery = function(pivotModule) {
-    if ((typeof exports === "object") && (typeof module === "object")) { // CommonJS
-        return pivotModule(require("jquery"), require("c3"));
-    } else if ((typeof define === "function") && define.amd) { // AMD
-        return define(["jquery", "c3"], pivotModule);
-    // Plain browser env
-    } else {
-        return pivotModule(jQuery, c3);
-    }
-};
 
 callWithJQuery(function($, c3) {
 

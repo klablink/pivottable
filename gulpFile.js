@@ -5,8 +5,7 @@ var gulp = require('gulp'),
     tag_version = require('gulp-tag-version'),
     runSequence = require('run-sequence').use(gulp),
     spawn = require('child_process').spawn,
-    coffee = require('gulp-coffee'),
-    gutil = require('gulp-util'),
+    babel = require('gulp-babel'),
     uglify = require("gulp-uglify"),
     rename = require('gulp-rename'),
     sourcemaps = require('gulp-sourcemaps'),
@@ -24,10 +23,13 @@ gulp.task('makeCss', function(done) {
 
 
 gulp.task('makeJs', function(done) {
-    gulp.src(['./src/*.coffee', './locales/*.coffee', './tests/*.coffee'])
+    gulp.src(['./src/*.js', './locales/*.js', './tests/*.js'])
         //compile to js (and create map files)
         .pipe(sourcemaps.init())
-        .pipe(coffee()).on('error', gutil.log)
+        .pipe(babel({
+            presets: ['@babel/preset-env']
+        }))
+        .pipe(gulp.dest('./dist'))
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('./dist'))
 
@@ -88,10 +90,14 @@ gulp.task('major', function() {
     runSequence('bumpMajor', 'default', 'tag', 'publish', 'push');
 });
 
-gulp.task('serve', serve('.'));
+gulp.task('serve', serve({
+    root: ['./'],
+    port: 3000,
+    hostname: 'localhost'
+}));
 
 gulp.task('watch', function() {
-  gulp.watch(['./src/**/*.coffee', './locales/*.coffee', './tests/*.coffee'], {usePolling: true}, gulp.series('makeJs'));
+  gulp.watch(['./src/**/*.js', './locales/*.js', './tests/*.js'], {usePolling: true}, gulp.series('makeJs'));
   gulp.watch('./dist/pivot.css',  gulp.series('makeCss'));
 });
 
