@@ -1,5 +1,6 @@
 "use strict";
 
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 /*
  * decaffeinate suggestions:
  * DS101: Remove unnecessary use of Array.from
@@ -9,7 +10,19 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 
-(function ($, c3) {
+(function ($) {
+  var c3;
+  if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object' && (typeof module === "undefined" ? "undefined" : _typeof(module)) === 'object') {
+    // CommonJS
+    c3 = require('c3');
+  } else if (typeof define === 'function' && define.amd) {
+    // AMD
+    define(['c3'], function (_c3) {
+      return c3 = _c3;
+    });
+  } else {
+    c3 = window.c3;
+  }
   var makeC3Chart = function makeC3Chart(chartOpts) {
     if (chartOpts == null) {
       chartOpts = {};
@@ -309,5 +322,5 @@
       type: 'scatter'
     })
   };
-})(jQuery, c3);
+})(jQuery);
 //# sourceMappingURL=c3_renderers.js.map
