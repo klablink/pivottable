@@ -1,5 +1,3 @@
-// TODO: This file was created by bulk-decaffeinate.
-// Sanity-check the conversion and remove this comment.
 /*
  * decaffeinate suggestions:
  * DS101: Remove unnecessary use of Array.from
@@ -8,7 +6,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 
-callWithJQuery(($, d3) => $.pivotUtilities.d3_renderers = { Treemap(pivotData, opts) {
+(($, d3) => $.pivotUtilities.d3_renderers = { Treemap(pivotData, opts) {
     let value;
     const defaults = {
         localeStrings: {},
@@ -78,7 +76,7 @@ callWithJQuery(($, d3) => $.pivotUtilities.d3_renderers = { Treemap(pivotData, o
 
     return result;
 }
-});
+})(jQuery, d3);
 
 
 

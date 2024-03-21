@@ -8,7 +8,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 
-callWithJQuery(function ($) {
+(function ($) {
   var nf = $.pivotUtilities.numberFormat;
   var tpl = $.pivotUtilities.aggregatorTemplates;
   var r = $.pivotUtilities.renderers;
@@ -109,5 +109,5 @@ callWithJQuery(function ($) {
     };
   }
   return $.pivotUtilities.locales.pt;
-});
+})(jQuery);
 //# sourceMappingURL=pivot.pt.js.map

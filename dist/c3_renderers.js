@@ -1,7 +1,5 @@
 "use strict";
 
-// TODO: This file was created by bulk-decaffeinate.
-// Sanity-check the conversion and remove this comment.
 /*
  * decaffeinate suggestions:
  * DS101: Remove unnecessary use of Array.from
@@ -11,7 +9,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 
-callWithJQuery(function ($, c3) {
+(function ($, c3) {
   var makeC3Chart = function makeC3Chart(chartOpts) {
     if (chartOpts == null) {
       chartOpts = {};
@@ -21,8 +19,8 @@ callWithJQuery(function ($, c3) {
       var c, x;
       var defaults = {
         localeStrings: {
-          vs: "vs",
-          by: "by"
+          vs: 'vs',
+          by: 'by'
         },
         c3: {}
       };
@@ -37,7 +35,7 @@ callWithJQuery(function ($, c3) {
         opts.c3.size.height = window.innerHeight / 1.4 - 50;
       }
       if (chartOpts.type == null) {
-        chartOpts.type = "line";
+        chartOpts.type = 'line';
       }
       if (chartOpts.horizontal == null) {
         chartOpts.horizontal = false;
@@ -54,28 +52,28 @@ callWithJQuery(function ($, c3) {
         colKeys.push([]);
       }
       var headers = Array.from(colKeys).map(function (h) {
-        return h.join("-");
+        return h.join('-');
       });
       var rotationAngle = 0;
       var fullAggName = pivotData.aggregatorName;
       if (pivotData.valAttrs.length) {
-        fullAggName += "(".concat(pivotData.valAttrs.join(", "), ")");
+        fullAggName += "(".concat(pivotData.valAttrs.join(', '), ")");
       }
-      if (chartOpts.type === "scatter") {
+      if (chartOpts.type === 'scatter') {
         scatterData = {
           x: {},
           y: {},
           t: {}
         };
         var attrs = pivotData.rowAttrs.concat(pivotData.colAttrs);
-        vAxisTitle = attrs[0] != null ? attrs[0] : "";
-        hAxisTitle = attrs[1] != null ? attrs[1] : "";
-        groupByTitle = attrs.slice(2).join("-");
+        vAxisTitle = attrs[0] != null ? attrs[0] : '';
+        hAxisTitle = attrs[1] != null ? attrs[1] : '';
+        groupByTitle = attrs.slice(2).join('-');
         titleText = vAxisTitle;
-        if (hAxisTitle !== "") {
+        if (hAxisTitle !== '') {
           titleText += " ".concat(opts.localeStrings.vs, " ").concat(hAxisTitle);
         }
-        if (groupByTitle !== "") {
+        if (groupByTitle !== '') {
           titleText += " ".concat(opts.localeStrings.by, " ").concat(groupByTitle);
         }
         for (var _i = 0, _Array$from = Array.from(rowKeys); _i < _Array$from.length; _i++) {
@@ -85,9 +83,9 @@ callWithJQuery(function ($, c3) {
             var agg = pivotData.getAggregator(rowKey, colKey);
             if (agg.value() != null) {
               var vals = rowKey.concat(colKey);
-              series = vals.slice(2).join("-");
-              if (series === "") {
-                series = "series";
+              series = vals.slice(2).join('-');
+              if (series === '') {
+                series = 'series';
               }
               if (scatterData.x[series] == null) {
                 scatterData.x[series] = [];
@@ -121,8 +119,8 @@ callWithJQuery(function ($, c3) {
         columns = [];
         for (var _i4 = 0, _Array$from4 = Array.from(rowKeys); _i4 < _Array$from4.length; _i4++) {
           rowKey = _Array$from4[_i4];
-          var rowHeader = rowKey.join("-");
-          var row = [rowHeader === "" ? fullAggName : rowHeader];
+          var rowHeader = rowKey.join('-');
+          var row = [rowHeader === '' ? fullAggName : rowHeader];
           for (var _i5 = 0, _Array$from5 = Array.from(colKeys); _i5 < _Array$from5.length; _i5++) {
             colKey = _Array$from5[_i5];
             var val = parseFloat(pivotData.getAggregator(rowKey, colKey).value());
@@ -136,22 +134,22 @@ callWithJQuery(function ($, c3) {
         }
         vAxisTitle = fullAggName;
         if (chartOpts.horizontal) {
-          hAxisTitle = pivotData.rowAttrs.join("-");
-          groupByTitle = pivotData.colAttrs.join("-");
+          hAxisTitle = pivotData.rowAttrs.join('-');
+          groupByTitle = pivotData.colAttrs.join('-');
         } else {
-          hAxisTitle = pivotData.colAttrs.join("-");
-          groupByTitle = pivotData.rowAttrs.join("-");
+          hAxisTitle = pivotData.colAttrs.join('-');
+          groupByTitle = pivotData.rowAttrs.join('-');
         }
         titleText = fullAggName;
-        if (hAxisTitle !== "") {
+        if (hAxisTitle !== '') {
           titleText += " ".concat(opts.localeStrings.vs, " ").concat(hAxisTitle);
         }
-        if (groupByTitle !== "") {
+        if (groupByTitle !== '') {
           titleText += " ".concat(opts.localeStrings.by, " ").concat(groupByTitle);
         }
       }
-      var title = $("<p>", {
-        style: "text-align: center; font-weight: bold"
+      var title = $('<p>', {
+        style: 'text-align: center; font-weight: bold'
       });
       title.text(titleText);
       var formatter = pivotData.getAggregator([], []).format;
@@ -178,18 +176,18 @@ callWithJQuery(function ($, c3) {
           grouped: false
         },
         color: {
-          pattern: ["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262", "#5574a6", "#3b3eac"]
+          pattern: ['#3366cc', '#dc3912', '#ff9900', '#109618', '#990099', '#0099c6', '#dd4477', '#66aa00', '#b82e2e', '#316395', '#994499', '#22aa99', '#aaaa11', '#6633cc', '#e67300', '#8b0707', '#651067', '#329262', '#5574a6', '#3b3eac']
         }
       };
       params = $.extend(true, {}, params, opts.c3);
-      if (chartOpts.type === "scatter") {
+      if (chartOpts.type === 'scatter') {
         var xs = {};
         var numSeries = 0;
         var dataColumns = [];
         for (var s in scatterData.x) {
           numSeries += 1;
-          xs[s] = s + "_x";
-          dataColumns.push([s + "_x"].concat(scatterData.x[s]));
+          xs[s] = s + '_x';
+          dataColumns.push([s + '_x'].concat(scatterData.x[s]));
           dataColumns.push([s].concat(scatterData.y[s]));
         }
         params.data.xs = xs;
@@ -207,7 +205,7 @@ callWithJQuery(function ($, c3) {
             return fullAggName;
           },
           name: function name() {
-            return "";
+            return '';
           },
           value: function value(a, b, c, d, e) {
             var _e$ = e[0];
@@ -240,10 +238,10 @@ callWithJQuery(function ($, c3) {
             return result1;
           }();
           if (categories.length === 1 && categories[0] === fullAggName) {
-            categories = [""];
+            categories = [''];
           }
           params.axis.x.categories = categories;
-          if (headers.length === 1 && headers[0] === "") {
+          if (headers.length === 1 && headers[0] === '') {
             headers = [fullAggName];
           }
           columns.unshift(headers);
@@ -259,7 +257,7 @@ callWithJQuery(function ($, c3) {
             var result2 = [];
             for (var _i7 = 0, _Array$from7 = Array.from(colKeys); _i7 < _Array$from7.length; _i7++) {
               x = _Array$from7[_i7];
-              result2.push(x.join("-"));
+              result2.push(x.join('-'));
             }
             return result2;
           }()];
@@ -268,48 +266,48 @@ callWithJQuery(function ($, c3) {
             var result3 = [];
             for (var _i8 = 0, _Array$from8 = Array.from(rowKeys); _i8 < _Array$from8.length; _i8++) {
               x = _Array$from8[_i8];
-              result3.push(x.join("-"));
+              result3.push(x.join('-'));
             }
             return result3;
           }()];
         }
       }
-      var renderArea = $("<div>", {
-        style: "display:none;"
-      }).appendTo($("body"));
-      var result = $("<div>").appendTo(renderArea);
+      var renderArea = $('<div>', {
+        style: 'display:none;'
+      }).appendTo($('body'));
+      var result = $('<div>').appendTo(renderArea);
       params.bindto = result[0];
       c3.generate(params);
       result.detach();
       renderArea.remove();
-      return $("<div>").append(title, result);
+      return $('<div>').append(title, result);
     };
   };
   return $.pivotUtilities.c3_renderers = {
-    "Horizontal Bar Chart": makeC3Chart({
-      type: "bar",
+    'Horizontal Bar Chart': makeC3Chart({
+      type: 'bar',
       horizontal: true
     }),
-    "Horizontal Stacked Bar Chart": makeC3Chart({
-      type: "bar",
+    'Horizontal Stacked Bar Chart': makeC3Chart({
+      type: 'bar',
       stacked: true,
       horizontal: true
     }),
-    "Bar Chart": makeC3Chart({
-      type: "bar"
+    'Bar Chart': makeC3Chart({
+      type: 'bar'
     }),
-    "Stacked Bar Chart": makeC3Chart({
-      type: "bar",
+    'Stacked Bar Chart': makeC3Chart({
+      type: 'bar',
       stacked: true
     }),
-    "Line Chart": makeC3Chart(),
-    "Area Chart": makeC3Chart({
-      type: "area",
+    'Line Chart': makeC3Chart(),
+    'Area Chart': makeC3Chart({
+      type: 'area',
       stacked: true
     }),
-    "Scatter Chart": makeC3Chart({
-      type: "scatter"
+    'Scatter Chart': makeC3Chart({
+      type: 'scatter'
     })
   };
-});
+})(jQuery, c3);
 //# sourceMappingURL=c3_renderers.js.map

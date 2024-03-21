@@ -1,5 +1,3 @@
-// TODO: This file was created by bulk-decaffeinate.
-// Sanity-check the conversion and remove this comment.
 /*
  * decaffeinate suggestions:
  * DS101: Remove unnecessary use of Array.from
@@ -9,13 +7,13 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 
-callWithJQuery(function($, c3) {
+(function($, c3) {
 
     const makeC3Chart = function(chartOpts) { if (chartOpts == null) { chartOpts = {}; } return function(pivotData, opts) {
         let colKey, columns, groupByTitle, hAxisTitle, rowKey, scatterData, series, titleText, vAxisTitle, y;
         let c, x;
         const defaults = {
-            localeStrings: {vs: "vs", by: "by"},
+            localeStrings: {vs: 'vs', by: 'by'},
             c3: {}
         };
 
@@ -23,7 +21,7 @@ callWithJQuery(function($, c3) {
         if (opts.c3.size == null) { opts.c3.size = {}; }
         if (opts.c3.size.width == null) { opts.c3.size.width = window.innerWidth / 1.4; }
         if (opts.c3.size.height == null) { opts.c3.size.height = (window.innerHeight / 1.4) - 50; }
-        if (chartOpts.type == null) { chartOpts.type = "line"; }
+        if (chartOpts.type == null) { chartOpts.type = 'line'; }
         if (chartOpts.horizontal == null) { chartOpts.horizontal = false; }
         if (chartOpts.stacked == null) { chartOpts.stacked = false; }
 
@@ -32,30 +30,30 @@ callWithJQuery(function($, c3) {
         const colKeys = pivotData.getColKeys();
         if (colKeys.length === 0) { colKeys.push([]); }
 
-        let headers = (Array.from(colKeys).map((h) => h.join("-")));
+        let headers = (Array.from(colKeys).map((h) => h.join('-')));
         let rotationAngle = 0;
 
         let fullAggName = pivotData.aggregatorName;
         if (pivotData.valAttrs.length) {
-            fullAggName += `(${pivotData.valAttrs.join(", ")})`;
+            fullAggName += `(${pivotData.valAttrs.join(', ')})`;
         }
 
-        if (chartOpts.type === "scatter") {
+        if (chartOpts.type === 'scatter') {
             scatterData = {x:{}, y:{}, t:{}};
             const attrs = pivotData.rowAttrs.concat(pivotData.colAttrs);
-            vAxisTitle = attrs[0] != null ? attrs[0] : "";
-            hAxisTitle = attrs[1] != null ? attrs[1] : "";
-            groupByTitle = attrs.slice(2).join("-");
+            vAxisTitle = attrs[0] != null ? attrs[0] : '';
+            hAxisTitle = attrs[1] != null ? attrs[1] : '';
+            groupByTitle = attrs.slice(2).join('-');
             titleText = vAxisTitle;
-            if (hAxisTitle !== "") { titleText += ` ${opts.localeStrings.vs} ${hAxisTitle}`; }
-            if (groupByTitle !== "") { titleText += ` ${opts.localeStrings.by} ${groupByTitle}`; }
+            if (hAxisTitle !== '') { titleText += ` ${opts.localeStrings.vs} ${hAxisTitle}`; }
+            if (groupByTitle !== '') { titleText += ` ${opts.localeStrings.by} ${groupByTitle}`; }
             for (rowKey of Array.from(rowKeys)) {
                 for (colKey of Array.from(colKeys)) {
                     var agg = pivotData.getAggregator(rowKey, colKey);
                     if (agg.value() != null) {
                         var vals = rowKey.concat(colKey);
-                        series = vals.slice(2).join("-");
-                        if (series === "") { series = "series"; }
+                        series = vals.slice(2).join('-');
+                        if (series === '') { series = 'series'; }
                         if (scatterData.x[series] == null) { scatterData.x[series] = []; }
                         if (scatterData.y[series] == null) { scatterData.y[series] = []; }
                         y = vals[0] != null ? vals[0] : 0;
@@ -79,8 +77,8 @@ callWithJQuery(function($, c3) {
 
             columns = [];
             for (rowKey of Array.from(rowKeys)) {
-                var rowHeader = rowKey.join("-");
-                var row = [rowHeader === "" ? fullAggName : rowHeader];
+                var rowHeader = rowKey.join('-');
+                var row = [rowHeader === '' ? fullAggName : rowHeader];
                 for (colKey of Array.from(colKeys)) {
                     var val = parseFloat(pivotData.getAggregator(rowKey, colKey).value());
                     if (isFinite(val)) {
@@ -95,18 +93,18 @@ callWithJQuery(function($, c3) {
             vAxisTitle = fullAggName;
 
             if (chartOpts.horizontal) {
-                hAxisTitle = pivotData.rowAttrs.join("-");
-                groupByTitle = pivotData.colAttrs.join("-");
+                hAxisTitle = pivotData.rowAttrs.join('-');
+                groupByTitle = pivotData.colAttrs.join('-');
             } else {
-                hAxisTitle = pivotData.colAttrs.join("-");
-                groupByTitle = pivotData.rowAttrs.join("-");
+                hAxisTitle = pivotData.colAttrs.join('-');
+                groupByTitle = pivotData.rowAttrs.join('-');
             }
             titleText = fullAggName;
-            if (hAxisTitle !== "") { titleText += ` ${opts.localeStrings.vs} ${hAxisTitle}`; }
-            if (groupByTitle !== "") { titleText += ` ${opts.localeStrings.by} ${groupByTitle}`; }
+            if (hAxisTitle !== '') { titleText += ` ${opts.localeStrings.vs} ${hAxisTitle}`; }
+            if (groupByTitle !== '') { titleText += ` ${opts.localeStrings.by} ${groupByTitle}`; }
         }
 
-        const title = $("<p>", {style: "text-align: center; font-weight: bold"});
+        const title = $('<p>', {style: 'text-align: center; font-weight: bold'});
         title.text(titleText);
 
         const formatter = pivotData.getAggregator([], []).format;
@@ -134,24 +132,24 @@ callWithJQuery(function($, c3) {
                 grouped: false
             },
             color: {
-                pattern: [ "#3366cc", "#dc3912", "#ff9900", "#109618",
-                           "#990099", "#0099c6", "#dd4477", "#66aa00",
-                           "#b82e2e", "#316395", "#994499", "#22aa99",
-                           "#aaaa11", "#6633cc", "#e67300", "#8b0707",
-                           "#651067", "#329262", "#5574a6", "#3b3eac" ]
+                pattern: [ '#3366cc', '#dc3912', '#ff9900', '#109618',
+                           '#990099', '#0099c6', '#dd4477', '#66aa00',
+                           '#b82e2e', '#316395', '#994499', '#22aa99',
+                           '#aaaa11', '#6633cc', '#e67300', '#8b0707',
+                           '#651067', '#329262', '#5574a6', '#3b3eac' ]
             }
         };
 
 
         params = $.extend(true, {}, params, opts.c3);
-        if (chartOpts.type === "scatter") {
+        if (chartOpts.type === 'scatter') {
             const xs = {};
             let numSeries = 0;
             const dataColumns = [];
             for (var s in scatterData.x) {
                 numSeries += 1;
-                xs[s] = s+"_x";
-                dataColumns.push([s+"_x"].concat(scatterData.x[s]));
+                xs[s] = s+'_x';
+                dataColumns.push([s+'_x'].concat(scatterData.x[s]));
                 dataColumns.push([s].concat(scatterData.y[s]));
             }
             params.data.xs = xs;
@@ -162,7 +160,7 @@ callWithJQuery(function($, c3) {
             }
             params.tooltip.format = {
                 title() { return fullAggName; },
-                name() { return ""; },
+                name() { return ''; },
                 value(a,b,c,d,e) {
                     ({name: series, value: y, x} = e[0]);
                     return formatter(scatterData.t[series][x][y]);
@@ -182,10 +180,10 @@ callWithJQuery(function($, c3) {
                     return result1;
                 })());
                 if ((categories.length === 1) && (categories[0] === fullAggName)) {
-                    categories = [""];
+                    categories = [''];
                 }
                 params.axis.x.categories = categories;
-                if ((headers.length === 1) && (headers[0] === "")) {
+                if ((headers.length === 1) && (headers[0] === '')) {
                     headers = [fullAggName];
                 }
                 columns.unshift(headers);
@@ -201,36 +199,36 @@ callWithJQuery(function($, c3) {
             if (chartOpts.horizontal) {
                 params.data.groups = [(() => {
                     const result2 = [];
-                    for (x of Array.from(colKeys)) {                         result2.push(x.join("-"));
+                    for (x of Array.from(colKeys)) {                         result2.push(x.join('-'));
                     }
                     return result2;
                 })()];
             } else {
                 params.data.groups = [(() => {
                     const result3 = [];
-                    for (x of Array.from(rowKeys)) {                         result3.push(x.join("-"));
+                    for (x of Array.from(rowKeys)) {                         result3.push(x.join('-'));
                     }
                     return result3;
                 })()];
             }
         }
 
-        const renderArea = $("<div>", {style: "display:none;"}).appendTo($("body"));
-        const result = $("<div>").appendTo(renderArea);
+        const renderArea = $('<div>', {style: 'display:none;'}).appendTo($('body'));
+        const result = $('<div>').appendTo(renderArea);
         params.bindto = result[0];
         c3.generate(params);
         result.detach();
         renderArea.remove();
-        return $("<div>").append(title, result);
+        return $('<div>').append(title, result);
     }; };
 
     return $.pivotUtilities.c3_renderers = {
-        "Horizontal Bar Chart": makeC3Chart({type: "bar", horizontal: true}),
-        "Horizontal Stacked Bar Chart": makeC3Chart({type: "bar", stacked: true, horizontal: true}),
-        "Bar Chart": makeC3Chart({type: "bar"}),
-        "Stacked Bar Chart": makeC3Chart({type: "bar", stacked: true}),
-        "Line Chart": makeC3Chart(),
-        "Area Chart": makeC3Chart({type: "area", stacked: true}),
-        "Scatter Chart": makeC3Chart({type: "scatter"})
+        'Horizontal Bar Chart': makeC3Chart({type: 'bar', horizontal: true}),
+        'Horizontal Stacked Bar Chart': makeC3Chart({type: 'bar', stacked: true, horizontal: true}),
+        'Bar Chart': makeC3Chart({type: 'bar'}),
+        'Stacked Bar Chart': makeC3Chart({type: 'bar', stacked: true}),
+        'Line Chart': makeC3Chart(),
+        'Area Chart': makeC3Chart({type: 'area', stacked: true}),
+        'Scatter Chart': makeC3Chart({type: 'scatter'})
     };
-});
+})(jQuery, c3);

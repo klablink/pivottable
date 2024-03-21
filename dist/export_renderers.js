@@ -10,7 +10,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 
-callWithJQuery(function ($) {
+(function ($) {
   return $.pivotUtilities.export_renderers = {
     "TSV Export": function TSVExport(pivotData, opts) {
       var colKey, r;
@@ -72,5 +72,5 @@ callWithJQuery(function ($) {
       });
     }
   };
-});
+})(jQuery);
 //# sourceMappingURL=export_renderers.js.map

@@ -17,18 +17,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 
-const callWithJQuery = function (pivotModule) {
-    if ((typeof exports === 'object') && (typeof module === 'object')) { // CommonJS
-        return pivotModule(require('jquery'));
-    } else if ((typeof define === 'function') && define.amd) { // AMD
-        return define(['jquery'], pivotModule);
-        // Plain browser env
-    } else {
-        return pivotModule(jQuery);
-    }
-};
-
-callWithJQuery(function ($) {
+(function ($) {
 
     const expandWithSpan = function (cell, rows, keys, nth) {
         let parent;
@@ -2366,5 +2355,5 @@ callWithJQuery(function ($) {
         expandAll(pivotData, $(ev.target).closest('table'), level + 1, rows, $(ev.target).hasClass('close'));
         return $(ev.target).toggleClass('open close');
     });
-});
+})(jQuery);
 

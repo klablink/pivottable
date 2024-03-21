@@ -109,5 +109,5 @@ callWithJQuery(function ($) {
     };
   }
   return $.pivotUtilities.locales.tr;
-});
+})(jQuery);
 //# sourceMappingURL=pivot.tr.js.map

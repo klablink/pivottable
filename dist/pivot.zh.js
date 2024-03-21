@@ -112,5 +112,5 @@ callWithJQuery(function ($) {
     $.pivotUtilities.locales.zh.renderers = $.extend($.pivotUtilities.locales.zh.renderers, $.pivotUtilities.locales.zh.c3_renderers);
   }
   return $.pivotUtilities.locales.zh;
-});
+})(jQuery);
 //# sourceMappingURL=pivot.zh.js.map

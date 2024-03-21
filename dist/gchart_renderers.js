@@ -10,7 +10,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 
-callWithJQuery(function ($) {
+(function ($) {
   var makeGoogleChart = function makeGoogleChart(chartType, extraOptions) {
     return function (pivotData, opts) {
       var agg, dataArray, dataTable, hAxisTitle, title, vAxisTitle;
@@ -166,5 +166,5 @@ callWithJQuery(function ($) {
     }),
     "Scatter Chart": makeGoogleChart("ScatterChart")
   };
-});
+})(jQuery);
 //# sourceMappingURL=gchart_renderers.js.map

@@ -99,5 +99,5 @@ callWithJQuery(function($) {
     }
 
     return $.pivotUtilities.locales.tr;
-});
+})(jQuery);
 

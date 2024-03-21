@@ -8,7 +8,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 
-callWithJQuery(function($, Plotly) {
+(function($, Plotly) {
 
     const makePlotlyChart = function(traceOptions, layoutOptions, transpose) {
         if (traceOptions == null) { traceOptions = {}; }
@@ -168,4 +168,4 @@ callWithJQuery(function($, Plotly) {
             {type: 'pie', scalegroup: 1, hoverinfo: 'label+value', textinfo: 'none'},
             {}, true)
     };
-});
+})(jQuery, Plotly);

@@ -8,7 +8,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 
-callWithJQuery($ => $.pivotUtilities.export_renderers = { "TSV Export"(pivotData, opts) {
+($ => $.pivotUtilities.export_renderers = { "TSV Export"(pivotData, opts) {
     let colKey, r;
     const defaults = {localeStrings: {}};
 
@@ -66,4 +66,4 @@ callWithJQuery($ => $.pivotUtilities.export_renderers = { "TSV Export"(pivotData
             width: ($(window).width() / 2) + "px",
             height: ($(window).height() / 2) + "px"});
 }
-});
+})(jQuery);

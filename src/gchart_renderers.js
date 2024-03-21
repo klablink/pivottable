@@ -8,7 +8,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 
-callWithJQuery(function($) {
+(function($) {
 
     const makeGoogleChart = (chartType, extraOptions) => (function(pivotData, opts) {
         let agg, dataArray, dataTable, hAxisTitle, title, vAxisTitle;
@@ -128,4 +128,4 @@ callWithJQuery(function($) {
         "Area Chart": makeGoogleChart("AreaChart", {isStacked: true}),
         "Scatter Chart": makeGoogleChart("ScatterChart")
     };
-});
+})(jQuery);

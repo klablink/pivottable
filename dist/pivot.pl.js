@@ -8,24 +8,24 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 
-callWithJQuery(function ($) {
+(function ($) {
   var nf = $.pivotUtilities.numberFormat;
   var tpl = $.pivotUtilities.aggregatorTemplates;
   var plFmt = nf({
-    thousandsSep: ".",
-    decimalSep: ","
+    thousandsSep: '.',
+    decimalSep: ','
   });
   var plFmtInt = nf({
     digitsAfterDecimal: 0,
-    thousandsSep: ".",
-    decimalSep: ","
+    thousandsSep: '.',
+    decimalSep: ','
   });
   var plFmtPct = nf({
     digitsAfterDecimal: 1,
     scaler: 100,
-    suffix: "%",
-    thousandsSep: ".",
-    decimalSep: ","
+    suffix: '%',
+    thousandsSep: '.',
+    decimalSep: ','
   });
   return $.pivotUtilities.locales.pl = {
     formatters: {
@@ -34,54 +34,54 @@ callWithJQuery(function ($) {
       formatPct: plFmtPct
     },
     localeStrings: {
-      renderError: "Wystąpił błąd podczas renderowania wyników PivotTable.",
-      computeError: "Wystąpił błąd podczas obliczania wyników PivotTable.",
-      uiRenderError: "Wystąpił błąd podczas renderowania UI PivotTable.",
-      selectAll: "Zaznacz wszystko",
-      selectNone: "Odznacz wszystkie",
-      tooMany: "(za dużo do wylistowania)",
-      filterResults: "Filtruj wartości",
-      apply: "Zastosuj",
-      cancel: "Anuluj",
-      totals: "Podsumowanie",
-      vs: "vs",
-      by: "przez",
-      rendererLabel: "Renderowanie",
-      valuesLabel: "Wartości",
-      fieldsLabel: "Pola",
-      colsLabel: "Kolumny",
-      rowsLabel: "Wiersze",
-      groupsLabel: "Grupy",
-      "Count": "Liczba",
-      "Count Unique Values": "Liczba unikatowych wartości",
-      "List Unique Values": "Lista unikatowych wartości",
-      "Sum": "Suma",
-      "Integer Sum": "Suma całkowita",
-      "Average": "Średnia",
-      "Median": "Mediana",
-      "Sample Variance": "Wariancja próbki",
-      "Sample Standard Deviation": "Odchylenie standardowe próbki",
-      "Minimum": "Minimum",
-      "Maximum": "Maksimum",
-      "First": "Pierwszy",
-      "Last": "Ostatni",
-      "Sum over Sum": "Suma po sumie",
-      "80% Upper Bound": "80% Kres Dolny",
-      "80% Lower Bound": "80% Kres Górny",
-      "Sum as Fraction of Total": "Suma jako Ułamek Całości",
-      "Sum as Fraction of Rows": "Suma jako Ułamek w Wierszach",
-      "Sum as Fraction of Columns": "Suma jako Ułamek w Kolumnach",
-      "Count as Fraction of Total": "Liczba jako Ułamek Całości",
-      "Count as Fraction of Rows": "Liczba jako Ułamek w Wierszach",
-      "Count as Fraction of Columns": "Liczba jako Ułamek w Kolumnach"
+      renderError: 'Wystąpił błąd podczas renderowania wyników PivotTable.',
+      computeError: 'Wystąpił błąd podczas obliczania wyników PivotTable.',
+      uiRenderError: 'Wystąpił błąd podczas renderowania UI PivotTable.',
+      selectAll: 'Zaznacz wszystko',
+      selectNone: 'Odznacz wszystkie',
+      tooMany: '(za dużo do wylistowania)',
+      filterResults: 'Filtruj wartości',
+      apply: 'Zastosuj',
+      cancel: 'Anuluj',
+      totals: 'Podsumowanie',
+      vs: 'vs',
+      by: 'przez',
+      rendererLabel: 'Renderowanie',
+      valuesLabel: 'Wartości',
+      fieldsLabel: 'Pola',
+      colsLabel: 'Kolumny',
+      rowsLabel: 'Wiersze',
+      groupsLabel: 'Grupy',
+      'Count': 'Liczba',
+      'Count Unique Values': 'Liczba unikatowych wartości',
+      'List Unique Values': 'Lista unikatowych wartości',
+      'Sum': 'Suma',
+      'Integer Sum': 'Suma całkowita',
+      'Average': 'Średnia',
+      'Median': 'Mediana',
+      'Sample Variance': 'Wariancja próbki',
+      'Sample Standard Deviation': 'Odchylenie standardowe próbki',
+      'Minimum': 'Minimum',
+      'Maximum': 'Maksimum',
+      'First': 'Pierwszy',
+      'Last': 'Ostatni',
+      'Sum over Sum': 'Suma po sumie',
+      '80% Upper Bound': '80% Kres Dolny',
+      '80% Lower Bound': '80% Kres Górny',
+      'Sum as Fraction of Total': 'Suma jako Ułamek Całości',
+      'Sum as Fraction of Rows': 'Suma jako Ułamek w Wierszach',
+      'Sum as Fraction of Columns': 'Suma jako Ułamek w Kolumnach',
+      'Count as Fraction of Total': 'Liczba jako Ułamek Całości',
+      'Count as Fraction of Rows': 'Liczba jako Ułamek w Wierszach',
+      'Count as Fraction of Columns': 'Liczba jako Ułamek w Kolumnach'
     },
     renderers: {
-      "Tabela": $.pivotUtilities.renderers["Table"],
-      "Tabela z Wykresem Słupkowym": $.pivotUtilities.renderers["Table Barchart"],
-      "Mapa cieplna": $.pivotUtilities.renderers["Heatmap"],
-      "Mapa cieplna po Wierszach": $.pivotUtilities.renderers["Row Heatmap"],
-      "Mapa cieplna po Kolumnach": $.pivotUtilities.renderers["Col Heatmap"]
+      'Tabela': $.pivotUtilities.renderers['Table'],
+      'Tabela z Wykresem Słupkowym': $.pivotUtilities.renderers['Table Barchart'],
+      'Mapa cieplna': $.pivotUtilities.renderers['Heatmap'],
+      'Mapa cieplna po Wierszach': $.pivotUtilities.renderers['Row Heatmap'],
+      'Mapa cieplna po Kolumnach': $.pivotUtilities.renderers['Col Heatmap']
     }
   };
-});
+})(jQuery);
 //# sourceMappingURL=pivot.pl.js.map

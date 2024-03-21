@@ -1,7 +1,5 @@
 "use strict";
 
-// TODO: This file was created by bulk-decaffeinate.
-// Sanity-check the conversion and remove this comment.
 /*
  * decaffeinate suggestions:
  * DS101: Remove unnecessary use of Array.from
@@ -10,7 +8,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 
-callWithJQuery(function ($, d3) {
+(function ($, d3) {
   return $.pivotUtilities.d3_renderers = {
     Treemap: function Treemap(pivotData, opts) {
       var value;
@@ -93,5 +91,5 @@ callWithJQuery(function ($, d3) {
       return result;
     }
   };
-});
+})(jQuery, d3);
 //# sourceMappingURL=d3_renderers.js.map

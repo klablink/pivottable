@@ -109,4 +109,4 @@ callWithJQuery(function($) {
     }
 
     return $.pivotUtilities.locales.zh;
-});
+})(jQuery);

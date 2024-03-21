@@ -6,7 +6,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 
-callWithJQuery(function($) {
+(function($) {
     const nf = $.pivotUtilities.numberFormat;
     const tpl = $.pivotUtilities.aggregatorTemplates;
     const r = $.pivotUtilities.renderers;
@@ -100,4 +100,4 @@ callWithJQuery(function($) {
   }
 
     return $.pivotUtilities.locales.pt;
-});
+})(jQuery);

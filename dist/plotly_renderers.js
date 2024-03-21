@@ -10,7 +10,7 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 
-callWithJQuery(function ($, Plotly) {
+(function ($, Plotly) {
   var makePlotlyChart = function makePlotlyChart(traceOptions, layoutOptions, transpose) {
     if (traceOptions == null) {
       traceOptions = {};
@@ -219,5 +219,5 @@ callWithJQuery(function ($, Plotly) {
       textinfo: 'none'
     }, {}, true)
   };
-});
+})(jQuery, Plotly);
 //# sourceMappingURL=plotly_renderers.js.map
