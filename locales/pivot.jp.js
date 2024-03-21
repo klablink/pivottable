@@ -1,69 +1,81 @@
-callWithJQuery = (pivotModule) ->
-    if typeof exports is "object" and typeof module is "object" # CommonJS
-        pivotModule require("jquery")
-    else if typeof define is "function" and define.amd # AMD
-        define ["jquery"], pivotModule
-# Plain browser env
-    else
-        pivotModule jQuery
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
+ */
+const callWithJQuery = function(pivotModule) {
+    if ((typeof exports === "object") && (typeof module === "object")) { // CommonJS
+        return pivotModule(require("jquery"));
+    } else if ((typeof define === "function") && define.amd) { // AMD
+        return define(["jquery"], pivotModule);
+// Plain browser env
+    } else {
+        return pivotModule(jQuery);
+    }
+};
 
-callWithJQuery ($) ->
-    nf = $.pivotUtilities.numberFormat
-    tpl = $.pivotUtilities.aggregatorTemplates
+callWithJQuery(function($) {
+    const nf = $.pivotUtilities.numberFormat;
+    const tpl = $.pivotUtilities.aggregatorTemplates;
 
-    jpFmt = nf(thousandsSep: ",", decimalSep: ".")
-    jpFmtInt = nf(digitsAfterDecimal: 0, thousandsSep: ",", decimalSep: ".")
-    jpFmtPct = nf(digitsAfterDecimal: 1, scaler: 100, suffix: "%", thousandsSep: ",", decimalSep: ".")
+    const jpFmt = nf({thousandsSep: ",", decimalSep: "."});
+    const jpFmtInt = nf({digitsAfterDecimal: 0, thousandsSep: ",", decimalSep: "."});
+    const jpFmtPct = nf({digitsAfterDecimal: 1, scaler: 100, suffix: "%", thousandsSep: ",", decimalSep: "."});
 
-    $.pivotUtilities.locales.ja =
-        localeStrings:
-            renderError: "描画処理でエラーが発生しました。"
-            computeError: "処理中にエラーが発生しました。"
-            uiRenderError: "表示処理中にエラーが発生しました。"
-            selectAll: "全選択"
-            selectNone: "選択解除"
-            tooMany: "項目が多すぎます"
-            filterResults: "項目を検索する"
-            totals: "合計"
-            vs: "vs"
-            by: "per"
-            apply: "適用する"
-            cancel: "キャンセル"
-            rendererLabel: "レンダラー"
-            valuesLabel: "値"
-            fieldsLabel: "フィールド"
-            colsLabel: "列"
-            rowsLabel: "行"
-            groupsLabel: "グループ"
-            "Count": "件数"
-            "Count Unique Values": "件数（ユニーク"
-            "List Unique Values": "ユニーク値を表示 (CSV)"
-            "Sum": "合計"
-            "Integer Sum": "合計（整数"
-            "Average": "平均"
-            "Median": "中央値"
-            "Sample Variance": "分散"
-            "Sample Standard Deviation": "標準偏差"
-            "Minimum": "最小"
-            "Maximum": "最大"
-            "First": "最初"
-            "Last": "最後"
-            "Sum over Sum": "選択２項目の比率"
-            "80% Upper Bound": "選択２項目の比率（上限80%）"
-            "80% Lower Bound": "選択２項目の比率（下限80%）"
-            "Sum as Fraction of Total": "合計割合"
-            "Sum as Fraction of Rows": "合計割合（行）"
-            "Sum as Fraction of Columns": "合計割合（列）"
-            "Count as Fraction of Total": "件数割合"
-            "Count as Fraction of Rows": "件数割合（行"
+    $.pivotUtilities.locales.ja = {
+        localeStrings: {
+            renderError: "描画処理でエラーが発生しました。",
+            computeError: "処理中にエラーが発生しました。",
+            uiRenderError: "表示処理中にエラーが発生しました。",
+            selectAll: "全選択",
+            selectNone: "選択解除",
+            tooMany: "項目が多すぎます",
+            filterResults: "項目を検索する",
+            totals: "合計",
+            vs: "vs",
+            by: "per",
+            apply: "適用する",
+            cancel: "キャンセル",
+            rendererLabel: "レンダラー",
+            valuesLabel: "値",
+            fieldsLabel: "フィールド",
+            colsLabel: "列",
+            rowsLabel: "行",
+            groupsLabel: "グループ",
+            "Count": "件数",
+            "Count Unique Values": "件数（ユニーク",
+            "List Unique Values": "ユニーク値を表示 (CSV)",
+            "Sum": "合計",
+            "Integer Sum": "合計（整数",
+            "Average": "平均",
+            "Median": "中央値",
+            "Sample Variance": "分散",
+            "Sample Standard Deviation": "標準偏差",
+            "Minimum": "最小",
+            "Maximum": "最大",
+            "First": "最初",
+            "Last": "最後",
+            "Sum over Sum": "選択２項目の比率",
+            "80% Upper Bound": "選択２項目の比率（上限80%）",
+            "80% Lower Bound": "選択２項目の比率（下限80%）",
+            "Sum as Fraction of Total": "合計割合",
+            "Sum as Fraction of Rows": "合計割合（行）",
+            "Sum as Fraction of Columns": "合計割合（列）",
+            "Count as Fraction of Total": "件数割合",
+            "Count as Fraction of Rows": "件数割合（行",
             "Count as Fraction of Columns": "件数割合（列）"
+        }
+    };
 
 
-    renderers:
-        "表": $.pivotUtilities.renderers["Table"]
-        "表（棒グラフ）": $.pivotUtilities.renderers["Table Barchart"]
-        "ヒートマップ": $.pivotUtilities.renderers["Heatmap"]
-        "ヒートマップ（行）": $.pivotUtilities.renderers["Row Heatmap"]
-        "ヒートマップ（列）": $.pivotUtilities.renderers["Col Heatmap"]
+    return {
+        renderers: {
+            "表": $.pivotUtilities.renderers["Table"],
+            "表（棒グラフ）": $.pivotUtilities.renderers["Table Barchart"],
+            "ヒートマップ": $.pivotUtilities.renderers["Heatmap"],
+            "ヒートマップ（行）": $.pivotUtilities.renderers["Row Heatmap"],
+            "ヒートマップ（列）": $.pivotUtilities.renderers["Col Heatmap"]
+        }
+    };});
 
 

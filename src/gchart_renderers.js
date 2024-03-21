@@ -1,111 +1,139 @@
-callWithJQuery = (pivotModule) ->
-    if typeof exports is "object" and typeof module is "object" # CommonJS
-        pivotModule require("jquery")
-    else if typeof define is "function" and define.amd # AMD
-        define ["jquery"], pivotModule
-    # Plain browser env
-    else
-        pivotModule jQuery
+/*
+ * decaffeinate suggestions:
+ * DS101: Remove unnecessary use of Array.from
+ * DS102: Remove unnecessary code created because of implicit returns
+ * DS207: Consider shorter variations of null checks
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
+ */
+const callWithJQuery = function(pivotModule) {
+    if ((typeof exports === "object") && (typeof module === "object")) { // CommonJS
+        return pivotModule(require("jquery"));
+    } else if ((typeof define === "function") && define.amd) { // AMD
+        return define(["jquery"], pivotModule);
+    // Plain browser env
+    } else {
+        return pivotModule(jQuery);
+    }
+};
 
-callWithJQuery ($) ->
+callWithJQuery(function($) {
 
-    makeGoogleChart = (chartType, extraOptions) -> (pivotData, opts) ->
-        defaults =
-            localeStrings:
-                vs: "vs"
+    const makeGoogleChart = (chartType, extraOptions) => (function(pivotData, opts) {
+        let agg, dataArray, dataTable, hAxisTitle, title, vAxisTitle;
+        const defaults = {
+            localeStrings: {
+                vs: "vs",
                 by: "by"
+            },
             gchart: {}
+        };
 
-        opts = $.extend(true, {}, defaults, opts)
-        opts.gchart.width ?= window.innerWidth / 1.4
-        opts.gchart.height ?= window.innerHeight / 1.4
+        opts = $.extend(true, {}, defaults, opts);
+        if (opts.gchart.width == null) { opts.gchart.width = window.innerWidth / 1.4; }
+        if (opts.gchart.height == null) { opts.gchart.height = window.innerHeight / 1.4; }
 
-        rowKeys = pivotData.getRowKeys()
-        rowKeys.push [] if rowKeys.length == 0
-        colKeys = pivotData.getColKeys()
-        colKeys.push [] if colKeys.length == 0
-        fullAggName = pivotData.aggregatorName
-        if pivotData.valAttrs.length
-            fullAggName += "(#{pivotData.valAttrs.join(", ")})"
-        headers = (h.join("-") for h in rowKeys)
-        headers.unshift ""
+        const rowKeys = pivotData.getRowKeys();
+        if (rowKeys.length === 0) { rowKeys.push([]); }
+        const colKeys = pivotData.getColKeys();
+        if (colKeys.length === 0) { colKeys.push([]); }
+        let fullAggName = pivotData.aggregatorName;
+        if (pivotData.valAttrs.length) {
+            fullAggName += `(${pivotData.valAttrs.join(", ")})`;
+        }
+        const headers = (Array.from(rowKeys).map((h) => h.join("-")));
+        headers.unshift("");
 
-        numCharsInHAxis = 0
-        if chartType == "ScatterChart"
-            dataArray = []
-            for y, tree2 of pivotData.tree
-                for x, agg of tree2
-                     dataArray.push [
+        let numCharsInHAxis = 0;
+        if (chartType === "ScatterChart") {
+            dataArray = [];
+            for (var y in pivotData.tree) {
+                var tree2 = pivotData.tree[y];
+                for (var x in tree2) {
+                    agg = tree2[x];
+                     dataArray.push([
                         parseFloat(x),
                         parseFloat(y),
                         fullAggName+": \n"+agg.format(agg.value())
-                        ]
-            dataTable = new google.visualization.DataTable()
-            dataTable.addColumn 'number', pivotData.colAttrs.join("-")
-            dataTable.addColumn 'number', pivotData.rowAttrs.join("-")
-            dataTable.addColumn type: "string", role: "tooltip"
-            dataTable.addRows dataArray
-            hAxisTitle = pivotData.colAttrs.join("-")
-            vAxisTitle = pivotData.rowAttrs.join("-")
-            title = ""
-        else
-            dataArray = [headers]
-            for colKey in colKeys
-                row = [colKey.join("-")]
-                numCharsInHAxis += row[0].length
-                for rowKey in rowKeys
-                    agg = pivotData.getAggregator(rowKey, colKey)
-                    if agg.value()?
-                        val = agg.value()
-                        if $.isNumeric val
-                            if val < 1
-                                row.push parseFloat(val.toPrecision(3))
-                            else
-                                row.push parseFloat(val.toFixed(3))
-                        else
-                            row.push val
-                    else row.push null
-                dataArray.push row
+                        ]);
+                }
+            }
+            dataTable = new google.visualization.DataTable();
+            dataTable.addColumn('number', pivotData.colAttrs.join("-"));
+            dataTable.addColumn('number', pivotData.rowAttrs.join("-"));
+            dataTable.addColumn({type: "string", role: "tooltip"});
+            dataTable.addRows(dataArray);
+            hAxisTitle = pivotData.colAttrs.join("-");
+            vAxisTitle = pivotData.rowAttrs.join("-");
+            title = "";
+        } else {
+            dataArray = [headers];
+            for (var colKey of Array.from(colKeys)) {
+                var row = [colKey.join("-")];
+                numCharsInHAxis += row[0].length;
+                for (var rowKey of Array.from(rowKeys)) {
+                    agg = pivotData.getAggregator(rowKey, colKey);
+                    if (agg.value() != null) {
+                        var val = agg.value();
+                        if ($.isNumeric(val)) {
+                            if (val < 1) {
+                                row.push(parseFloat(val.toPrecision(3)));
+                            } else {
+                                row.push(parseFloat(val.toFixed(3)));
+                            }
+                        } else {
+                            row.push(val);
+                        }
+                    } else { row.push(null); }
+                }
+                dataArray.push(row);
+            }
 
-            dataTable = google.visualization.arrayToDataTable(dataArray)
+            dataTable = google.visualization.arrayToDataTable(dataArray);
 
-            title = vAxisTitle = fullAggName
-            hAxisTitle = pivotData.colAttrs.join("-")
-            title += " #{opts.localeStrings.vs} #{hAxisTitle}" if hAxisTitle != ""
-            groupByTitle = pivotData.rowAttrs.join("-")
-            title += " #{opts.localeStrings.by} #{groupByTitle}" if groupByTitle != ""
+            title = (vAxisTitle = fullAggName);
+            hAxisTitle = pivotData.colAttrs.join("-");
+            if (hAxisTitle !== "") { title += ` ${opts.localeStrings.vs} ${hAxisTitle}`; }
+            const groupByTitle = pivotData.rowAttrs.join("-");
+            if (groupByTitle !== "") { title += ` ${opts.localeStrings.by} ${groupByTitle}`; }
+        }
 
-        options =
-            title: title
-            hAxis: {title: hAxisTitle, slantedText: numCharsInHAxis > 50}
-            vAxis: {title: vAxisTitle}
+        let options = {
+            title,
+            hAxis: {title: hAxisTitle, slantedText: numCharsInHAxis > 50},
+            vAxis: {title: vAxisTitle},
             tooltip: { textStyle: { fontName: 'Arial', fontSize: 12 } }
+        };
 
-        if chartType == "ColumnChart"
-            options.vAxis.minValue = 0
+        if (chartType === "ColumnChart") {
+            options.vAxis.minValue = 0;
+        }
 
-        if chartType == "ScatterChart"
-            options.legend = position: "none"
-            options.chartArea = {'width': '80%', 'height': '80%'}
+        if (chartType === "ScatterChart") {
+            options.legend = {position: "none"};
+            options.chartArea = {'width': '80%', 'height': '80%'};
 
-        else if dataArray[0].length == 2 and dataArray[0][1] ==  ""
-            options.legend = position: "none"
+        } else if ((dataArray[0].length === 2) && (dataArray[0][1] ===  "")) {
+            options.legend = {position: "none"};
+        }
 
-        options = $.extend(true, {}, options, opts.gchart, extraOptions)
+        options = $.extend(true, {}, options, opts.gchart, extraOptions);
 
-        result = $("<div>").css(width: "100%", height: "100%")
-        wrapper = new google.visualization.ChartWrapper {dataTable, chartType, options}
-        wrapper.draw(result[0])
-        result.bind "dblclick", ->
-            editor = new google.visualization.ChartEditor()
-            google.visualization.events.addListener editor, 'ok', ->
-                editor.getChartWrapper().draw(result[0])
-            editor.openDialog(wrapper)
-        return result
+        const result = $("<div>").css({width: "100%", height: "100%"});
+        const wrapper = new google.visualization.ChartWrapper({dataTable, chartType, options});
+        wrapper.draw(result[0]);
+        result.bind("dblclick", function() {
+            const editor = new google.visualization.ChartEditor();
+            google.visualization.events.addListener(editor, 'ok', () => editor.getChartWrapper().draw(result[0]));
+            return editor.openDialog(wrapper);
+        });
+        return result;
+    });
 
-    $.pivotUtilities.gchart_renderers =
-        "Line Chart": makeGoogleChart("LineChart")
-        "Bar Chart": makeGoogleChart("ColumnChart")
-        "Stacked Bar Chart": makeGoogleChart("ColumnChart", isStacked: true)
-        "Area Chart": makeGoogleChart("AreaChart", isStacked: true)
+    return $.pivotUtilities.gchart_renderers = {
+        "Line Chart": makeGoogleChart("LineChart"),
+        "Bar Chart": makeGoogleChart("ColumnChart"),
+        "Stacked Bar Chart": makeGoogleChart("ColumnChart", {isStacked: true}),
+        "Area Chart": makeGoogleChart("AreaChart", {isStacked: true}),
         "Scatter Chart": makeGoogleChart("ScatterChart")
+    };
+});
