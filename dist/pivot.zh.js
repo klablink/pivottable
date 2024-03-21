@@ -9,7 +9,7 @@
  */
 // example: http://zhoulvjun.github.io/2016/02/08/pivottable/
 
-callWithJQuery(function ($) {
+(function ($) {
   var nf = $.pivotUtilities.numberFormat;
   var tpl = $.pivotUtilities.aggregatorTemplates;
   var r = $.pivotUtilities.renderers;
