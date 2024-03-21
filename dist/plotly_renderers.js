@@ -1,5 +1,6 @@
 "use strict";
 
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 // TODO: This file was created by bulk-decaffeinate.
 // Sanity-check the conversion and remove this comment.
 /*
@@ -10,7 +11,19 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 
-(function ($, Plotly) {
+var callWithJQueryAndPlotty = function callWithJQueryAndPlotty(pivotModule) {
+  if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === "object" && (typeof module === "undefined" ? "undefined" : _typeof(module)) === "object") {
+    // CommonJS
+    return pivotModule(require("jquery"), require("plotly.js"));
+  } else if (typeof define === "function" && define.amd) {
+    // AMD
+    return define(["jquery", "plotly.js"], pivotModule);
+    // Plain browser env
+  } else {
+    return pivotModule(jQuery, Plotly);
+  }
+};
+callWithJQueryAndPlotty(function ($, Plotly) {
   var makePlotlyChart = function makePlotlyChart(traceOptions, layoutOptions, transpose) {
     if (traceOptions == null) {
       traceOptions = {};
@@ -219,5 +232,5 @@
       textinfo: 'none'
     }, {}, true)
   };
-})(jQuery, Plotly);
+});
 //# sourceMappingURL=plotly_renderers.js.map

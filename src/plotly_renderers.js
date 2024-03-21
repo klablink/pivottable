@@ -8,7 +8,18 @@
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 
-(function($, Plotly) {
+const callWithJQueryAndPlotty = function(pivotModule) {
+    if ((typeof exports === "object") && (typeof module === "object")) { // CommonJS
+        return pivotModule(require("jquery"), require("plotly.js"));
+    } else if ((typeof define === "function") && define.amd) { // AMD
+        return define(["jquery", "plotly.js"], pivotModule);
+        // Plain browser env
+    } else {
+        return pivotModule(jQuery, Plotly);
+    }
+};
+
+callWithJQueryAndPlotty(function($, Plotly) {
 
     const makePlotlyChart = function(traceOptions, layoutOptions, transpose) {
         if (traceOptions == null) { traceOptions = {}; }
@@ -168,4 +179,4 @@
             {type: 'pie', scalegroup: 1, hoverinfo: 'label+value', textinfo: 'none'},
             {}, true)
     };
-})(jQuery, Plotly);
+});

@@ -4,10 +4,6 @@
 
 /*
  * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS103: Rewrite code to no longer use __guard__, or convert again using --optional-chaining
- * DS104: Avoid inline assignments
  * DS201: Simplify complex destructure assignments
  * DS202: Simplify dynamic range loops
  * DS203: Remove `|| {}` from converted for-own loops

@@ -1,13 +1,5 @@
 "use strict";
 
-// TODO: This file was created by bulk-decaffeinate.
-// Sanity-check the conversion and remove this comment.
-/*
- * decaffeinate suggestions:
- * DS102: Remove unnecessary code created because of implicit returns
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
- */
-
 (function ($) {
   var nf = $.pivotUtilities.numberFormat;
   var tpl = $.pivotUtilities.aggregatorTemplates;
