@@ -756,18 +756,16 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.rowGroupBefore = (opts.grouping != null ? opts.grouping.rowGroupBefore : undefined) != null ? opts.grouping != null ? opts.grouping.rowGroupBefore : undefined : true;
       this.colGroupBefore = (opts.grouping != null ? opts.grouping.colGroupBefore : undefined) != null ? opts.grouping != null ? opts.grouping.colGroupBefore : undefined : false;
       if (this.aggregatorName != null) {
-        if (this.multiple) {
-          this.aggregators = [];
-          this.aggregatorName = Array.isArray(this.aggregatorName) ? this.aggregatorName : [this.aggregatorName];
-          for (var idx = 0; idx < this.aggregatorName.length; idx++) {
-            var _agg = this.aggregatorName[idx];
-            this.aggregators.push({
-              id: ++itemsId,
-              value: _agg,
-              vals: opts.vals != null ? opts.vals[idx] : undefined
-            });
-            renameAggregators();
-          }
+        this.aggregators = [];
+        this.aggregatorName = Array.isArray(this.aggregatorName) ? this.aggregatorName : [this.aggregatorName];
+        for (var idx = 0; idx < this.aggregatorName.length; idx++) {
+          var _agg = this.aggregatorName[idx];
+          this.aggregators.push({
+            id: ++itemsId,
+            value: _agg,
+            vals: opts.vals != null ? opts.vals[idx] : undefined
+          });
+          renameAggregators(this.aggregators);
         }
       }
 
@@ -1091,7 +1089,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
     }]);
   }();
-  var renameAggregators = function renameAggregators() {
+  var renameAggregators = function renameAggregators(aggregators) {
     return aggregators.map(function (agg, id) {
       return agg.displayName = String.fromCharCode(97 + id).toUpperCase();
     });
@@ -1868,7 +1866,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
             id: ++itemsId,
             value: aggregator.val()
           });
-          renameAggregators();
+          renameAggregators(aggregators);
           return refresh();
         });
       }
@@ -2019,7 +2017,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                 return agg.id === _this6.aggIdx;
               });
               aggregators.splice(idx, 1);
-              renameAggregators();
+              renameAggregators(aggregators);
               return refresh();
             }.bind({
               instance: _this5,
@@ -2160,7 +2158,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
               value: _agg2,
               vals: opts.vals != null ? opts.vals[idx] : undefined
             });
-            renameAggregators();
+            renameAggregators(aggregators);
           }
         } else {
           this.find('.pvtVals').append(this.find('.pvtAttrDropdown'));

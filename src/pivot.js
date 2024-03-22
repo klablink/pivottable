@@ -674,18 +674,16 @@
             this.colGroupBefore = (opts.grouping != null ? opts.grouping.colGroupBefore : undefined) != null ? (opts.grouping != null ? opts.grouping.colGroupBefore : undefined) : false;
 
             if (this.aggregatorName != null) {
-                if (this.multiple) {
-                    this.aggregators = [];
-                    this.aggregatorName = Array.isArray(this.aggregatorName) ? this.aggregatorName : [this.aggregatorName];
-                    for (let idx = 0; idx < this.aggregatorName.length; idx++) {
-                        const agg = this.aggregatorName[idx];
-                        this.aggregators.push({
-                            id: ++itemsId,
-                            value: agg,
-                            vals: (opts.vals != null ? opts.vals[idx] : undefined),
-                        });
-                        renameAggregators();
-                    }
+                this.aggregators = [];
+                this.aggregatorName = Array.isArray(this.aggregatorName) ? this.aggregatorName : [this.aggregatorName];
+                for (let idx = 0; idx < this.aggregatorName.length; idx++) {
+                    const agg = this.aggregatorName[idx];
+                    this.aggregators.push({
+                        id: ++itemsId,
+                        value: agg,
+                        vals: (opts.vals != null ? opts.vals[idx] : undefined),
+                    });
+                    renameAggregators(this.aggregators);
                 }
             }
 
@@ -938,7 +936,7 @@
         }
     }
 
-    const renameAggregators = () => aggregators.map((agg, id) =>
+    const renameAggregators = (aggregators) => aggregators.map((agg, id) =>
         (agg.displayName = String.fromCharCode(97 + id).toUpperCase()));
 
     //expose these to the outside world
@@ -1726,7 +1724,7 @@
                     .html('+')
                     .bind('click', function () {
                         aggregators.push({ id: ++itemsId, value: aggregator.val() });
-                        renameAggregators();
+                        renameAggregators(aggregators);
                         return refresh();
                     });
             }
@@ -1912,7 +1910,7 @@
                                     this.instance.find('.pvtVals .pvtAttrDropdownContainer' + this.aggIdx).remove();
                                     idx = aggregators.findIndex(agg => agg.id === this.aggIdx);
                                     aggregators.splice(idx, 1);
-                                    renameAggregators();
+                                    renameAggregators(aggregators);
                                     return refresh();
                                 }).bind({ instance: this, aggIdx }),
                             );
@@ -2031,7 +2029,7 @@
                             value: agg,
                             vals: (opts.vals != null ? opts.vals[idx] : undefined),
                         });
-                        renameAggregators();
+                        renameAggregators(aggregators);
                     }
                 } else {
                     this.find('.pvtVals').append(this.find('.pvtAttrDropdown'));
