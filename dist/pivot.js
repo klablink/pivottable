@@ -2086,7 +2086,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           inclusions: inclusions,
           inclusionsInfo: inclusions,
           //duplicated for backwards-compatibility
-          aggregators: aggregators,
+          aggregator: aggregators,
           aggregatorName: aggregators.map(function (agg) {
             return agg.value;
           }),

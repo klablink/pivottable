@@ -1971,7 +1971,7 @@
                         exclusions,
                         inclusions,
                         inclusionsInfo: inclusions, //duplicated for backwards-compatibility
-                        aggregators,
+                        aggregator: aggregators,
                         aggregatorName: aggregators.map(agg => agg.value),
                         rendererName: renderer.val(),
                     },
