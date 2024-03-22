@@ -673,21 +673,6 @@
             this.rowGroupBefore = (opts.grouping != null ? opts.grouping.rowGroupBefore : undefined) != null ? (opts.grouping != null ? opts.grouping.rowGroupBefore : undefined) : true;
             this.colGroupBefore = (opts.grouping != null ? opts.grouping.colGroupBefore : undefined) != null ? (opts.grouping != null ? opts.grouping.colGroupBefore : undefined) : false;
 
-            let itemsId = 0;
-            if (this.aggregatorName != null) {
-                this.aggregators = [];
-                this.aggregatorName = Array.isArray(this.aggregatorName) ? this.aggregatorName : [this.aggregatorName];
-                for (let idx = 0; idx < this.aggregatorName.length; idx++) {
-                    const agg = this.aggregatorName[idx];
-                    this.aggregators.push({
-                        id: ++itemsId,
-                        value: agg,
-                        vals: (opts.vals != null ? opts.vals[idx] : undefined),
-                    });
-                    renameAggregators(this.aggregators);
-                }
-            }
-
             // iterate through input, accumulating data for cells
             PivotData.forEachRecord(this.input, this.derivedAttributes, record => {
                 if (this.filter(record)) {
@@ -1986,6 +1971,7 @@
                         exclusions,
                         inclusions,
                         inclusionsInfo: inclusions, //duplicated for backwards-compatibility
+                        aggregators,
                         aggregatorName: aggregators.map(agg => agg.value),
                         rendererName: renderer.val(),
                     },
