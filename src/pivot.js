@@ -614,7 +614,7 @@
         };
     };
 
-    function getSort (sorters, attr) {
+    function getSort(sorters, attr) {
         if (sorters != null) {
             if ($.isFunction(sorters)) {
                 const sort = sorters(attr);
@@ -672,6 +672,22 @@
             this.grouping = opts.grouping != null ? opts.grouping : false;
             this.rowGroupBefore = (opts.grouping != null ? opts.grouping.rowGroupBefore : undefined) != null ? (opts.grouping != null ? opts.grouping.rowGroupBefore : undefined) : true;
             this.colGroupBefore = (opts.grouping != null ? opts.grouping.colGroupBefore : undefined) != null ? (opts.grouping != null ? opts.grouping.colGroupBefore : undefined) : false;
+
+            if (this.aggregatorName != null) {
+                if (this.multiple) {
+                    this.aggregators = [];
+                    this.aggregatorName = Array.isArray(this.aggregatorName) ? this.aggregatorName : [this.aggregatorName];
+                    for (let idx = 0; idx < this.aggregatorName.length; idx++) {
+                        const agg = this.aggregatorName[idx];
+                        this.aggregators.push({
+                            id: ++itemsId,
+                            value: agg,
+                            vals: (opts.vals != null ? opts.vals[idx] : undefined),
+                        });
+                        renameAggregators();
+                    }
+                }
+            }
 
             // iterate through input, accumulating data for cells
             PivotData.forEachRecord(this.input, this.derivedAttributes, record => {
@@ -922,6 +938,9 @@
         }
     }
 
+    const renameAggregators = () => aggregators.map((agg, id) =>
+        (agg.displayName = String.fromCharCode(97 + id).toUpperCase()));
+
     //expose these to the outside world
     $.pivotUtilities = {
         aggregatorTemplates, aggregators: defaultAggregators, renderers, derivers, locales,
@@ -932,7 +951,7 @@
     Default Renderer for hierarchical table layout
     */
 
-    function pivotTableRenderer (pivotData, opts) {
+    function pivotTableRenderer(pivotData, opts) {
 
         let agg, aggregator, colKey, getClickHandler, i, id, j, td, th, totalAggregator, tr, val, x;
         const defaults = {
@@ -1328,7 +1347,6 @@
         return this.append(result);
     };
 
-
     /*
     Pivot Table UI: calls the Pivot Table core above with options set by user
     */
@@ -1378,9 +1396,6 @@
             rendererOptions: { localeStrings },
             localeStrings,
         };
-
-        const renameAggregators = () => aggregators.map((agg, id) =>
-            (agg.displayName = String.fromCharCode(97 + id).toUpperCase()));
 
         const existingOpts = this.data('pivotUIOptions');
         if ((existingOpts == null) || overwrite) {

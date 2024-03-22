@@ -755,6 +755,21 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.grouping = opts.grouping != null ? opts.grouping : false;
       this.rowGroupBefore = (opts.grouping != null ? opts.grouping.rowGroupBefore : undefined) != null ? opts.grouping != null ? opts.grouping.rowGroupBefore : undefined : true;
       this.colGroupBefore = (opts.grouping != null ? opts.grouping.colGroupBefore : undefined) != null ? opts.grouping != null ? opts.grouping.colGroupBefore : undefined : false;
+      if (this.aggregatorName != null) {
+        if (this.multiple) {
+          this.aggregators = [];
+          this.aggregatorName = Array.isArray(this.aggregatorName) ? this.aggregatorName : [this.aggregatorName];
+          for (var idx = 0; idx < this.aggregatorName.length; idx++) {
+            var _agg = this.aggregatorName[idx];
+            this.aggregators.push({
+              id: ++itemsId,
+              value: _agg,
+              vals: opts.vals != null ? opts.vals[idx] : undefined
+            });
+            renameAggregators();
+          }
+        }
+      }
 
       // iterate through input, accumulating data for cells
       PivotData.forEachRecord(this.input, this.derivedAttributes, function (record) {
@@ -1075,7 +1090,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         }
       }
     }]);
-  }(); //expose these to the outside world
+  }();
+  var renameAggregators = function renameAggregators() {
+    return aggregators.map(function (agg, id) {
+      return agg.displayName = String.fromCharCode(97 + id).toUpperCase();
+    });
+  };
+
+  //expose these to the outside world
   $.pivotUtilities = {
     aggregatorTemplates: aggregatorTemplates,
     aggregators: defaultAggregators,
@@ -1553,11 +1575,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         localeStrings: localeStrings
       },
       localeStrings: localeStrings
-    };
-    var renameAggregators = function renameAggregators() {
-      return aggregators.map(function (agg, id) {
-        return agg.displayName = String.fromCharCode(97 + id).toUpperCase();
-      });
     };
     var existingOpts = this.data('pivotUIOptions');
     if (existingOpts == null || overwrite) {
@@ -2137,10 +2154,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         if (opts.multiple) {
           opts.aggregatorName = Array.isArray(opts.aggregatorName) ? opts.aggregatorName : [opts.aggregatorName];
           for (var idx = 0; idx < opts.aggregatorName.length; idx++) {
-            var _agg = opts.aggregatorName[idx];
+            var _agg2 = opts.aggregatorName[idx];
             aggregators.push({
               id: ++itemsId,
-              value: _agg,
+              value: _agg2,
               vals: opts.vals != null ? opts.vals[idx] : undefined
             });
             renameAggregators();
