@@ -59,6 +59,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       */
 
   var getExpandAllHandler;
+  var localeGlobal = 'en';
   var addSeparators = function addSeparators(nStr, thousandsSep, decimalSep) {
     nStr += '';
     var x = nStr.split('.');
@@ -87,6 +88,33 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       var result = addSeparators((opts.scaler * x).toFixed(opts.digitsAfterDecimal), opts.thousandsSep, opts.decimalSep);
       return '' + opts.prefix + result + opts.suffix;
     };
+  };
+  var cellRenderers = {
+    text: function text(value) {
+      value = value || '';
+      return document.createTextNode(value);
+    },
+    byType: function byType(opts, def) {
+      return function (value, type) {
+        return (opts[type] || def || cellRenderers.text).apply(this, arguments);
+      };
+    },
+    toDate: function toDate(value, opts) {
+      var date = '';
+      if (value) {
+        try {
+          var options = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+          };
+          date = new Date(value).toLocaleDateString(localeGlobal, options);
+        } catch (e) {
+          date = value;
+        }
+      }
+      return $.pivotUtilities.cellRenderers.text(date);
+    }
   };
 
   //aggregator templates default to US number formatting, but this is overrideable
@@ -129,6 +157,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           attr = _ref3[0];
         return function (data, rowKey, colKey) {
           return {
+            attr: attr,
             uniq: [],
             push: function push(record) {
               if (!this.uniq.includes(record[attr])) {
@@ -154,6 +183,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           attr = _ref5[0];
         return function (data, rowKey, colKey) {
           return {
+            attr: attr,
             sum: 0,
             push: function push(record) {
               if (!isNaN(parseFloat(record[attr]))) {
@@ -179,6 +209,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           attr = _ref7[0];
         return function (data, rowKey, colKey) {
           return {
+            attr: attr,
             val: null,
             sorter: getSort(data != null ? data.sorters : undefined, attr),
             push: function push(record) {
@@ -225,6 +256,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           attr = _ref9[0];
         return function (data, rowKey, colKey) {
           return {
+            attr: attr,
             vals: [],
             push: function push(record) {
               var x = parseFloat(record[attr]);
@@ -264,6 +296,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           attr = _ref11[0];
         return function (data, rowKey, colKey) {
           return {
+            attr: attr,
             n: 0.0,
             m: 0.0,
             s: 0.0,
@@ -710,6 +743,18 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     });
   }; // [1,2,3] => [[1], [1,2], [1,2,3]]
 
+  function normalizeData(data) {
+    Object.entries(data).forEach(function (_ref16) {
+      var _ref17 = _slicedToArray(_ref16, 2),
+        key = _ref17[0],
+        value = _ref17[1];
+      if (value instanceof Date) {
+        data[key] = value.toISOString();
+      }
+    });
+    return data;
+  }
+
   /*
   Data Model class
   */
@@ -759,7 +804,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       // iterate through input, accumulating data for cells
       PivotData.forEachRecord(this.input, this.derivedAttributes, function (record) {
         if (_this.filter(record)) {
-          return _this.processRecord(record);
+          return _this.processRecord(normalizeData(record));
         }
       });
     }
@@ -1087,6 +1132,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     aggregatorTemplates: aggregatorTemplates,
     aggregators: defaultAggregators,
     renderers: renderers,
+    cellRenderers: cellRenderers,
     derivers: derivers,
     locales: locales,
     naturalSort: naturalSort,
@@ -1109,7 +1155,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       },
       localeStrings: {
         totals: 'Totals'
-      }
+      },
+      typeCellRenderer: cellRenderers.text,
+      headCellRenderer: cellRenderers.text,
+      dataCellRenderer: cellRenderers.text
     };
     opts = $.extend(true, {}, defaults, opts);
     var colAttrs = pivotData.colAttrs;
@@ -1195,7 +1244,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
       th = document.createElement('th');
       th.className = 'pvtAxisLabel';
-      th.textContent = c;
+      th.appendChild(opts.typeCellRenderer(c));
       if (pivotData.grouping && j < colAttrs.length - 1) {
         th.onclick = getExpandAllHandler(pivotData, +j, false);
         th.className += " open level".concat(j);
@@ -1209,7 +1258,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           th = document.createElement('th');
           th.className = 'pvtColLabel';
           th.className += " col".concat(pivotData.colGroupBefore ? +i : +i + x - 1);
-          th.textContent = colKey[j];
+          th.appendChild(opts.headCellRenderer(colKey[j], c));
           th.setAttribute('colspan', x * Math.max(1, pivotData.aggregator.length));
           if (parseInt(j) === colAttrs.length - 1 && rowAttrs.length !== 0) {
             th.setAttribute('rowspan', 2);
@@ -1241,7 +1290,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         var r = rowAttrs[i];
         th = document.createElement('th');
         th.className = 'pvtAxisLabel';
-        th.textContent = r;
+        th.appendChild(opts.typeCellRenderer(r));
         if (pivotData.grouping && i < rowAttrs.length - 1) {
           th.className += " open level".concat(i);
           th.onclick = getExpandAllHandler(pivotData, +i, true);
@@ -1322,7 +1371,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           th = document.createElement('th');
           th.className = 'pvtRowLabel';
           th.className += " row".concat(pivotData.rowGroupBefore ? +i : +i + x - 1);
-          th.textContent = txt;
+          th.appendChild(opts.headCellRenderer(txt, rowAttrs[j]));
           th.setAttribute('rowspan', x);
           if (compactLayout) {
             th.colSpan = rowAttrs.length;
@@ -1349,6 +1398,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         //this is a tight loop
         colKey = colKeys[j];
         for (id = 0; id < pivotData.aggregator.length; id++) {
+          var _aggregator;
           agg = pivotData.aggregator[id];
           aggregator = pivotData.getAggregator(rowKey, colKey, id);
           val = aggregator.value(id);
@@ -1360,7 +1410,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           if (colAttrs.length - colKey.length) {
             td.className = "pvtSubtotal level".concat(colKey.length, " row").concat(i, " col").concat(j);
           }
-          td.textContent = aggregator.format(val);
+          td.appendChild(opts.dataCellRenderer(aggregator.format(val), (_aggregator = aggregator) === null || _aggregator === void 0 ? void 0 : _aggregator.attr, rowKey, colKey));
           td.setAttribute('data-value', val);
           if (getClickHandler != null) {
             td.onclick = getClickHandler(val, rowKey, colKey);
@@ -1370,12 +1420,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
       if (opts.table.rowTotals || colAttrs.length === 0) {
         for (id = 0; id < pivotData.aggregator.length; id++) {
+          var _totalAggregator;
           agg = pivotData.aggregator[id];
           totalAggregator = pivotData.getAggregator(rowKey, [], id);
           val = totalAggregator.value(id);
           td = document.createElement('td');
           td.className = 'pvtTotal rowTotal';
-          td.textContent = totalAggregator.format(val);
+          td.append(opts.dataCellRenderer(totalAggregator.format(val), (_totalAggregator = totalAggregator) === null || _totalAggregator === void 0 ? void 0 : _totalAggregator.attr, rowKey, []));
           td.setAttribute('data-value', val);
           if (getClickHandler != null) {
             td.onclick = getClickHandler(val, rowKey, []);
@@ -1401,6 +1452,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         j = _Object$keys14[_i14];
         colKey = colKeys[j];
         for (id = 0; id < pivotData.aggregator.length; id++) {
+          var _totalAggregator2;
           agg = pivotData.aggregator[id];
           totalAggregator = pivotData.getAggregator([], colKey, id);
           val = totalAggregator.value(id);
@@ -1409,7 +1461,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           if (colKey.length !== colAttrs.length) {
             td.className += " pvtSubtotal level".concat(colKey.length);
           }
-          td.textContent = totalAggregator.format(val);
+          td.append(opts.dataCellRenderer(totalAggregator.format(val), (_totalAggregator2 = totalAggregator) === null || _totalAggregator2 === void 0 ? void 0 : _totalAggregator2.attr, [], colKey));
           td.setAttribute('data-value', val);
           if (getClickHandler != null) {
             td.onclick = getClickHandler(val, [], colKey);
@@ -1420,12 +1472,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }
       if (opts.table.rowTotals || colAttrs.length === 0) {
         for (id = 0; id < pivotData.aggregator.length; id++) {
+          var _totalAggregator3;
           agg = pivotData.aggregator[id];
           totalAggregator = pivotData.getAggregator([], [], id);
           val = totalAggregator.value(id);
           td = document.createElement('td');
           td.className = 'pvtGrandTotal';
-          td.textContent = totalAggregator.format(val);
+          td.append(opts.dataCellRenderer(totalAggregator.format(val), (_totalAggregator3 = totalAggregator) === null || _totalAggregator3 === void 0 ? void 0 : _totalAggregator3.attr, [], []));
           td.setAttribute('data-value', val);
           if (getClickHandler != null) {
             td.onclick = getClickHandler(val, [], []);
@@ -1455,6 +1508,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     if (locales[locale] == null) {
       locale = 'en';
     }
+    localeGlobal = locale;
     inputOpts = inputOpts || {};
     var defaults = {
       cols: [],
@@ -2075,7 +2129,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
           return true;
         };
-        pivotTable.pivot(materializedInput, subopts);
+        pivotTable.pivot(materializedInput, subopts, locale);
         var pivotUIOptions = $.extend({}, opts, {
           cols: subopts.cols,
           rows: subopts.rows,

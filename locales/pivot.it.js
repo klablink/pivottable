@@ -7,7 +7,7 @@
     const frFmtInt = nf({ digitsAfterDecimal: 0, thousandsSep: '.', decimalSep: ',' });
     const frFmtPct = nf({ digitsAfterDecimal: 1, scaler: 100, suffix: '%', thousandsSep: '.', decimalSep: ',' });
 
-    $.pivotUtilities.locales.it = {
+    return $.pivotUtilities.locales.it = {
         formatters: {
             format: frFmt,
             formatInt: frFmtInt,
@@ -55,9 +55,7 @@
             'Count as Fraction of Rows': 'Conteggio come frazione di righe',
             'Count as Fraction of Columns': 'Conteggio come frazione di colonne',
         },
-    };
 
-    return {
         renderers: {
             'Tabella': $.pivotUtilities.renderers['Table'],
             'Tabella con grafico': $.pivotUtilities.renderers['Table Barchart'],

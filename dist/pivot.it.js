@@ -19,7 +19,7 @@
     thousandsSep: '.',
     decimalSep: ','
   });
-  $.pivotUtilities.locales.it = {
+  return $.pivotUtilities.locales.it = {
     formatters: {
       format: frFmt,
       formatInt: frFmtInt,
@@ -66,9 +66,7 @@
       'Count as Fraction of Total': 'Conteggio come frazione del totale',
       'Count as Fraction of Rows': 'Conteggio come frazione di righe',
       'Count as Fraction of Columns': 'Conteggio come frazione di colonne'
-    }
-  };
-  return {
+    },
     renderers: {
       'Tabella': $.pivotUtilities.renderers['Table'],
       'Tabella con grafico': $.pivotUtilities.renderers['Table Barchart'],

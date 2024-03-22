@@ -42,6 +42,8 @@
         */
 
     let getExpandAllHandler;
+    let localeGlobal = 'en';
+
     const addSeparators = function (nStr, thousandsSep, decimalSep) {
         nStr += '';
         const x = nStr.split('.');
@@ -68,6 +70,32 @@
             const result = addSeparators((opts.scaler * x).toFixed(opts.digitsAfterDecimal), opts.thousandsSep, opts.decimalSep);
             return '' + opts.prefix + result + opts.suffix;
         };
+    };
+
+    const cellRenderers = {
+        text: function (value) {
+            value = value || '';
+            return document.createTextNode(value);
+        },
+        byType: function (opts, def) {
+            return function (value, type) {
+                return (opts[type] || def || cellRenderers.text).apply(this, arguments);
+            };
+        },
+        toDate(value, opts) {
+            let date = '';
+
+            if (value) {
+                try {
+                    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+                    date = (new Date(value)).toLocaleDateString(localeGlobal, options);
+                } catch (e) {
+                    date = value;
+                }
+            }
+
+            return $.pivotUtilities.cellRenderers.text(date);
+        },
     };
 
     //aggregator templates default to US number formatting, but this is overrideable
@@ -102,6 +130,7 @@
                 const [attr] = args[0];
                 return function (data, rowKey, colKey) {
                     return {
+                        attr,
                         uniq: [],
                         push(record) {
                             if (!this.uniq.includes(record[attr])) {
@@ -126,6 +155,7 @@
                 const [attr] = args[0];
                 return function (data, rowKey, colKey) {
                     return {
+                        attr,
                         sum: 0,
                         push(record) {
                             if (!isNaN(parseFloat(record[attr]))) {
@@ -150,6 +180,7 @@
                 const [attr] = args[0];
                 return function (data, rowKey, colKey) {
                     return {
+                        attr,
                         val: null,
                         sorter: getSort(data != null ? data.sorters : undefined, attr),
                         push(record) {
@@ -195,6 +226,7 @@
                 const [attr] = args[0];
                 return function (data, rowKey, colKey) {
                     return {
+                        attr,
                         vals: [],
                         push(record) {
                             const x = parseFloat(record[attr]);
@@ -231,6 +263,7 @@
                 const [attr] = args[0];
                 return function (data, rowKey, colKey) {
                     return {
+                        attr,
                         n: 0.0, m: 0.0, s: 0.0,
                         push(record) {
                             const x = parseFloat(record[attr]);
@@ -632,6 +665,16 @@
 
     const subarrays = array => array.map((d, i) => array.slice(0, i + 1));  // [1,2,3] => [[1], [1,2], [1,2,3]]
 
+    function normalizeData(data) {
+        Object.entries(data).forEach(([key, value]) => {
+            if (value instanceof Date) {
+                data[key] = value.toISOString();
+            }
+        })
+
+        return data;
+    }
+
     /*
     Data Model class
     */
@@ -676,7 +719,7 @@
             // iterate through input, accumulating data for cells
             PivotData.forEachRecord(this.input, this.derivedAttributes, record => {
                 if (this.filter(record)) {
-                    return this.processRecord(record);
+                    return this.processRecord(normalizeData(record));
                 }
             });
         }
@@ -927,7 +970,7 @@
 
     //expose these to the outside world
     $.pivotUtilities = {
-        aggregatorTemplates, aggregators: defaultAggregators, renderers, derivers, locales,
+        aggregatorTemplates, aggregators: defaultAggregators, renderers, cellRenderers, derivers, locales,
         naturalSort, numberFormat, sortAs, PivotData,
     };
 
@@ -947,6 +990,10 @@
             localeStrings: {
                 totals: 'Totals',
             },
+
+            typeCellRenderer: cellRenderers.text,
+            headCellRenderer: cellRenderers.text,
+            dataCellRenderer: cellRenderers.text,
         };
 
         opts = $.extend(true, {}, defaults, opts);
@@ -1035,7 +1082,7 @@
             }
             th = document.createElement('th');
             th.className = 'pvtAxisLabel';
-            th.textContent = c;
+            th.appendChild(opts.typeCellRenderer(c))
             if (pivotData.grouping && (j < (colAttrs.length - 1))) {
                 th.onclick = getExpandAllHandler(pivotData, +j, false);
                 th.className += ` open level${j}`;
@@ -1048,7 +1095,7 @@
                     th = document.createElement('th');
                     th.className = 'pvtColLabel';
                     th.className += ` col${pivotData.colGroupBefore ? +i : (+i + x) - 1}`;
-                    th.textContent = colKey[j];
+                    th.appendChild(opts.headCellRenderer(colKey[j], c))
                     th.setAttribute('colspan', x * Math.max(1, pivotData.aggregator.length));
                     if ((parseInt(j) === (colAttrs.length - 1)) && (rowAttrs.length !== 0)) {
                         th.setAttribute('rowspan', 2);
@@ -1079,7 +1126,7 @@
                 const r = rowAttrs[i];
                 th = document.createElement('th');
                 th.className = 'pvtAxisLabel';
-                th.textContent = r;
+                th.appendChild(opts.typeCellRenderer(r))
                 if (pivotData.grouping && (i < (rowAttrs.length - 1))) {
                     th.className += ` open level${i}`;
                     th.onclick = getExpandAllHandler(pivotData, +i, true);
@@ -1144,7 +1191,7 @@
                     th = document.createElement('th');
                     th.className = 'pvtRowLabel';
                     th.className += ` row${pivotData.rowGroupBefore ? +i : (+i + x) - 1}`;
-                    th.textContent = txt;
+                    th.appendChild(opts.headCellRenderer(txt, rowAttrs[j]))
                     th.setAttribute('rowspan', x);
                     if (compactLayout) {
                         th.colSpan = rowAttrs.length;
@@ -1183,7 +1230,7 @@
                     if (colAttrs.length - colKey.length) {
                         td.className = `pvtSubtotal level${colKey.length} row${i} col${j}`;
                     }
-                    td.textContent = aggregator.format(val);
+                    td.appendChild(opts.dataCellRenderer(aggregator.format(val), aggregator?.attr, rowKey, colKey))
                     td.setAttribute('data-value', val);
                     if (getClickHandler != null) {
                         td.onclick = getClickHandler(val, rowKey, colKey);
@@ -1199,7 +1246,7 @@
                     val = totalAggregator.value(id);
                     td = document.createElement('td');
                     td.className = 'pvtTotal rowTotal';
-                    td.textContent = totalAggregator.format(val);
+                    td.append(opts.dataCellRenderer(totalAggregator.format(val), totalAggregator?.attr, rowKey, []))
                     td.setAttribute('data-value', val);
                     if (getClickHandler != null) {
                         td.onclick = getClickHandler(val, rowKey, []);
@@ -1232,7 +1279,7 @@
                     if (colKey.length !== colAttrs.length) {
                         td.className += ` pvtSubtotal level${colKey.length}`;
                     }
-                    td.textContent = totalAggregator.format(val);
+                    td.append(opts.dataCellRenderer(totalAggregator.format(val), totalAggregator?.attr, [], colKey))
                     td.setAttribute('data-value', val);
                     if (getClickHandler != null) {
                         td.onclick = getClickHandler(val, [], colKey);
@@ -1248,7 +1295,7 @@
                     val = totalAggregator.value(id);
                     td = document.createElement('td');
                     td.className = 'pvtGrandTotal';
-                    td.textContent = totalAggregator.format(val);
+                    td.append(opts.dataCellRenderer(totalAggregator.format(val), totalAggregator?.attr, [], []))
                     td.setAttribute('data-value', val);
                     if (getClickHandler != null) {
                         td.onclick = getClickHandler(val, [], []);
@@ -1279,6 +1326,7 @@
         if ((locales[locale] == null)) {
             locale = 'en';
         }
+        localeGlobal = locale;
         inputOpts = inputOpts || {};
         const defaults = {
             cols: [], rows: [], vals: [],
@@ -1961,7 +2009,7 @@
                     return true;
                 };
 
-                pivotTable.pivot(materializedInput, subopts);
+                pivotTable.pivot(materializedInput, subopts, locale);
                 const pivotUIOptions = $.extend({}, opts, {
                         cols: subopts.cols,
                         rows: subopts.rows,
