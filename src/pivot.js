@@ -673,6 +673,7 @@
             this.rowGroupBefore = (opts.grouping != null ? opts.grouping.rowGroupBefore : undefined) != null ? (opts.grouping != null ? opts.grouping.rowGroupBefore : undefined) : true;
             this.colGroupBefore = (opts.grouping != null ? opts.grouping.colGroupBefore : undefined) != null ? (opts.grouping != null ? opts.grouping.colGroupBefore : undefined) : false;
 
+            let itemsId = 0;
             if (this.aggregatorName != null) {
                 this.aggregators = [];
                 this.aggregatorName = Array.isArray(this.aggregatorName) ? this.aggregatorName : [this.aggregatorName];

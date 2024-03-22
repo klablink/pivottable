@@ -755,6 +755,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.grouping = opts.grouping != null ? opts.grouping : false;
       this.rowGroupBefore = (opts.grouping != null ? opts.grouping.rowGroupBefore : undefined) != null ? opts.grouping != null ? opts.grouping.rowGroupBefore : undefined : true;
       this.colGroupBefore = (opts.grouping != null ? opts.grouping.colGroupBefore : undefined) != null ? opts.grouping != null ? opts.grouping.colGroupBefore : undefined : false;
+      var itemsId = 0;
       if (this.aggregatorName != null) {
         this.aggregators = [];
         this.aggregatorName = Array.isArray(this.aggregatorName) ? this.aggregatorName : [this.aggregatorName];
