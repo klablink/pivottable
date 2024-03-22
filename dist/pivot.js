@@ -755,20 +755,6 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       this.grouping = opts.grouping != null ? opts.grouping : false;
       this.rowGroupBefore = (opts.grouping != null ? opts.grouping.rowGroupBefore : undefined) != null ? opts.grouping != null ? opts.grouping.rowGroupBefore : undefined : true;
       this.colGroupBefore = (opts.grouping != null ? opts.grouping.colGroupBefore : undefined) != null ? opts.grouping != null ? opts.grouping.colGroupBefore : undefined : false;
-      var itemsId = 0;
-      if (this.aggregatorName != null) {
-        this.aggregators = [];
-        this.aggregatorName = Array.isArray(this.aggregatorName) ? this.aggregatorName : [this.aggregatorName];
-        for (var idx = 0; idx < this.aggregatorName.length; idx++) {
-          var _agg = this.aggregatorName[idx];
-          this.aggregators.push({
-            id: ++itemsId,
-            value: _agg,
-            vals: opts.vals != null ? opts.vals[idx] : undefined
-          });
-          renameAggregators(this.aggregators);
-        }
-      }
 
       // iterate through input, accumulating data for cells
       PivotData.forEachRecord(this.input, this.derivedAttributes, function (record) {
@@ -2100,6 +2086,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           inclusions: inclusions,
           inclusionsInfo: inclusions,
           //duplicated for backwards-compatibility
+          aggregators: aggregators,
           aggregatorName: aggregators.map(function (agg) {
             return agg.value;
           }),
@@ -2153,10 +2140,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         if (opts.multiple) {
           opts.aggregatorName = Array.isArray(opts.aggregatorName) ? opts.aggregatorName : [opts.aggregatorName];
           for (var idx = 0; idx < opts.aggregatorName.length; idx++) {
-            var _agg2 = opts.aggregatorName[idx];
+            var _agg = opts.aggregatorName[idx];
             aggregators.push({
               id: ++itemsId,
-              value: _agg2,
+              value: _agg,
               vals: opts.vals != null ? opts.vals[idx] : undefined
             });
             renameAggregators(aggregators);
