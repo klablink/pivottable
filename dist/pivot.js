@@ -2084,12 +2084,10 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           vals: aggVals,
           exclusions: exclusions,
           inclusions: inclusions,
+          aggregator: subopts.aggregator,
           inclusionsInfo: inclusions,
           //duplicated for backwards-compatibility
-          aggregator: aggregators,
-          aggregatorName: aggregators.map(function (agg) {
-            return agg.value;
-          }),
+          aggregatorName: subopts.aggregatorName,
           rendererName: renderer.val()
         });
         var currentPivotData = subopts.pivotData;

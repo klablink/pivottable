@@ -1970,9 +1970,9 @@
                         vals: aggVals,
                         exclusions,
                         inclusions,
+                        aggregator: subopts.aggregator,
                         inclusionsInfo: inclusions, //duplicated for backwards-compatibility
-                        aggregator: aggregators,
-                        aggregatorName: aggregators.map(agg => agg.value),
+                        aggregatorName: subopts.aggregatorName,
                         rendererName: renderer.val(),
                     },
                 );
