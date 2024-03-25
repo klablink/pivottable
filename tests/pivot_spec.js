@@ -1,12 +1,4 @@
-// TODO: This file was created by bulk-decaffeinate.
-// Sanity-check the conversion and remove this comment.
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
- */
+
 const fixtureData = [
     ['name', 'gender', 'colour', 'birthday', 'trials', 'successes'],
     ['Nick', 'male', 'blue', '1982-11-07', 103, 12],
@@ -345,7 +337,6 @@ describe('$.pivot()', function () {
     });
 
     it('renders a table with the correct textual representation', function () {
-        console.log(table.find('table.pvtTable').text())
         expect(table.find('table.pvtTable').text()).toBe([
             'colour', 'h_colour_blue', 'h_colour_red', 'h_colour_yellow', 'Totals',
             'gender',

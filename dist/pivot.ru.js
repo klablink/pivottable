@@ -1,6 +1,6 @@
 "use strict";
 
-callWithJQuery(function ($) {
+(function ($) {
   var nf = $.pivotUtilities.numberFormat;
   var tpl = $.pivotUtilities.aggregatorTemplates;
   var frFmt = nf({

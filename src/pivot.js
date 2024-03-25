@@ -1,17 +1,3 @@
-// TODO: This file was created by bulk-decaffeinate.
-// Sanity-check the conversion and remove this comment.
-// noinspection JSUnresolvedReference
-
-/*
- * decaffeinate suggestions:
- * DS201: Simplify complex destructure assignments
- * DS202: Simplify dynamic range loops
- * DS203: Remove `|| {}` from converted for-own loops
- * DS204: Change includes calls to have a more natural evaluation order
- * DS205: Consider reworking code to avoid use of IIFEs
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
- */
 
 (function ($) {
 
@@ -771,10 +757,7 @@
                 addRecord = function (record) {
                     for (let k in derivedAttributes) {
                         const v = derivedAttributes[k];
-                        const left = v(record);
-                        if (left != null) {
-                            record[k] = left;
-                        }
+                        record[k] = v(record) || record[k];
                     }
                     return f(record);
                 };
@@ -785,29 +768,25 @@
                 return input(addRecord);
             } else if ($.isArray(input)) {
                 if ($.isArray(input[0])) { //array of arrays
-                    return (() => {
-                        const result = [];
-                        for (let i of Object.keys(input || {})) {
-                            const compactRecord = input[i];
-                            if (i > 0) {
-                                const record = {};
-                                for (let j of Object.keys(input[0] || {})) {
-                                    const k = input[0][j];
-                                    record[k] = compactRecord[j];
-                                }
-                                result.push(addRecord(record));
+                    const result = [];
+                    for (let i of Object.keys(input || {})) {
+                        const compactRecord = input[i];
+                        if (i > 0) {
+                            const record = {};
+                            for (let j of Object.keys(input[0] || {})) {
+                                const k = input[0][j];
+                                record[k] = compactRecord[j];
                             }
+                            result.push(addRecord(record));
                         }
-                        return result;
-                    })();
+                    }
+                    return result;
                 } else { //array of objects
-                    return (() => {
-                        const result1 = [];
-                        for (let record of input) {
-                            result1.push(addRecord(record));
-                        }
-                        return result1;
-                    })();
+                    const result = [];
+                    for (let record of input) {
+                        result.push(addRecord(record));
+                    }
+                    return result;
                 }
             } else if (input instanceof $) {
                 const tblCols = [];
@@ -1019,7 +998,7 @@
     //expose these to the outside world
     $.pivotUtilities = {
         aggregatorTemplates, aggregators: defaultAggregators, renderers, cellRenderers, derivers, locales, fieldsType,
-        zeroPad, naturalSort, numberFormat, sortAs, PivotData, toDate
+        zeroPad, naturalSort, numberFormat, sortAs, PivotData
     };
 
     /*
@@ -1654,8 +1633,7 @@
                                     if (real_filter.length === 0) {
                                         return true;
                                     }
-                                    let needle = Math.sign(sorter(v.toLowerCase(), real_filter));
-                                    return accepted.includes(needle);
+                                    return accepted.includes(Math.sign(sorter(v.toLowerCase(), real_filter)));
                                 });
                                 const accept =
                                     filter.indexOf('>=') === 0 ? accept_gen('>=', [1, 0])
@@ -1920,12 +1898,8 @@
                     const aggIdx = agg.id;
                     const initialVals = agg.vals;
 
-                    const left = opts.aggregators[aggregatorType]([])().numInputs;
-                    if (left != null) {
-                        numInputsToProcess = left;
-                    } else {
-                        numInputsToProcess = 0;
-                    }
+                    numInputsToProcess = opts.aggregators[aggregatorType]([])().numInputs || 0;
+
                     vals = [];
                     this.find('.pvtVals select.pvtAttrDropdown' + aggIdx).each(function () {
                         if (numInputsToProcess !== 0) {

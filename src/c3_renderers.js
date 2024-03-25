@@ -1,11 +1,3 @@
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS205: Consider reworking code to avoid use of IIFEs
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
- */
 
 (function ($) {
 
@@ -13,7 +5,7 @@
     if ((typeof exports === 'object') && (typeof module === 'object')) { // CommonJS
         c3 = require('c3');
     } else if ((typeof define === 'function') && define.amd) { // AMD
-        define([ 'c3'], (_c3) => (c3 = _c3));
+        define(['c3'], (_c3) => (c3 = _c3));
     } else {
         c3 = window.c3;
     }
@@ -59,7 +51,7 @@
                 colKeys.push([]);
             }
 
-            let headers = (Array.from(colKeys).map((h) => h.join('-')));
+            let headers = colKeys.map((h) => h.join('-'));
             let rotationAngle = 0;
 
             let fullAggName = pivotData.aggregatorName;
@@ -80,8 +72,8 @@
                 if (groupByTitle !== '') {
                     titleText += ` ${opts.localeStrings.by} ${groupByTitle}`;
                 }
-                for (rowKey of Array.from(rowKeys)) {
-                    for (colKey of Array.from(colKeys)) {
+                for (rowKey of rowKeys) {
+                    for (colKey of colKeys) {
                         var agg = pivotData.getAggregator(rowKey, colKey);
                         if (agg.value() != null) {
                             var vals = rowKey.concat(colKey);
@@ -119,7 +111,7 @@
                 }
 
                 columns = [];
-                for (rowKey of Array.from(rowKeys)) {
+                for (rowKey of rowKeys) {
                     var rowHeader = rowKey.join('-');
                     var row = [rowHeader === '' ? fullAggName : rowHeader];
                     for (colKey of Array.from(colKeys)) {
@@ -230,20 +222,20 @@
                 };
 
                 if (chartOpts.horizontal) {
-                    categories = ((() => {
-                        const result1 = [];
-                        for (c of Array.from(columns)) {
-                            result1.push(c.shift());
-                        }
-                        return result1;
-                    })());
+                    categories = [];
+                    for (c of Array.from(columns)) {
+                        categories.push(c.shift());
+                    }
+
                     if ((categories.length === 1) && (categories[0] === fullAggName)) {
                         categories = [''];
                     }
+
                     params.axis.x.categories = categories;
                     if ((headers.length === 1) && (headers[0] === '')) {
                         headers = [fullAggName];
                     }
+
                     columns.unshift(headers);
                     params.data.rows = columns;
                 } else {
@@ -255,21 +247,19 @@
 
             if (chartOpts.stacked) {
                 if (chartOpts.horizontal) {
-                    params.data.groups = [(() => {
-                        const result2 = [];
-                        for (x of Array.from(colKeys)) {
-                            result2.push(x.join('-'));
-                        }
-                        return result2;
-                    })()];
+                    const result = [];
+                    for (x of Array.from(colKeys)) {
+                        result.push(x.join('-'));
+                    }
+
+                    params.data.groups = [result];
                 } else {
-                    params.data.groups = [(() => {
-                        const result3 = [];
-                        for (x of Array.from(rowKeys)) {
-                            result3.push(x.join('-'));
-                        }
-                        return result3;
-                    })()];
+                    const result = [];
+                    for (x of rowKeys) {
+                        result.push(x.join('-'));
+                    }
+
+                    params.data.groups = [result];
                 }
             }
 

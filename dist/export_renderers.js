@@ -1,18 +1,11 @@
 "use strict";
 
-// TODO: This file was created by bulk-decaffeinate.
-// Sanity-check the conversion and remove this comment.
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
- */
-
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 (function ($) {
   return $.pivotUtilities.export_renderers = {
-    "TSV Export": function TSVExport(pivotData, opts) {
+    'TSV Export': function TSVExport(pivotData, opts) {
       var colKey, r;
       var defaults = {
         localeStrings: {}
@@ -30,45 +23,85 @@
       var colAttrs = pivotData.colAttrs;
       var result = [];
       var row = [];
-      for (var _i = 0, _Array$from = Array.from(rowAttrs); _i < _Array$from.length; _i++) {
-        var rowAttr = _Array$from[_i];
-        row.push(rowAttr);
+      var _iterator = _createForOfIteratorHelper(rowAttrs),
+        _step;
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var rowAttr = _step.value;
+          row.push(rowAttr);
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
       }
       if (colKeys.length === 1 && colKeys[0].length === 0) {
         row.push(pivotData.aggregatorName);
       } else {
-        for (var _i2 = 0, _Array$from2 = Array.from(colKeys); _i2 < _Array$from2.length; _i2++) {
-          colKey = _Array$from2[_i2];
-          row.push(colKey.join("-"));
+        var _iterator2 = _createForOfIteratorHelper(colKeys),
+          _step2;
+        try {
+          for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+            colKey = _step2.value;
+            row.push(colKey.join('-'));
+          }
+        } catch (err) {
+          _iterator2.e(err);
+        } finally {
+          _iterator2.f();
         }
       }
       result.push(row);
-      for (var _i3 = 0, _Array$from3 = Array.from(rowKeys); _i3 < _Array$from3.length; _i3++) {
-        var rowKey = _Array$from3[_i3];
-        row = [];
-        for (var _i4 = 0, _Array$from4 = Array.from(rowKey); _i4 < _Array$from4.length; _i4++) {
-          r = _Array$from4[_i4];
-          row.push(r);
-        }
-        for (var _i5 = 0, _Array$from5 = Array.from(colKeys); _i5 < _Array$from5.length; _i5++) {
-          colKey = _Array$from5[_i5];
-          var agg = pivotData.getAggregator(rowKey, colKey);
-          if (agg.value() != null) {
-            row.push(agg.value());
-          } else {
-            row.push("");
+      var _iterator3 = _createForOfIteratorHelper(rowKeys),
+        _step3;
+      try {
+        for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+          var rowKey = _step3.value;
+          row = [];
+          var _iterator4 = _createForOfIteratorHelper(rowKey),
+            _step4;
+          try {
+            for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+              r = _step4.value;
+              row.push(r);
+            }
+          } catch (err) {
+            _iterator4.e(err);
+          } finally {
+            _iterator4.f();
           }
+          var _iterator5 = _createForOfIteratorHelper(colKeys),
+            _step5;
+          try {
+            for (_iterator5.s(); !(_step5 = _iterator5.n()).done;) {
+              colKey = _step5.value;
+              var agg = pivotData.getAggregator(rowKey, colKey);
+              if (agg.value() != null) {
+                row.push(agg.value());
+              } else {
+                row.push('');
+              }
+            }
+          } catch (err) {
+            _iterator5.e(err);
+          } finally {
+            _iterator5.f();
+          }
+          result.push(row);
         }
-        result.push(row);
+      } catch (err) {
+        _iterator3.e(err);
+      } finally {
+        _iterator3.f();
       }
-      var text = "";
-      for (var _i6 = 0, _Array$from6 = Array.from(result); _i6 < _Array$from6.length; _i6++) {
-        r = _Array$from6[_i6];
-        text += r.join("\t") + "\n";
+      var text = '';
+      for (var _i = 0, _result = result; _i < _result.length; _i++) {
+        r = _result[_i];
+        text += r.join('\t') + '\n';
       }
-      return $("<textarea>").text(text).css({
-        width: $(window).width() / 2 + "px",
-        height: $(window).height() / 2 + "px"
+      return $('<textarea>').text(text).css({
+        width: $(window).width() / 2 + 'px',
+        height: $(window).height() / 2 + 'px'
       });
     }
   };

@@ -1,16 +1,12 @@
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
- */
+// noinspection JSUnresolvedReference,NpmUsedModulesInstalled
+
+/** global: jQuery, define, d3 */
 
 const callWithJQueryAndD3 = function(pivotModule) {
-    if ((typeof exports === "object") && (typeof module === "object")) { // CommonJS
-        return pivotModule(require("jquery"), require("d3"));
-    } else if ((typeof define === "function") && define.amd) { // AMD
-        return define(["jquery", "d3"], pivotModule);
+    if ((typeof exports === 'object') && (typeof module === 'object')) { // CommonJS
+        return pivotModule(require('jquery'), require('d3'));
+    } else if ((typeof define === 'function') && define.amd) { // AMD
+        return define(['jquery', 'd3'], pivotModule);
         // Plain browser env
     } else {
         return pivotModule(jQuery, d3);
@@ -38,7 +34,7 @@ callWithJQueryAndD3(($, d3) => $.pivotUtilities.d3_renderers = {
         const result = $('<div>').css({ width: '100%', height: '100%' });
 
         const tree = { name: 'All', children: [] };
-        var addToTree = function (tree, path, value) {
+        const addToTree = function (tree, path, value) {
             if (path.length === 0) {
                 tree.value = value;
                 return;
@@ -47,7 +43,7 @@ callWithJQueryAndD3(($, d3) => $.pivotUtilities.d3_renderers = {
                 tree.children = [];
             }
             const x = path.shift();
-            for (var child of Array.from(tree.children)) {
+            for (let child of tree.children) {
                 if (child.name === x) {
                     addToTree(child, path, value);
                     return;
@@ -58,7 +54,7 @@ callWithJQueryAndD3(($, d3) => $.pivotUtilities.d3_renderers = {
             return tree.children.push(newChild);
         };
 
-        for (var rowKey of Array.from(pivotData.getRowKeys())) {
+        for (let rowKey of pivotData.getRowKeys()) {
             value = pivotData.getAggregator(rowKey, []).value();
             if (value != null) {
                 addToTree(tree, rowKey, value);

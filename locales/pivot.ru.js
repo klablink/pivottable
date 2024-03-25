@@ -1,5 +1,5 @@
 
-callWithJQuery(function ($) {
+(function ($) {
     const nf = $.pivotUtilities.numberFormat;
     const tpl = $.pivotUtilities.aggregatorTemplates;
 
@@ -62,5 +62,4 @@ callWithJQuery(function ($) {
             'Тепловая карта по столбцу': $.pivotUtilities.renderers['Col Heatmap'],
         },
     };
-})(jQuery)
-
+})(jQuery);

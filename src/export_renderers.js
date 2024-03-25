@@ -1,14 +1,4 @@
-// TODO: This file was created by bulk-decaffeinate.
-// Sanity-check the conversion and remove this comment.
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
- */
-
-($ => $.pivotUtilities.export_renderers = { "TSV Export"(pivotData, opts) {
+($ => $.pivotUtilities.export_renderers = { 'TSV Export'(pivotData, opts) {
     let colKey, r;
     const defaults = {localeStrings: {}};
 
@@ -28,42 +18,42 @@
     const result = [];
 
     let row = [];
-    for (var rowAttr of Array.from(rowAttrs)) {
+    for (let rowAttr of rowAttrs) {
         row.push(rowAttr);
     }
     if ((colKeys.length === 1) && (colKeys[0].length === 0)) {
         row.push(pivotData.aggregatorName);
     } else {
-        for (colKey of Array.from(colKeys)) {
-            row.push(colKey.join("-"));
+        for (colKey of colKeys) {
+            row.push(colKey.join('-'));
         }
     }
 
     result.push(row);
 
-    for (var rowKey of Array.from(rowKeys)) {
+    for (let rowKey of rowKeys) {
         row = [];
-        for (r of Array.from(rowKey)) {
+        for (r of rowKey) {
             row.push(r);
         }
 
-        for (colKey of Array.from(colKeys)) {
-            var agg = pivotData.getAggregator(rowKey, colKey);
+        for (colKey of colKeys) {
+            const agg = pivotData.getAggregator(rowKey, colKey);
             if (agg.value() != null) {
                 row.push(agg.value());
             } else {
-                row.push("");
+                row.push('');
             }
         }
         result.push(row);
     }
-    let text = "";
-    for (r of Array.from(result)) {
-        text += r.join("\t")+"\n";
+    let text = '';
+    for (r of result) {
+        text += r.join('\t')+'\n';
     }
 
-    return  $("<textarea>").text(text).css({
-            width: ($(window).width() / 2) + "px",
-            height: ($(window).height() / 2) + "px"});
+    return  $('<textarea>').text(text).css({
+            width: ($(window).width() / 2) + 'px',
+            height: ($(window).height() / 2) + 'px'});
 }
 })(jQuery);

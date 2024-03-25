@@ -17,21 +17,6 @@ function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o =
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-// TODO: This file was created by bulk-decaffeinate.
-// Sanity-check the conversion and remove this comment.
-// noinspection JSUnresolvedReference
-
-/*
- * decaffeinate suggestions:
- * DS201: Simplify complex destructure assignments
- * DS202: Simplify dynamic range loops
- * DS203: Remove `|| {}` from converted for-own loops
- * DS204: Change includes calls to have a more natural evaluation order
- * DS205: Consider reworking code to avoid use of IIFEs
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
- */
-
 (function ($) {
   var expandWithSpan = function expandWithSpan(cell, rows, keys, nth) {
     var parent;
@@ -1081,10 +1066,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           addRecord = function addRecord(record) {
             for (var k in derivedAttributes) {
               var v = derivedAttributes[k];
-              var left = v(record);
-              if (left != null) {
-                record[k] = left;
-              }
+              record[k] = v(record) || record[k];
             }
             return f(record);
           };
@@ -1096,41 +1078,37 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
         } else if ($.isArray(input)) {
           if ($.isArray(input[0])) {
             //array of arrays
-            return function () {
-              var result = [];
-              for (var _i3 = 0, _Object$keys3 = Object.keys(input || {}); _i3 < _Object$keys3.length; _i3++) {
-                var i = _Object$keys3[_i3];
-                var compactRecord = input[i];
-                if (i > 0) {
-                  var record = {};
-                  for (var _i4 = 0, _Object$keys4 = Object.keys(input[0] || {}); _i4 < _Object$keys4.length; _i4++) {
-                    var j = _Object$keys4[_i4];
-                    var k = input[0][j];
-                    record[k] = compactRecord[j];
-                  }
-                  result.push(addRecord(record));
+            var result = [];
+            for (var _i3 = 0, _Object$keys3 = Object.keys(input || {}); _i3 < _Object$keys3.length; _i3++) {
+              var i = _Object$keys3[_i3];
+              var compactRecord = input[i];
+              if (i > 0) {
+                var record = {};
+                for (var _i4 = 0, _Object$keys4 = Object.keys(input[0] || {}); _i4 < _Object$keys4.length; _i4++) {
+                  var j = _Object$keys4[_i4];
+                  var k = input[0][j];
+                  record[k] = compactRecord[j];
                 }
+                result.push(addRecord(record));
               }
-              return result;
-            }();
+            }
+            return result;
           } else {
             //array of objects
-            return function () {
-              var result1 = [];
-              var _iterator4 = _createForOfIteratorHelper(input),
-                _step4;
-              try {
-                for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
-                  var record = _step4.value;
-                  result1.push(addRecord(record));
-                }
-              } catch (err) {
-                _iterator4.e(err);
-              } finally {
-                _iterator4.f();
+            var _result = [];
+            var _iterator4 = _createForOfIteratorHelper(input),
+              _step4;
+            try {
+              for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
+                var _record = _step4.value;
+                _result.push(addRecord(_record));
               }
-              return result1;
-            }();
+            } catch (err) {
+              _iterator4.e(err);
+            } finally {
+              _iterator4.f();
+            }
+            return _result;
           }
         } else if (input instanceof $) {
           var tblCols = [];
@@ -1178,8 +1156,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     naturalSort: naturalSort,
     numberFormat: numberFormat,
     sortAs: sortAs,
-    PivotData: PivotData,
-    toDate: toDate
+    PivotData: PivotData
   };
 
   /*
@@ -1810,8 +1787,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
                   if (real_filter.length === 0) {
                     return true;
                   }
-                  var needle = Math.sign(sorter(v.toLowerCase(), real_filter));
-                  return accepted.includes(needle);
+                  return accepted.includes(Math.sign(sorter(v.toLowerCase(), real_filter)));
                 };
               };
               var accept = filter.indexOf('>=') === 0 ? accept_gen('>=', [1, 0]) : filter.indexOf('<=') === 0 ? accept_gen('<=', [-1, 0]) : filter.indexOf('>') === 0 ? accept_gen('>', [1]) : filter.indexOf('<') === 0 ? accept_gen('<', [-1]) : filter.indexOf('~') === 0 ? function (v) {
@@ -2044,12 +2020,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
           }
           var aggIdx = agg.id;
           var initialVals = agg.vals;
-          var left = opts.aggregators[aggregatorType]([])().numInputs;
-          if (left != null) {
-            numInputsToProcess = left;
-          } else {
-            numInputsToProcess = 0;
-          }
+          numInputsToProcess = opts.aggregators[aggregatorType]([])().numInputs || 0;
           vals = [];
           _this5.find('.pvtVals select.pvtAttrDropdown' + aggIdx).each(function () {
             if (numInputsToProcess !== 0) {

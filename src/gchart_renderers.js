@@ -1,21 +1,11 @@
-// TODO: This file was created by bulk-decaffeinate.
-// Sanity-check the conversion and remove this comment.
-/*
- * decaffeinate suggestions:
- * DS101: Remove unnecessary use of Array.from
- * DS102: Remove unnecessary code created because of implicit returns
- * DS207: Consider shorter variations of null checks
- * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
- */
-
 (function($) {
 
     const makeGoogleChart = (chartType, extraOptions) => (function(pivotData, opts) {
         let agg, dataArray, dataTable, hAxisTitle, title, vAxisTitle;
         const defaults = {
             localeStrings: {
-                vs: "vs",
-                by: "by"
+                vs: 'vs',
+                by: 'by'
             },
             gchart: {}
         };
@@ -30,13 +20,13 @@
         if (colKeys.length === 0) { colKeys.push([]); }
         let fullAggName = pivotData.aggregatorName;
         if (pivotData.valAttrs.length) {
-            fullAggName += `(${pivotData.valAttrs.join(", ")})`;
+            fullAggName += `(${pivotData.valAttrs.join(', ')})`;
         }
-        const headers = (Array.from(rowKeys).map((h) => h.join("-")));
-        headers.unshift("");
+        const headers = rowKeys.map((h) => h.join('-'));
+        headers.unshift('');
 
         let numCharsInHAxis = 0;
-        if (chartType === "ScatterChart") {
+        if (chartType === 'ScatterChart') {
             dataArray = [];
             for (var y in pivotData.tree) {
                 var tree2 = pivotData.tree[y];
@@ -45,24 +35,24 @@
                      dataArray.push([
                         parseFloat(x),
                         parseFloat(y),
-                        fullAggName+": \n"+agg.format(agg.value())
+                        fullAggName+': \n'+agg.format(agg.value())
                         ]);
                 }
             }
             dataTable = new google.visualization.DataTable();
-            dataTable.addColumn('number', pivotData.colAttrs.join("-"));
-            dataTable.addColumn('number', pivotData.rowAttrs.join("-"));
-            dataTable.addColumn({type: "string", role: "tooltip"});
+            dataTable.addColumn('number', pivotData.colAttrs.join('-'));
+            dataTable.addColumn('number', pivotData.rowAttrs.join('-'));
+            dataTable.addColumn({type: 'string', role: 'tooltip'});
             dataTable.addRows(dataArray);
-            hAxisTitle = pivotData.colAttrs.join("-");
-            vAxisTitle = pivotData.rowAttrs.join("-");
-            title = "";
+            hAxisTitle = pivotData.colAttrs.join('-');
+            vAxisTitle = pivotData.rowAttrs.join('-');
+            title = '';
         } else {
             dataArray = [headers];
-            for (var colKey of Array.from(colKeys)) {
-                var row = [colKey.join("-")];
+            for (var colKey of colKeys) {
+                var row = [colKey.join('-')];
                 numCharsInHAxis += row[0].length;
-                for (var rowKey of Array.from(rowKeys)) {
+                for (var rowKey of rowKeys) {
                     agg = pivotData.getAggregator(rowKey, colKey);
                     if (agg.value() != null) {
                         var val = agg.value();
@@ -83,10 +73,10 @@
             dataTable = google.visualization.arrayToDataTable(dataArray);
 
             title = (vAxisTitle = fullAggName);
-            hAxisTitle = pivotData.colAttrs.join("-");
-            if (hAxisTitle !== "") { title += ` ${opts.localeStrings.vs} ${hAxisTitle}`; }
-            const groupByTitle = pivotData.rowAttrs.join("-");
-            if (groupByTitle !== "") { title += ` ${opts.localeStrings.by} ${groupByTitle}`; }
+            hAxisTitle = pivotData.colAttrs.join('-');
+            if (hAxisTitle !== '') { title += ` ${opts.localeStrings.vs} ${hAxisTitle}`; }
+            const groupByTitle = pivotData.rowAttrs.join('-');
+            if (groupByTitle !== '') { title += ` ${opts.localeStrings.by} ${groupByTitle}`; }
         }
 
         let options = {
@@ -96,24 +86,24 @@
             tooltip: { textStyle: { fontName: 'Arial', fontSize: 12 } }
         };
 
-        if (chartType === "ColumnChart") {
+        if (chartType === 'ColumnChart') {
             options.vAxis.minValue = 0;
         }
 
-        if (chartType === "ScatterChart") {
-            options.legend = {position: "none"};
+        if (chartType === 'ScatterChart') {
+            options.legend = {position: 'none'};
             options.chartArea = {'width': '80%', 'height': '80%'};
 
-        } else if ((dataArray[0].length === 2) && (dataArray[0][1] ===  "")) {
-            options.legend = {position: "none"};
+        } else if ((dataArray[0].length === 2) && (dataArray[0][1] ===  '')) {
+            options.legend = {position: 'none'};
         }
 
         options = $.extend(true, {}, options, opts.gchart, extraOptions);
 
-        const result = $("<div>").css({width: "100%", height: "100%"});
+        const result = $('<div>').css({width: '100%', height: '100%'});
         const wrapper = new google.visualization.ChartWrapper({dataTable, chartType, options});
         wrapper.draw(result[0]);
-        result.bind("dblclick", function() {
+        result.bind('dblclick', function() {
             const editor = new google.visualization.ChartEditor();
             google.visualization.events.addListener(editor, 'ok', () => editor.getChartWrapper().draw(result[0]));
             return editor.openDialog(wrapper);
@@ -122,10 +112,10 @@
     });
 
     return $.pivotUtilities.gchart_renderers = {
-        "Line Chart": makeGoogleChart("LineChart"),
-        "Bar Chart": makeGoogleChart("ColumnChart"),
-        "Stacked Bar Chart": makeGoogleChart("ColumnChart", {isStacked: true}),
-        "Area Chart": makeGoogleChart("AreaChart", {isStacked: true}),
-        "Scatter Chart": makeGoogleChart("ScatterChart")
+        'Line Chart': makeGoogleChart('LineChart'),
+        'Bar Chart': makeGoogleChart('ColumnChart'),
+        'Stacked Bar Chart': makeGoogleChart('ColumnChart', {isStacked: true}),
+        'Area Chart': makeGoogleChart('AreaChart', {isStacked: true}),
+        'Scatter Chart': makeGoogleChart('ScatterChart')
     };
 })(jQuery);
