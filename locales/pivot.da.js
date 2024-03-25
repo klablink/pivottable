@@ -45,6 +45,7 @@
             colsLabel: 'Kolonner',
             rowsLabel: 'Rækker',
             groupsLabel: 'Grupper',
+            // aggregators
             'Count': 'Antal',
             'Count Unique Values': 'Antal unikke værdier',
             'List Unique Values': 'Liste unikke værdier',
@@ -67,14 +68,12 @@
             'Count as Fraction of Total': 'Tæl som en brøkdel af totalen',
             'Count as Fraction of Rows': 'Tæl som brøkdel af rækker',
             'Count as Fraction of Columns': 'Tæl som brøkdel af kolonner',
-        },
-
-        renderers: {
-            'Tabel': $.pivotUtilities.renderers.Table,
-            'Tabel med søjler': $.pivotUtilities.renderers['Table Barchart'],
-            'Heatmap': $.pivotUtilities.renderers.Heatmap,
-            'Heatmap per række': $.pivotUtilities.renderers['Row Heatmap'],
-            'Heatmap per kolonne': $.pivotUtilities.renderers['Col Heatmap'],
+            // renderers
+            'Table': 'Tabel',
+            'Table Barchart': 'Tabel med søjler',
+            'Heatmap': 'Heatmap',
+            'Row Heatmap': 'Heatmap per række',
+            'Col Heatmap': 'Heatmap per kolonne'
         },
     };
 })(jQuery);

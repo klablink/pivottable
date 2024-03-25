@@ -31,6 +31,7 @@
             colsLabel: 'Spalten',
             rowsLabel: 'Zeilen',
             groupsLabel: 'Gruppen',
+            // aggregators
             'Count': 'Anzahl',
             'Count Unique Values': 'Anzahl eindeutiger Werte',
             'List Unique Values': 'Liste eindeutiger Werte',
@@ -53,14 +54,12 @@
             'Count as Fraction of Total': 'Anzahl als Anteil von Gesamt',
             'Count as Fraction of Rows': 'Anzahl als Anteil von Zeile',
             'Count as Fraction of Columns': 'Anzahl als Anteil von Spalte',
-        },
-
-        renderers: {
-            'Tabelle': $.pivotUtilities.renderers['Table'],
-            'Tabelle mit Balkendiagramm': $.pivotUtilities.renderers['Table Barchart'],
-            'Heatmap': $.pivotUtilities.renderers['Heatmap'],
-            'Heatmap pro Zeile': $.pivotUtilities.renderers['Row Heatmap'],
-            'Heatmap pro Spalte': $.pivotUtilities.renderers['Col Heatmap'],
+            // renderers
+            'Table': 'Tabelle',
+            'Table Barchart': 'Tabelle mit Balkendiagramm',
+            'Heatmap': 'Heatmap',
+            'Row Heatmap': 'Heatmap pro Zeile',
+            'Col Heatmap': 'Heatmap pro Spalte'
         },
     };
 })(jQuery);

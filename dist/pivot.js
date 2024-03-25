@@ -1601,7 +1601,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     var defaults = {
       derivedAttributes: {},
       aggregators: defaultAggregators,
-      renderers: locales[locale].renderers,
+      renderers: renderers,
       hiddenAttributes: [],
       hiddenFromAggregators: [],
       hiddenFromDragDrop: [],
@@ -1710,7 +1710,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
       }); //capture reference
       for (var _i16 = 0, _Object$keys16 = Object.keys(opts.renderers || {}); _i16 < _Object$keys16.length; _i16++) {
         x = _Object$keys16[_i16];
-        $('<option>').val(x).html(x).appendTo(renderer);
+        var r = opts.localeStrings[x] || x;
+        $('<option>').val(x).html(r).appendTo(renderer);
       }
 
       //axis list, including the double click menu

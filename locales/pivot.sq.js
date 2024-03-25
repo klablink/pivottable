@@ -52,14 +52,13 @@
             'Count as Fraction of Total': 'Numërimi si thyesë e totalit',
             'Count as Fraction of Rows': 'Numërimi si thyesë e rreshtave',
             'Count as Fraction of Columns': 'Numërimi si thyesë e kolonave',
-        },
+            // renderers
+            'Table': 'Tabela',
+            'Table Barchart': 'Tabela me diagram vertikal',
+            'Heatmap': 'Heatmap',
+            'Row Heatmap': 'Heatmap për rresht',
+            'Col Heatmap': 'Heatmap për kolonë',
 
-        renderers: {
-            'Tabela': $.pivotUtilities.renderers['Table'],
-            'Tabela me diagram vertikal': $.pivotUtilities.renderers['Table Barchart'],
-            'Heatmap': $.pivotUtilities.renderers['Heatmap'],
-            'Heatmap për rresht': $.pivotUtilities.renderers['Row Heatmap'],
-            'Heatmap për kolonë': $.pivotUtilities.renderers['Col Heatmap'],
         },
     };
 })(jQuery);

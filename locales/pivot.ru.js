@@ -30,6 +30,7 @@
             colsLabel: 'Колонки',
             rowsLabel: 'Строки',
             groupsLabel: 'Группы',
+            // aggregators
             'Count': 'Количество',
             'Count Unique Values': 'Количество уникальных значений',
             'List Unique Values': 'Список уникальных значений',
@@ -52,14 +53,13 @@
             'Count as Fraction of Total': 'Кол-во как Доля от Общего',
             'Count as Fraction of Rows': 'Кол-во как Доля от Строк',
             'Count as Fraction of Columns': 'Кол-во как Доля от Колонок',
-        },
+            // renderers
+            'Table': 'Таблица',
+            'Table Barchart': 'Таблица с графиком',
+            'Heatmap': 'Тепловая карта',
+            'Row Heatmap': 'Тепловая карта по строке',
+            'Col Heatmap': 'Тепловая карта по столбцу'
 
-        renderers: {
-            'Таблица': $.pivotUtilities.renderers['Table'],
-            'График столбцы': $.pivotUtilities.renderers['Table Barchart'], // TODO придумать более понятный вариант
-            'Тепловая карта': $.pivotUtilities.renderers['Heatmap'],
-            'Тепловая карта по строке': $.pivotUtilities.renderers['Row Heatmap'],
-            'Тепловая карта по столбцу': $.pivotUtilities.renderers['Col Heatmap'],
         },
     };
 })(jQuery);

@@ -32,6 +32,7 @@
             colsLabel: 'Kolumny',
             rowsLabel: 'Wiersze',
             groupsLabel: 'Grupy',
+            // aggregators
             'Count': 'Liczba',
             'Count Unique Values': 'Liczba unikatowych wartości',
             'List Unique Values': 'Lista unikatowych wartości',
@@ -54,14 +55,12 @@
             'Count as Fraction of Total': 'Liczba jako Ułamek Całości',
             'Count as Fraction of Rows': 'Liczba jako Ułamek w Wierszach',
             'Count as Fraction of Columns': 'Liczba jako Ułamek w Kolumnach',
-        },
-
-        renderers: {
-            'Tabela': $.pivotUtilities.renderers['Table'],
-            'Tabela z Wykresem Słupkowym': $.pivotUtilities.renderers['Table Barchart'],
-            'Mapa cieplna': $.pivotUtilities.renderers['Heatmap'],
-            'Mapa cieplna po Wierszach': $.pivotUtilities.renderers['Row Heatmap'],
-            'Mapa cieplna po Kolumnach': $.pivotUtilities.renderers['Col Heatmap'],
+            // renderers
+            'Table': 'Tabela',
+            'Table Barchart': 'Tabela z Wykresem Słupkowym',
+            'Heatmap': 'Mapa cieplna',
+            'Row Heatmap': 'Mapa cieplna po Wierszach',
+            'Col Heatmap': 'Mapa cieplna po Kolumnach',
         },
     };
-})(jQuery)
+})(jQuery);

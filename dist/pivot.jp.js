@@ -44,6 +44,7 @@
       colsLabel: '列',
       rowsLabel: '行',
       groupsLabel: 'グループ',
+      // aggregators
       'Count': '件数',
       'Count Unique Values': '件数（ユニーク',
       'List Unique Values': 'ユニーク値を表示 (CSV)',
@@ -65,16 +66,13 @@
       'Sum as Fraction of Columns': '合計割合（列）',
       'Count as Fraction of Total': '件数割合',
       'Count as Fraction of Rows': '件数割合（行',
-      'Count as Fraction of Columns': '件数割合（列）'
-    }
-  };
-  return {
-    renderers: {
-      '表': $.pivotUtilities.renderers['Table'],
-      '表（棒グラフ）': $.pivotUtilities.renderers['Table Barchart'],
-      'ヒートマップ': $.pivotUtilities.renderers['Heatmap'],
-      'ヒートマップ（行）': $.pivotUtilities.renderers['Row Heatmap'],
-      'ヒートマップ（列）': $.pivotUtilities.renderers['Col Heatmap']
+      'Count as Fraction of Columns': '件数割合（列）',
+      // renderers
+      'Table': '表',
+      'Table Barchart': '表（棒グラフ）',
+      'Heatmap': 'ヒートマップ',
+      'Row Heatmap': 'ヒートマップ（行）',
+      'Col Heatmap': 'ヒートマップ（列）'
     }
   };
 })(jQuery);

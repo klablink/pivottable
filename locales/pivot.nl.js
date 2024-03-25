@@ -32,6 +32,7 @@
             colsLabel: 'Kolommen',
             rowsLabel: 'Rijen',
             groupsLabel: 'Groepen',
+            // aggregators
             'Count': 'Aantal',
             'Count Unique Values': 'Aantal unieke waarden',
             'List Unique Values': 'Lijst unieke waarden',
@@ -54,15 +55,13 @@
             'Count as Fraction of Total': 'Aantal in verhouding tot het totaal',
             'Count as Fraction of Rows': 'Aantal in verhouding tot de rij',
             'Count as Fraction of Columns': 'Aantal in verhouding tot de kolom',
-        },
+            // renderers
+            'Table': 'Tabel',
+            'Table Barchart': 'Tabel met staafdiagrammen',
+            'Heatmap': 'Warmtekaart',
+            'Row Heatmap': 'Warmtekaart per rij',
+            'Col Heatmap': 'Warmtekaart per kolom',
 
-
-        renderers: {
-            'Tabel': $.pivotUtilities.renderers['Table'],
-            'Tabel met staafdiagrammen': $.pivotUtilities.renderers['Table Barchart'],
-            'Warmtekaart': $.pivotUtilities.renderers['Heatmap'],
-            'Warmtekaart per rij': $.pivotUtilities.renderers['Row Heatmap'],
-            'Warmtekaart per kolom': $.pivotUtilities.renderers['Col Heatmap'],
         },
     };
 })(jQuery);

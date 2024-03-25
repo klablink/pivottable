@@ -32,6 +32,7 @@
             colsLabel: 'Sloupce',
             rowsLabel: 'Řádky',
             groupsLabel: 'Skupiny',
+            // aggregators
             'Count': 'Počet',
             'Count Unique Values': 'Počet unikátních hodnot',
             'List Unique Values': 'Výčet unikátních hodnot',
@@ -54,14 +55,13 @@
             'Count as Fraction of Total': 'Počítejte jako zlomek z celkového počtu',
             'Count as Fraction of Rows': 'Počítejte jako zlomek řádků',
             'Count as Fraction of Columns': 'Počítejte jako zlomek sloupců',
+            // renderers
+            'Table': 'Tabulka',
+            'Table Barchart': 'Tabulka se sloupcovým grafem',
+            'Heatmap': 'Teplotní mapa',
+            'Row Heatmap': 'Teplotní mapa z řádků',
+            'Col Heatmap': 'Teplotní mapa ze sloupců'
         },
 
-        renderers: {
-            'Tabulka': $.pivotUtilities.renderers['Table'],
-            'Tabulka se sloupcovým grafem': $.pivotUtilities.renderers['Table Barchart'],
-            'Teplotní mapa': $.pivotUtilities.renderers['Heatmap'],
-            'Teplotní mapa z řádků': $.pivotUtilities.renderers['Row Heatmap'],
-            'Teplotní mapa ze sloupců': $.pivotUtilities.renderers['Col Heatmap'],
-        },
     };
 })(jQuery);

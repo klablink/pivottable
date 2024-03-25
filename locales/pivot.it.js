@@ -32,6 +32,7 @@
             colsLabel: 'Colonne',
             rowsLabel: 'Righe',
             groupsLabel: 'Gruppi',
+            // aggregators
             'Count': 'Conteggio',
             'Count Unique Values': 'Conteggio valori unici',
             'List Unique Values': 'Elenco valori unici',
@@ -54,14 +55,12 @@
             'Count as Fraction of Total': 'Conteggio come frazione del totale',
             'Count as Fraction of Rows': 'Conteggio come frazione di righe',
             'Count as Fraction of Columns': 'Conteggio come frazione di colonne',
-        },
-
-        renderers: {
-            'Tabella': $.pivotUtilities.renderers['Table'],
-            'Tabella con grafico': $.pivotUtilities.renderers['Table Barchart'],
-            'Mappa di calore': $.pivotUtilities.renderers['Heatmap'],
-            'Mappa di calore per righe': $.pivotUtilities.renderers['Row Heatmap'],
-            'Mappa di calore per colonne': $.pivotUtilities.renderers['Col Heatmap'],
+            // renderers
+            'Table': 'Tabella',
+            'Table Barchart': 'Tabella con grafico',
+            'Heatmap': 'Mappa di calore',
+            'Row Heatmap': 'Mappa di calore per righe',
+            'Col Heatmap': 'Mappa di calore per colonne',
         },
     };
 })(jQuery);

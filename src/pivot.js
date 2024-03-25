@@ -1428,7 +1428,7 @@
         const defaults = {
             derivedAttributes: {},
             aggregators: defaultAggregators,
-            renderers: locales[locale].renderers,
+            renderers,
             hiddenAttributes: [],
             hiddenFromAggregators: [],
             hiddenFromDragDrop: [],
@@ -1563,9 +1563,9 @@
                 .appendTo(pvtRenderType)
                 .bind('change', () => refresh()); //capture reference
             for (x of Object.keys(opts.renderers || {})) {
-                $('<option>').val(x).html(x).appendTo(renderer);
+                const r = opts.localeStrings[x] || x;
+                $('<option>').val(x).html(r).appendTo(renderer);
             }
-
 
             //axis list, including the double click menu
             const unused = $('<div>').addClass('pvtAxisContainer pvtUnused');

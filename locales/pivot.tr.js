@@ -55,41 +55,16 @@
             'Sum as Fraction of Columns': 'Sütunun oranı (toplam)',
             'Count as Fraction of Total': 'Toplam oranı (sayı)',
             'Count as Fraction of Rows': 'Satır oranı (sayı)',
-            'Count as Fraction of Columns': 'Sütunun oranı (sayı)'
-        },
+            'Count as Fraction of Columns': 'Sütunun oranı (sayı)',
+            // renderers
+            'Table': 'Tablo',
+            'Table Barchart': 'Tablo Çubuk Grafiği',
+            'Heatmap': 'Isı Haritası',
+            'Row Heatmap': 'Satır Isı Haritası',
+            'Col Heatmap': 'Sütun Isı Haritası'
 
-        renderers: {
-            'Tablo': r['Table'],
-            'Tablo (Çubuklar)': r['Table Barchart'],
-            'İlgi haritası': r['Heatmap'],
-            'Satır ilgi haritası': r['Row Heatmap'],
-            'Sütun ilgi haritası': r['Col Heatmap']
         }
     };
 
-    if (gcr) {
-        $.pivotUtilities.locales.tr.gchart_renderers = {
-            'Çizgi Grafiği': gcr['Line Chart'],
-            'Bar Grafiği': gcr['Bar Chart'],
-            'Yığılmış Çubuk Grafik ': gcr['Stacked Bar Chart'],
-            'Alan Grafiği': gcr['Area Chart']
-        };
-    }
-
-    if (d3r) {
-        $.pivotUtilities.locales.tr.d3_renderers =
-            {'Hiyerarşik Alan Grafiği (Treemap)': d3r['Treemap']};
-    }
-
-    if (c3r) {
-        $.pivotUtilities.locales.tr.c3_renderers = {
-            'Çizgi Grafiği': c3r['Line Chart'],
-            'Bar Grafiği': c3r['Bar Chart'],
-            'Yığılmış Çubuk Grafik ': c3r['Stacked Bar Chart'],
-            'Alan Grafiği': c3r['Area Chart']
-        };
-    }
-
-    return $.pivotUtilities.locales.tr;
 })(jQuery);
 

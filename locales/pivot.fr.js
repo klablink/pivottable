@@ -32,6 +32,7 @@
             colsLabel: 'Colonnes',
             rowsLabel: 'Lignes',
             groupsLabel: 'Groupes',
+            // aggregators
             'Count': 'Nombre',
             'Count Unique Values': 'Nombre de valeurs uniques',
             'List Unique Values': 'Liste de valeurs uniques',
@@ -54,16 +55,15 @@
             'Count as Fraction of Total': 'Compter comme fraction du tota',
             'Count as Fraction of Rows': 'Compter comme fraction de lignes',
             'Count as Fraction of Columns': 'Compter comme fraction de colonnes',
+            // renderers
+            'Table': 'Table',
+            'Table Barchart': 'Table avec barres',
+            'Heatmap': 'Carte de chaleur',
+            'Row Heatmap': 'Carte de chaleur par ligne',
+            'Col Heatmap': 'Carte de chaleur par colonne'
         },
 
-        renderers: {
-            'Table': $.pivotUtilities.renderers['Table'],
-            'Table avec barres': $.pivotUtilities.renderers['Table Barchart'],
-            'Carte de chaleur': $.pivotUtilities.renderers['Heatmap'],
-            'Carte de chaleur par ligne': $.pivotUtilities.renderers['Row Heatmap'],
-            'Carte de chaleur par colonne': $.pivotUtilities.renderers['Col Heatmap'],
-        },
     };
-})(jQuery)
+})(jQuery);
 
 

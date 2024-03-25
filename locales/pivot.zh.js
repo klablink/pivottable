@@ -55,50 +55,14 @@
             'Sum as Fraction of Columns': '和在列合计中的比例',
             'Count as Fraction of Total': '频数在总计中的比例',
             'Count as Fraction of Rows': '频数在行合计中的比例',
-            'Count as Fraction of Columns': '频数在列合计中的比例'
+            'Count as Fraction of Columns': '频数在列合计中的比例',
+            // renderers
+            'Table': '表格',
+            'Table Barchart': '表格内柱状图',
+            'Heatmap': '热图',
+            'Row Heatmap': '行热图',
+            'Col Heatmap': '列热图'
         },
-
-        renderers: {
-            '表格': r['Table'],
-            '表格内柱状图': r['Table Barchart'],
-            '热图': r['Heatmap'],
-            '行热图': r['Row Heatmap'],
-            '列热图': r['Col Heatmap']
-        }
     };
 
-    if (gcr) {
-        $.pivotUtilities.locales.zh.gchart_renderers = {
-            '折线图(g)':            gcr['Line Chart'],
-            '柱形图(g)':            gcr['Bar Chart'],
-            '堆栈柱形图(g)': gcr['Stacked Bar Chart'],
-            '面积图(g)':       gcr['Area Chart']
-        };
-        $.pivotUtilities.locales.zh.renderers = $.extend(
-            $.pivotUtilities.locales.zh.renderers,
-            $.pivotUtilities.locales.zh.gchart_renderers);
-    }
-
-    if (d3r) {
-        $.pivotUtilities.locales.zh.d3_renderers =
-            {'树图': d3r['Treemap']};
-        $.pivotUtilities.locales.zh.renderers = $.extend(
-            $.pivotUtilities.locales.zh.renderers,
-            $.pivotUtilities.locales.zh.d3_renderers);
-    }
-
-    if (c3r) {
-        $.pivotUtilities.locales.zh.c3_renderers = {
-            '折线图': c3r['Line Chart'],
-            '柱形图': c3r['Bar Chart'],
-            '堆栈柱形图': c3r['Stacked Bar Chart'],
-            '面积图': c3r['Area Chart'],
-            '散点图': c3r['Scatter Chart']
-        };
-        $.pivotUtilities.locales.zh.renderers = $.extend(
-            $.pivotUtilities.locales.zh.renderers,
-            $.pivotUtilities.locales.zh.c3_renderers);
-    }
-
-    return $.pivotUtilities.locales.zh;
 })(jQuery);

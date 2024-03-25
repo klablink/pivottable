@@ -44,6 +44,7 @@
       colsLabel: 'Columnas',
       rowsLabel: 'Filas',
       groupsLabel: 'Grupos',
+      // aggregators
       'Count': 'Cuenta',
       'Count Unique Values': 'Cuenta de valores únicos',
       'List Unique Values': 'Lista de valores únicos',
@@ -65,14 +66,13 @@
       'Sum as Fraction of Columns': 'Suma como fracción de columnas',
       'Count as Fraction of Total': 'Contar como fracción del total',
       'Count as Fraction of Rows': 'Contar como fracción de filas',
-      'Count as Fraction of Columns': 'Contar como fracción de columnas'
-    },
-    renderers: {
-      'Tabla': $.pivotUtilities.renderers['Table'],
-      'Tabla con barras': $.pivotUtilities.renderers['Table Barchart'],
-      'Heatmap': $.pivotUtilities.renderers['Heatmap'],
-      'Heatmap por filas': $.pivotUtilities.renderers['Row Heatmap'],
-      'Heatmap por columnas': $.pivotUtilities.renderers['Col Heatmap']
+      'Count as Fraction of Columns': 'Contar como fracción de columnas',
+      // renderers
+      'Table': 'Tabla',
+      'Table Barchart': 'Tabla con barras',
+      'Heatmap': 'Heatmap',
+      'Row Heatmap': 'Heatmap por filas',
+      'Col Heatmap': 'Heatmap por columnas'
     }
   };
 })(jQuery);
