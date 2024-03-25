@@ -56,6 +56,22 @@
         return x1 + x2;
     };
 
+
+    function toDate(value) {
+        let date = '';
+
+        if (value) {
+            try {
+                const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+                date = (new Date(value)).toLocaleDateString(localeGlobal, options);
+            } catch (e) {
+                date = value;
+            }
+        }
+
+        return date;
+    }
+
     const numberFormat = function (opts) {
         const defaults = {
             digitsAfterDecimal: 2, scaler: 1,
@@ -63,38 +79,46 @@
             prefix: '', suffix: '',
         };
         opts = $.extend({}, defaults, opts);
-        return function (x) {
+        return function (x, fieldType) {
+            if (x === undefined) {
+                return '';
+            }
+
+            if (fieldType === $.pivotUtilities.fieldsType.integer) {
+                return x;
+            } else if (fieldType === $.pivotUtilities.fieldsType.date) {
+                return toDate(x);
+            } else if ($.isFunction(fieldType)) {
+                return fieldType(x);
+            }
+
             if (isNaN(x) || !isFinite(x)) {
                 return '';
             }
+
             const result = addSeparators((opts.scaler * x).toFixed(opts.digitsAfterDecimal), opts.thousandsSep, opts.decimalSep);
             return '' + opts.prefix + result + opts.suffix;
         };
     };
 
     const cellRenderers = {
-        text: function (value) {
-            value = value || '';
+        text: function (value, fieldName, col, row) {
+            const { fieldsType } = this;
+
+            if (value === undefined) {
+                value = '';
+            }
+            // Header type date
+            if (fieldName && fieldsType[fieldName] === $.pivotUtilities.fieldsType.date) {
+                return document.createTextNode(toDate(value));
+            }
+
             return document.createTextNode(value);
         },
         byType: function (opts, def) {
             return function (value, type) {
                 return (opts[type] || def || cellRenderers.text).apply(this, arguments);
             };
-        },
-        toDate(value, opts) {
-            let date = '';
-
-            if (value) {
-                try {
-                    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-                    date = (new Date(value)).toLocaleDateString(localeGlobal, options);
-                } catch (e) {
-                    date = value;
-                }
-            }
-
-            return $.pivotUtilities.cellRenderers.text(date);
         },
     };
 
@@ -178,6 +202,7 @@
             }
             return function (...args) {
                 const [attr] = args[0];
+                const opts = args[1] || {};
                 return function (data, rowKey, colKey) {
                     return {
                         attr,
@@ -185,31 +210,44 @@
                         sorter: getSort(data != null ? data.sorters : undefined, attr),
                         push(record) {
                             let x = record[attr];
-                            if (['min', 'max'].includes(mode)) {
+                            let y = this.val;
+
+                            if (opts.rendererOptions?.fieldsType[attr] === $.pivotUtilities.fieldsType.date) {
+                                x = new Date(x);
+                                y = !y ? x : new Date(y);
+                            } else if (['min', 'max'].includes(mode)) {
                                 x = parseFloat(x);
+                            }
+
+                            if (['min', 'max'].includes(mode)) {
                                 if (!isNaN(x)) {
-                                    this.val = Math[mode](x, this.val != null ? this.val : x);
+                                    this.val = Math[mode](x, y != null ? y : x);
                                 }
                             }
                             if (mode === 'first') {
-                                if (this.sorter(x, this.val != null ? this.val : x) <= 0) {
+                                if (this.sorter(x, y != null ? y : x) <= 0) {
                                     this.val = x;
                                 }
                             }
                             if (mode === 'last') {
-                                if (this.sorter(x, this.val != null ? this.val : x) >= 0) {
-                                    return this.val = x;
+                                if (this.sorter(x, y != null ? y : x) >= 0) {
+                                    this.val = x;
                                 }
                             }
+
+                            if (opts.rendererOptions?.fieldsType[attr] === $.pivotUtilities.fieldsType.date) {
+                                this.val = new Date(this.val).toISOString();
+                            }
+
                         },
                         value() {
                             return this.val;
                         },
-                        format(x) {
+                        format(x, fieldType) {
                             if (isNaN(x)) {
                                 return x;
                             } else {
-                                return formatter(x);
+                                return formatter(x, fieldType);
                             }
                         },
                         numInputs: (attr != null) ? 0 : 1,
@@ -488,7 +526,7 @@
     //dateFormat deriver l10n requires month and day names to be passed in directly
     const mthNamesEn = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const dayNamesEn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    const zeroPad = number => ('0' + number).substr(-2, 2);
+    const zeroPad = (number, padding = 2) => ('0' + number).substr(-padding, padding);
 
     const derivers = {
         bin(col, binWidth) {
@@ -670,7 +708,7 @@
             if (value instanceof Date) {
                 data[key] = value.toISOString();
             }
-        })
+        });
 
         return data;
     }
@@ -968,10 +1006,20 @@
     const renameAggregators = (aggregators) => aggregators.map((agg, id) =>
         (agg.displayName = String.fromCharCode(97 + id).toUpperCase()));
 
+    const fieldsType = {
+        string: 'String',
+        number: 'Number',
+        date: 'Date',
+        time: 'Time',
+        datetime: 'Datetime',
+        boolean: 'Boolean',
+        integer: 'Integer',
+    };
+
     //expose these to the outside world
     $.pivotUtilities = {
-        aggregatorTemplates, aggregators: defaultAggregators, renderers, cellRenderers, derivers, locales,
-        naturalSort, numberFormat, sortAs, PivotData,
+        aggregatorTemplates, aggregators: defaultAggregators, renderers, cellRenderers, derivers, locales, fieldsType,
+        zeroPad, naturalSort, numberFormat, sortAs, PivotData,
     };
 
     /*
@@ -994,6 +1042,8 @@
             typeCellRenderer: cellRenderers.text,
             headCellRenderer: cellRenderers.text,
             dataCellRenderer: cellRenderers.text,
+
+            fieldsType: {},
         };
 
         opts = $.extend(true, {}, defaults, opts);
@@ -1082,7 +1132,7 @@
             }
             th = document.createElement('th');
             th.className = 'pvtAxisLabel';
-            th.appendChild(opts.typeCellRenderer(c))
+            th.appendChild(opts.typeCellRenderer.call(opts, c));
             if (pivotData.grouping && (j < (colAttrs.length - 1))) {
                 th.onclick = getExpandAllHandler(pivotData, +j, false);
                 th.className += ` open level${j}`;
@@ -1095,7 +1145,7 @@
                     th = document.createElement('th');
                     th.className = 'pvtColLabel';
                     th.className += ` col${pivotData.colGroupBefore ? +i : (+i + x) - 1}`;
-                    th.appendChild(opts.headCellRenderer(colKey[j], c))
+                    th.appendChild(opts.headCellRenderer.call(opts, colKey[j], c));
                     th.setAttribute('colspan', x * Math.max(1, pivotData.aggregator.length));
                     if ((parseInt(j) === (colAttrs.length - 1)) && (rowAttrs.length !== 0)) {
                         th.setAttribute('rowspan', 2);
@@ -1126,7 +1176,7 @@
                 const r = rowAttrs[i];
                 th = document.createElement('th');
                 th.className = 'pvtAxisLabel';
-                th.appendChild(opts.typeCellRenderer(r))
+                th.appendChild(opts.typeCellRenderer.call(opts, r));
                 if (pivotData.grouping && (i < (rowAttrs.length - 1))) {
                     th.className += ` open level${i}`;
                     th.onclick = getExpandAllHandler(pivotData, +i, true);
@@ -1191,7 +1241,7 @@
                     th = document.createElement('th');
                     th.className = 'pvtRowLabel';
                     th.className += ` row${pivotData.rowGroupBefore ? +i : (+i + x) - 1}`;
-                    th.appendChild(opts.headCellRenderer(txt, rowAttrs[j]))
+                    th.appendChild(opts.headCellRenderer.call(opts, txt, rowAttrs[j]));
                     th.setAttribute('rowspan', x);
                     if (compactLayout) {
                         th.colSpan = rowAttrs.length;
@@ -1230,7 +1280,7 @@
                     if (colAttrs.length - colKey.length) {
                         td.className = `pvtSubtotal level${colKey.length} row${i} col${j}`;
                     }
-                    td.appendChild(opts.dataCellRenderer(aggregator.format(val), aggregator?.attr, rowKey, colKey))
+                    td.appendChild(opts.dataCellRenderer.call(opts, aggregator.format(val, opts.fieldsType[aggregator?.attr]), aggregator?.attr, rowKey, colKey));
                     td.setAttribute('data-value', val);
                     if (getClickHandler != null) {
                         td.onclick = getClickHandler(val, rowKey, colKey);
@@ -1246,7 +1296,7 @@
                     val = totalAggregator.value(id);
                     td = document.createElement('td');
                     td.className = 'pvtTotal rowTotal';
-                    td.append(opts.dataCellRenderer(totalAggregator.format(val), totalAggregator?.attr, rowKey, []))
+                    td.append(opts.dataCellRenderer.call(opts, totalAggregator.format(val, opts.fieldsType[totalAggregator?.attr]), totalAggregator?.attr, rowKey, []));
                     td.setAttribute('data-value', val);
                     if (getClickHandler != null) {
                         td.onclick = getClickHandler(val, rowKey, []);
@@ -1279,7 +1329,7 @@
                     if (colKey.length !== colAttrs.length) {
                         td.className += ` pvtSubtotal level${colKey.length}`;
                     }
-                    td.append(opts.dataCellRenderer(totalAggregator.format(val), totalAggregator?.attr, [], colKey))
+                    td.append(opts.dataCellRenderer.call(opts, totalAggregator.format(val, opts.fieldsType[totalAggregator?.attr]), totalAggregator?.attr, [], colKey));
                     td.setAttribute('data-value', val);
                     if (getClickHandler != null) {
                         td.onclick = getClickHandler(val, [], colKey);
@@ -1295,7 +1345,7 @@
                     val = totalAggregator.value(id);
                     td = document.createElement('td');
                     td.className = 'pvtGrandTotal';
-                    td.append(opts.dataCellRenderer(totalAggregator.format(val), totalAggregator?.attr, [], []))
+                    td.append(opts.dataCellRenderer.call(opts, totalAggregator.format(val, opts.fieldsType[totalAggregator?.attr]), totalAggregator?.attr, [], []));
                     td.setAttribute('data-value', val);
                     if (getClickHandler != null) {
                         td.onclick = getClickHandler(val, [], []);
@@ -1965,7 +2015,7 @@
 
                 subopts.aggregatorName = aggregators.map(agg => agg.value);
                 subopts.vals = aggVals;
-                subopts.aggregator = aggregators.map((agg, i) => opts.aggregators[agg.value](aggVals[i]));
+                subopts.aggregator = aggregators.map((agg, i) => opts.aggregators[agg.value](aggVals[i], opts));
                 subopts.renderer = opts.renderers[renderer.val()];
                 subopts.rowOrder = rowOrderArrow.data('order');
                 subopts.colOrder = colOrderArrow.data('order');

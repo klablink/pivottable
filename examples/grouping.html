@@ -45,7 +45,6 @@
             };
 
             $.getJSON("mps.json", function (mps) {
-                console.log(mps);
                 $("#output").pivot(mps, params);
             });
 

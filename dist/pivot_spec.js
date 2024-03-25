@@ -56,7 +56,7 @@ describe('$.pivotUI()', function () {
       expect(table.find('table.pvtTable').length).toBe(1);
       return done();
     });
-    return describe('its renderer output', function () {
+    describe('its renderer output', function () {
       it('has the correct type and number of cells', function (done) {
         expect(table.find('th.pvtTotalLabel').length).toBe(1);
         expect(table.find('td.pvtGrandTotal').length).toBe(1);
@@ -66,7 +66,7 @@ describe('$.pivotUI()', function () {
         expect(table.find('table.pvtTable').text()).toBe(['Totals', '4'].join(''));
         return done();
       });
-      return it('has a correct grand total with data value', function (done) {
+      it('has a correct grand total with data value', function (done) {
         expect(table.find('td.pvtGrandTotal').text()).toBe('4');
         expect(table.find('td.pvtGrandTotal').data('value')).toBe(4);
         return done();
@@ -109,7 +109,7 @@ describe('$.pivotUI()', function () {
       expect(table.find('table.pvtTable').length).toBe(1);
       return done();
     });
-    return describe('its renderer output', function () {
+    describe('its renderer output', function () {
       it('has the correct type and number of cells', function (done) {
         expect(table.find('th.pvtAxisLabel').length).toBe(2);
         expect(table.find('th.pvtRowLabel').length).toBe(2);
@@ -124,21 +124,21 @@ describe('$.pivotUI()', function () {
         expect(table.find('table.pvtTable').text()).toBe(['colour', 'blue', 'red', 'yellow', 'Totals', 'gender', 'female', '0.26', '0.14', '0.20', 'male', '0.20', '0.20', 'Totals', '0.20', '0.26', '0.14', '0.20'].join(''));
         return done();
       });
-      return it('has a correct spot-checked cell with data value', function (done) {
+      it('has a correct spot-checked cell with data value', function (done) {
         expect(table.find('td.col0.row1').text()).toBe('0.20');
         expect(table.find('td.col0.row1').data('value')).toBe((12 + 30) / (103 + 112));
         return done();
       });
     });
   });
-  return describe('with ragged input', function () {
+  describe('with ragged input', function () {
     var table = $('<div>').pivotUI(raggedFixtureData, {
       multiple: false,
       parametersActive: true,
       rows: ['gender'],
       cols: ['age']
     });
-    return it('renders a table with the correct textual representation', function () {
+    it('renders a table with the correct textual representation', function () {
       return expect(table.find('table.pvtTable').text()).toBe(['age', '12', '34', 'null', 'Totals', 'gender', 'female', '1', '1', 'male', '1', '1', 'null', '1', '1', '2', 'Totals', '2', '1', '1', '4'].join(''));
     });
   });
@@ -149,11 +149,11 @@ describe('$.pivot()', function () {
     it('renders a table', function () {
       return expect(table.find('table.pvtTable').length).toBe(1);
     });
-    return describe('its renderer output', function () {
+    describe('its renderer output', function () {
       it('has the correct textual representation', function () {
         return expect(table.find('table.pvtTable').text()).toBe(['Totals', '4'].join(''));
       });
-      return it('has a correct grand total with data value', function () {
+      it('has a correct grand total with data value', function () {
         expect(table.find('td.pvtGrandTotal').text()).toBe('4');
         return expect(table.find('td.pvtGrandTotal').data('value')).toBe(4);
       });
@@ -181,7 +181,7 @@ describe('$.pivot()', function () {
         }
       }
     });
-    return it('renders a table with the correct textual representation', function () {
+    it('renders a table with the correct textual representation', function () {
       return expect(table.find('table.pvtTable').text()).toBe(['birthyear', '1982', '1983', 'Totals', 'gender', 'male', '110.00', '110.00', 'female', '90.00', '100.00', '190.00', 'Totals', '200.00', '100.00', '300.00'].join(''));
     });
   });
@@ -191,7 +191,7 @@ describe('$.pivot()', function () {
       rows: ['gender'],
       aggregator: aggregators['Sum as Fraction of Total'](['trials'])
     });
-    return it('renders a table with the correct textual representation', function () {
+    it('renders a table with the correct textual representation', function () {
       return expect(table.find('table.pvtTable').text()).toBe(['gender', 'Totals', 'female', '47.8%', 'male', '52.2%', 'Totals', '100.0%'].join(''));
     });
   });
@@ -227,7 +227,7 @@ describe('$.pivot()', function () {
     it('renders the custom renderer as per options', function () {
       return expect(table.find('div.hithere').length).toBe(1);
     });
-    return describe('its received PivotData object', function () {
+    describe('its received PivotData object', function () {
       return it('has a correct grand total value and format for custom aggregator', function () {
         var agg = received_PivotData.getAggregator([], []);
         var val = agg.value();
@@ -236,14 +236,34 @@ describe('$.pivot()', function () {
       });
     });
   });
-  return describe('with ragged input', function () {
+  describe('with ragged input', function () {
     var table = $('<div>').pivot(raggedFixtureData, {
       rows: ['gender'],
       cols: ['age']
     });
-    return it('renders a table with the correct textual representation', function () {
+    it('renders a table with the correct textual representation', function () {
       return expect(table.find('table.pvtTable').text()).toBe(['age', '12', '34', 'null', 'Totals', 'gender', 'female', '1', '1', 'male', '1', '1', 'null', '1', '1', '2', 'Totals', '2', '1', '1', '4'].join(''));
     });
+  });
+});
+describe('$.pivot()', function () {
+  var table = $('<div>').pivot(fixtureData, {
+    multiple: false,
+    rows: ['gender'],
+    cols: ['colour'],
+    aggregatorName: ['Count'],
+    rendererOptions: {
+      headCellRenderer: function headCellRenderer(value, type) {
+        return document.createTextNode('h_' + type + '_' + value);
+      },
+      dataCellRenderer: function dataCellRenderer(value) {
+        return document.createTextNode('d_' + value);
+      }
+    }
+  });
+  it('renders a table with the correct textual representation', function () {
+    console.log(table.find('table.pvtTable').text());
+    expect(table.find('table.pvtTable').text()).toBe(['colour', 'h_colour_blue', 'h_colour_red', 'h_colour_yellow', 'Totals', 'gender', 'h_gender_female', 'd_', 'd_1', 'd_1', 'd_2', 'h_gender_male', 'd_2', 'd_', 'd_', 'd_2', 'Totals', 'd_2', 'd_1', 'd_1', 'd_4'].join(''));
   });
 });
 describe('$.pivotUtilities', function () {
@@ -254,14 +274,14 @@ describe('$.pivotUtilities', function () {
     describe('with no options', function () {
       var aoaInput = [['a', 'b'], [1, 2], [3, 4]];
       var pd = new $.pivotUtilities.PivotData(aoaInput);
-      return it('has the correct grand total value', function () {
+      it('has the correct grand total value', function () {
         return expect(pd.getAggregator([], []).value()).toBe(2);
       });
     });
     describe('with array-of-array input', function () {
       var aoaInput = [['a', 'b'], [1, 2], [3, 4]];
       var pd = new $.pivotUtilities.PivotData(aoaInput, sumOverSumOpts);
-      return it('has the correct grand total value', function () {
+      it('has the correct grand total value', function () {
         return expect(pd.getAggregator([], []).value()).toBe((1 + 3) / (2 + 4));
       });
     });
@@ -274,7 +294,7 @@ describe('$.pivotUtilities', function () {
         b: 4
       }];
       var pd = new $.pivotUtilities.PivotData(aosInput, sumOverSumOpts);
-      return it('has the correct grand total value', function () {
+      it('has the correct grand total value', function () {
         return expect(pd.getAggregator([], []).value()).toBe((1 + 3) / (2 + 4));
       });
     });
@@ -288,7 +308,7 @@ describe('$.pivotUtilities', function () {
         b: 2
       }];
       var pd = new $.pivotUtilities.PivotData(raggedAosInput, sumOverSumOpts);
-      return it('has the correct grand total value', function () {
+      it('has the correct grand total value', function () {
         return expect(pd.getAggregator([], []).value()).toBe((1 + 3) / (2 + 4));
       });
     });
@@ -304,18 +324,18 @@ describe('$.pivotUtilities', function () {
         });
       };
       var pd = new $.pivotUtilities.PivotData(functionInput, sumOverSumOpts);
-      return it('has the correct grand total value', function () {
+      it('has the correct grand total value', function () {
         return expect(pd.getAggregator([], []).value()).toBe((1 + 3) / (2 + 4));
       });
     });
     describe('with jQuery table element input', function () {
       var tableInput = $("<table>\n    <thead>\n        <tr> <th>a</th><th>b</th> </tr>\n    </thead>\n    <tbody>\n        <tr> <td>1</td> <td>2</td> </tr>\n        <tr> <td>3</td> <td>4</td> </tr>\n    </tbody>\n</table>");
       var pd = new $.pivotUtilities.PivotData(tableInput, sumOverSumOpts);
-      return it('has the correct grand total value', function () {
+      it('has the correct grand total value', function () {
         return expect(pd.getAggregator([], []).value()).toBe((1 + 3) / (2 + 4));
       });
     });
-    return describe('with rows/cols', function () {
+    describe('with rows/cols', function () {
       var pd = new $.pivotUtilities.PivotData(fixtureData, {
         rows: ['name', 'colour'],
         cols: ['trials', 'successes']
@@ -358,7 +378,7 @@ describe('$.pivotUtilities', function () {
         expect(val).toBe(1);
         return expect(agg.format(val)).toBe('1');
       });
-      return it('has a correct grand total aggregator', function () {
+      it('has a correct grand total aggregator', function () {
         var agg = pd.getAggregator([], []);
         var val = agg.value();
         expect(val).toBe(4);
@@ -448,7 +468,7 @@ describe('$.pivotUtilities', function () {
         return expect(getVal(tpl.stdev()(['trials']))).toBe(6.976149845485451);
       });
     });
-    return describe('.sumOverSum', function () {
+    describe('.sumOverSum', function () {
       return it('works', function () {
         return expect(getVal(tpl.sumOverSum()(['successes', 'trials']))).toBe((12 + 25 + 30 + 14) / (95 + 102 + 103 + 112));
       });
@@ -457,7 +477,7 @@ describe('$.pivotUtilities', function () {
   describe('.naturalSort()', function () {
     var naturalSort = $.pivotUtilities.naturalSort;
     var sortedArr = [null, NaN, -Infinity, '-Infinity', -3, '-3', -2, '-2', -1, '-1', 0, '2e-1', 1, '01', '1', 2, '002', '002e0', '02', '2', '2e-0', 3, 10, '10', '11', '12', '1e2', '112', Infinity, 'Infinity', '1a', '2a', '12a', '20a', 'A', 'A', 'NaN', 'a', 'a', 'a01', 'a012', 'a02', 'a1', 'a2', 'a12', 'a12', 'a21', 'a21', 'b', 'c', 'd', 'null'];
-    return it('sorts naturally (null, NaN, numbers & numbery strings, Alphanum for text strings)', function () {
+    it('sorts naturally (null, NaN, numbers & numbery strings, Alphanum for text strings)', function () {
       return expect(sortedArr.slice().sort(naturalSort)).toEqual(sortedArr);
     });
   });
@@ -466,7 +486,7 @@ describe('$.pivotUtilities', function () {
     it('sorts with unknown values sorted at the end', function () {
       return expect([5, 2, 3, 4, 1].sort(sortAs([4, 3, 2]))).toEqual([4, 3, 2, 1, 5]);
     });
-    return it('sorts lowercase after uppercase', function () {
+    it('sorts lowercase after uppercase', function () {
       return expect(['Ab', 'aA', 'aa', 'ab'].sort(sortAs(['Ab', 'Aa']))).toEqual(['Ab', 'ab', 'aa', 'aA']);
     });
   });
@@ -515,15 +535,35 @@ describe('$.pivotUtilities', function () {
       });
       return expect(nf(1234567.89123456)).toEqual('a1,234,567.89b');
     });
-    return it('scales and rounds', function () {
+    it('scales and rounds', function () {
       var nf = numberFormat({
         digitsAfterDecimal: 3,
         scaler: 1000
       });
       return expect(nf(1234567.89123456)).toEqual('1,234,567,891.235');
     });
+    describe('.date', function () {
+      it('from date', function () {
+        var nf = numberFormat({});
+        return expect(nf(new Date('2024-01-01'), $.pivotUtilities.fieldsType.date)).toEqual('01/01/2024');
+      });
+      it('from ISO string', function () {
+        var nf = numberFormat({});
+        return expect(nf(new Date('2024-01-01').toISOString(), $.pivotUtilities.fieldsType.date)).toEqual('01/01/2024');
+      });
+      it('to integer', function () {
+        var nf = numberFormat({});
+        return expect(nf(10, $.pivotUtilities.fieldsType.integer)).toEqual(10);
+      });
+      it('to integer', function () {
+        var nf = numberFormat({});
+        return expect(nf(10, function (val) {
+          return "hello_".concat(val);
+        })).toEqual('hello_10');
+      });
+    });
   });
-  return describe('.derivers', function () {
+  describe('.derivers', function () {
     describe('.dateFormat()', function () {
       var df = $.pivotUtilities.derivers.dateFormat('x', 'abc % %% %%% %a %y %m %n %d %w %x %H %M %S', true);
       it('formats date objects', function () {
@@ -531,7 +571,7 @@ describe('$.pivotUtilities', function () {
           x: new Date('2015-01-02T23:43:11Z')
         })).toBe('abc % %% %%% %a 2015 01 Jan 02 Fri 5 23 43 11');
       });
-      return it('formats input parsed by Date.parse()', function () {
+      it('formats input parsed by Date.parse()', function () {
         expect(df({
           x: '2015-01-02T23:43:11Z'
         })).toBe('abc % %% %%% %a 2015 01 Jan 02 Fri 5 23 43 11');
@@ -540,7 +580,7 @@ describe('$.pivotUtilities', function () {
         })).toBe('');
       });
     });
-    return describe('.bin()', function () {
+    describe('.bin()', function () {
       var binner = $.pivotUtilities.derivers.bin('x', 10);
       it('bins numbers', function () {
         expect(binner({
@@ -568,13 +608,25 @@ describe('$.pivotUtilities', function () {
           x: 'a'
         })).toBeNaN();
       });
-      return it('doesn\'t bin objects', function () {
+      it('doesn\'t bin objects', function () {
         return expect(binner({
           x: {
             a: 1
           }
         })).toBeNaN();
       });
+    });
+  });
+  describe('.cellRenderers', function () {
+    it('cellRenderers string', function () {
+      return expect($.pivotUtilities.cellRenderers.text.call({}, 'x').data).toBe('x');
+    });
+    it('cellRenderers string', function () {
+      return expect($.pivotUtilities.cellRenderers.text.call({
+        fieldsType: {
+          fname: $.pivotUtilities.fieldsType.date
+        }
+      }, new Date('2024-01-01'), 'fname').data).toBe('01/01/2024');
     });
   });
 });

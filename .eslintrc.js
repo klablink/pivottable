@@ -8,8 +8,7 @@ module.exports = {
         'node': true,
         'amd': true,
         'jquery': true,
-        'jasmine': true,
-        'c3': true
+        'jasmine': true
     },
     'extends': 'eslint:recommended',
     'plugins': [

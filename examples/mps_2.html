@@ -46,6 +46,9 @@
             }
 
             $("#output").pivotUI(mps, {
+                cols: ["Age Bin"],
+                rows: ["Gender Imbalance"],
+                aggregatorName: ["Minimum"],
                 // hiddenAttributes: ["FirstDate"],
                 derivedAttributes: {
                     "Age Bin": derivers.bin("Age", 10),
@@ -56,7 +59,7 @@
                     "month": derivers.dateFormat('FirstDate', '%m'),
                 },
                 rendererOptions: {
-                    typeCellRenderer: $.pivotUtilities.cellRenderers.byType({
+/*                    typeCellRenderer: $.pivotUtilities.cellRenderers.byType({
                         "FirstDate": $.pivotUtilities.cellRenderers.toDate
                     }),
                     dataCellRenderer: $.pivotUtilities.cellRenderers.byType({
@@ -64,8 +67,15 @@
                     }),
                     headCellRenderer: $.pivotUtilities.cellRenderers.byType({
                         "FirstDate": $.pivotUtilities.cellRenderers.toDate
-                    })
-                }
+                    }),*/
+                    fieldsType: {
+                        "FirstDate": $.pivotUtilities.fieldsType.date,
+                        "year": $.pivotUtilities.fieldsType.integer,
+                        "month"(value) {
+                            return $.pivotUtilities.zeroPad(value);
+                        }
+                    },
+                },
             }, null,'it'
         );
         });
