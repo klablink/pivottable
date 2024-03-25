@@ -1178,7 +1178,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
     naturalSort: naturalSort,
     numberFormat: numberFormat,
     sortAs: sortAs,
-    PivotData: PivotData
+    PivotData: PivotData,
+    toDate: toDate
   };
 
   /*

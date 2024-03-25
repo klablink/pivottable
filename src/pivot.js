@@ -1019,7 +1019,7 @@
     //expose these to the outside world
     $.pivotUtilities = {
         aggregatorTemplates, aggregators: defaultAggregators, renderers, cellRenderers, derivers, locales, fieldsType,
-        zeroPad, naturalSort, numberFormat, sortAs, PivotData,
+        zeroPad, naturalSort, numberFormat, sortAs, PivotData, toDate
     };
 
     /*
