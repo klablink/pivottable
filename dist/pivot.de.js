@@ -75,6 +75,7 @@
       'Horizontal Bar Chart': 'Horizontales Balkendiagramm',
       'Horizontal Stacked Bar Chart': 'Horizontales gestapeltes Balkendiagramm',
       'Bar Chart': 'Balkendiagramm',
+      'Line Chart': 'Liniendiagramm',
       'Stacked Bar Chart': 'Gestapeltes Balkendiagramm',
       'Area Chart': 'Flächendiagramm',
       'Scatter Chart': 'Punktdiagramm'

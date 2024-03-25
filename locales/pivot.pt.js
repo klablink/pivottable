@@ -67,6 +67,7 @@
             'Horizontal Bar Chart': 'Gráfico de barras horizontais',
             'Horizontal Stacked Bar Chart': 'Gráfico de barras horizontais empilhadas',
             'Bar Chart': 'Gráfico de barras',
+            'Line Chart': 'Gráfico de linhas',
             'Stacked Bar Chart': 'Gráfico de barras empilhadas',
             'Area Chart': 'Gráfico de área',
             'Scatter Chart': 'Gráfico de dispersão',

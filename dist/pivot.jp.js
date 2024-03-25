@@ -76,6 +76,7 @@
       'Horizontal Bar Chart': '横棒グラフ',
       'Horizontal Stacked Bar Chart': '横積み上げ棒グラフ',
       'Bar Chart': '棒グラフ',
+      'Line Chart': '折れ線グラフ',
       'Stacked Bar Chart': '積み上げ棒グラフ',
       'Area Chart': '面グラフ',
       'Scatter Chart': '散布図'

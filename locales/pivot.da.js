@@ -77,6 +77,7 @@
             'Horizontal Bar Chart': 'Vandret søjlediagram',
             'Horizontal Stacked Bar Chart': 'Vandret stakket søjlediagram',
             'Bar Chart': 'Søjlediagram',
+            'Line Chart': 'Linjediagram',
             'Stacked Bar Chart': 'Stakket søjlediagram',
             'Area Chart': 'Område diagram',
             'Scatter Chart': 'Spredningsdiagram',

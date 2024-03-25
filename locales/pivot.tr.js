@@ -65,6 +65,7 @@
             'Horizontal Bar Chart': 'Yatay Çubuk Grafiği',
             'Horizontal Stacked Bar Chart': 'Yatay Yığılmış Çubuk Grafiği',
             'Bar Chart': 'Çubuk Grafiği',
+            'Line Chart': 'Çizgi Grafiği',
             'Stacked Bar Chart': 'Yığılmış Çubuk Grafiği',
             'Area Chart': 'Alan Grafiği',
             'Scatter Chart': 'Dağılım Grafiği',

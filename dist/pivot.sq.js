@@ -73,6 +73,7 @@
       'Horizontal Bar Chart': 'Diagrami horizontal i shiritave',
       'Horizontal Stacked Bar Chart': 'Diagrami horizontal i shiritave me ngarkesë',
       'Bar Chart': 'Diagrami i shiritave',
+      'Line Chart': 'Diagrami i linjave',
       'Stacked Bar Chart': 'Diagrami i shiritave me ngarkesë',
       'Area Chart': 'Diagrami i zonës',
       'Scatter Chart': 'Diagrami i shpërndarjes'

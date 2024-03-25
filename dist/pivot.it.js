@@ -76,6 +76,7 @@
       'Horizontal Bar Chart': 'Grafico a barre orizzontali',
       'Horizontal Stacked Bar Chart': 'Grafico a barre orizzontali impilate',
       'Bar Chart': 'Grafico a barre',
+      'Line Chart': 'Grafico a linee',
       'Stacked Bar Chart': 'Grafico a barre impilate',
       'Area Chart': 'Grafico ad area',
       'Scatter Chart': 'Grafico a dispersione'

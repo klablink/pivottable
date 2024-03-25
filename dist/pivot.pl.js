@@ -76,6 +76,7 @@
       'Horizontal Bar Chart': 'Poziomy wykres słupkowy',
       'Horizontal Stacked Bar Chart': 'Poziomy wykres słupkowy ze stosami',
       'Bar Chart': 'Wykres słupkowy',
+      'Line Chart': 'Wykres liniowy',
       'Stacked Bar Chart': 'Wykres słupkowy ze stosami',
       'Area Chart': 'Wykres obszarowy',
       'Scatter Chart': 'Wykres punktowy'

@@ -76,6 +76,7 @@
       'Horizontal Bar Chart': 'Horizontaal staafdiagram',
       'Horizontal Stacked Bar Chart': 'Horizontaal gestapeld staafdiagram',
       'Bar Chart': 'Staafdiagram',
+      'Line Chart': 'Lijngrafiek',
       'Stacked Bar Chart': 'Gestapeld staafdiagram',
       'Area Chart': 'Gebiedsdiagram',
       'Scatter Chart': 'Verstrooiingsdiagram'

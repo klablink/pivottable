@@ -76,6 +76,7 @@
       'Horizontal Bar Chart': 'Horizontální sloupcový graf',
       'Horizontal Stacked Bar Chart': 'Horizontální sloupcový graf s vrstvami',
       'Bar Chart': 'Sloupcový graf',
+      'Line Chart': 'Čárový graf',
       'Stacked Bar Chart': 'Sloupcový graf s vrstvami',
       'Area Chart': 'Plošný graf',
       'Scatter Chart': 'Body na rovině'
