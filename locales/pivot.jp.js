@@ -61,6 +61,12 @@
             'Heatmap': 'ヒートマップ',
             'Row Heatmap': 'ヒートマップ（行）',
             'Col Heatmap': 'ヒートマップ（列）',
+            'Horizontal Bar Chart': '横棒グラフ',
+            'Horizontal Stacked Bar Chart': '横積み上げ棒グラフ',
+            'Bar Chart': '棒グラフ',
+            'Stacked Bar Chart': '積み上げ棒グラフ',
+            'Area Chart': '面グラフ',
+            'Scatter Chart': '散布図',
 
         },
     };

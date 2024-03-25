@@ -60,7 +60,13 @@
             'Table Barchart': 'Tabla con barras',
             'Heatmap': 'Heatmap',
             'Row Heatmap': 'Heatmap por filas',
-            'Col Heatmap': 'Heatmap por columnas'
+            'Col Heatmap': 'Heatmap por columnas',
+            'Horizontal Bar Chart': 'Gráfico de barras horizontales',
+            'Horizontal Stacked Bar Chart': 'Gráfico de barras apiladas horizontales',
+            'Bar Chart': 'Gráfico de barras',
+            'Stacked Bar Chart': 'Gráfico de barras apiladas',
+            'Area Chart': 'Gráfico de área',
+            'Scatter Chart': 'Gráfico de dispersión',
         },
     };
 })(jQuery);

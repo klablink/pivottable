@@ -60,7 +60,13 @@
             'Table Barchart': 'Table avec barres',
             'Heatmap': 'Carte de chaleur',
             'Row Heatmap': 'Carte de chaleur par ligne',
-            'Col Heatmap': 'Carte de chaleur par colonne'
+            'Col Heatmap': 'Carte de chaleur par colonne',
+            'Horizontal Bar Chart': 'Graphique à barres horizontales',
+            'Horizontal Stacked Bar Chart': 'Graphique à barres empilées horizontales',
+            'Bar Chart': 'Graphique à barres',
+            'Stacked Bar Chart': 'Graphique à barres empilées',
+            'Area Chart': 'Graphique en aires',
+            'Scatter Chart': 'Nuage de points',
         },
 
     };

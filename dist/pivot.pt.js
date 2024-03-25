@@ -75,7 +75,13 @@
       'Table Barchart': 'Tabela com Barras',
       'Heatmap': 'Mapa de Calor',
       'Row Heatmap': 'Mapa de Calor por Linhas',
-      'Col Heatmap': 'Mapa de Calor por Colunas'
+      'Col Heatmap': 'Mapa de Calor por Colunas',
+      'Horizontal Bar Chart': 'Gráfico de barras horizontais',
+      'Horizontal Stacked Bar Chart': 'Gráfico de barras horizontais empilhadas',
+      'Bar Chart': 'Gráfico de barras',
+      'Stacked Bar Chart': 'Gráfico de barras empilhadas',
+      'Area Chart': 'Gráfico de área',
+      'Scatter Chart': 'Gráfico de dispersão'
     }
   };
 })(jQuery);

@@ -71,7 +71,13 @@
       'Table Barchart': 'Tabelle mit Balkendiagramm',
       'Heatmap': 'Heatmap',
       'Row Heatmap': 'Heatmap pro Zeile',
-      'Col Heatmap': 'Heatmap pro Spalte'
+      'Col Heatmap': 'Heatmap pro Spalte',
+      'Horizontal Bar Chart': 'Horizontales Balkendiagramm',
+      'Horizontal Stacked Bar Chart': 'Horizontales gestapeltes Balkendiagramm',
+      'Bar Chart': 'Balkendiagramm',
+      'Stacked Bar Chart': 'Gestapeltes Balkendiagramm',
+      'Area Chart': 'Flächendiagramm',
+      'Scatter Chart': 'Punktdiagramm'
     }
   };
 })(jQuery);

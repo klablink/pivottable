@@ -73,7 +73,13 @@
       'Table Barchart': '表格内柱状图',
       'Heatmap': '热图',
       'Row Heatmap': '行热图',
-      'Col Heatmap': '列热图'
+      'Col Heatmap': '列热图',
+      'Horizontal Bar Chart': '水平柱状图',
+      'Horizontal Stacked Bar Chart': '水平堆叠柱状图',
+      'Bar Chart': '柱状图',
+      'Stacked Bar Chart': '堆叠柱状图',
+      'Area Chart': '面积图',
+      'Scatter Chart': '散点图'
     }
   };
 })(jQuery);

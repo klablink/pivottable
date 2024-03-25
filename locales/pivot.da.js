@@ -73,7 +73,13 @@
             'Table Barchart': 'Tabel med søjler',
             'Heatmap': 'Heatmap',
             'Row Heatmap': 'Heatmap per række',
-            'Col Heatmap': 'Heatmap per kolonne'
+            'Col Heatmap': 'Heatmap per kolonne',
+            'Horizontal Bar Chart': 'Vandret søjlediagram',
+            'Horizontal Stacked Bar Chart': 'Vandret stakket søjlediagram',
+            'Bar Chart': 'Søjlediagram',
+            'Stacked Bar Chart': 'Stakket søjlediagram',
+            'Area Chart': 'Område diagram',
+            'Scatter Chart': 'Spredningsdiagram',
         },
     };
 })(jQuery);

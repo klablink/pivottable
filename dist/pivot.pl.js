@@ -72,7 +72,13 @@
       'Table Barchart': 'Tabela z Wykresem Słupkowym',
       'Heatmap': 'Mapa cieplna',
       'Row Heatmap': 'Mapa cieplna po Wierszach',
-      'Col Heatmap': 'Mapa cieplna po Kolumnach'
+      'Col Heatmap': 'Mapa cieplna po Kolumnach',
+      'Horizontal Bar Chart': 'Poziomy wykres słupkowy',
+      'Horizontal Stacked Bar Chart': 'Poziomy wykres słupkowy ze stosami',
+      'Bar Chart': 'Wykres słupkowy',
+      'Stacked Bar Chart': 'Wykres słupkowy ze stosami',
+      'Area Chart': 'Wykres obszarowy',
+      'Scatter Chart': 'Wykres punktowy'
     }
   };
 })(jQuery);

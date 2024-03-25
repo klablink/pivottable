@@ -72,7 +72,13 @@
       'Table Barchart': 'Tabulka se sloupcovým grafem',
       'Heatmap': 'Teplotní mapa',
       'Row Heatmap': 'Teplotní mapa z řádků',
-      'Col Heatmap': 'Teplotní mapa ze sloupců'
+      'Col Heatmap': 'Teplotní mapa ze sloupců',
+      'Horizontal Bar Chart': 'Horizontální sloupcový graf',
+      'Horizontal Stacked Bar Chart': 'Horizontální sloupcový graf s vrstvami',
+      'Bar Chart': 'Sloupcový graf',
+      'Stacked Bar Chart': 'Sloupcový graf s vrstvami',
+      'Area Chart': 'Plošný graf',
+      'Scatter Chart': 'Body na rovině'
     }
   };
 })(jQuery);

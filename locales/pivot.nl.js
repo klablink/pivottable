@@ -61,7 +61,12 @@
             'Heatmap': 'Warmtekaart',
             'Row Heatmap': 'Warmtekaart per rij',
             'Col Heatmap': 'Warmtekaart per kolom',
-
+            'Horizontal Bar Chart': 'Horizontaal staafdiagram',
+            'Horizontal Stacked Bar Chart': 'Horizontaal gestapeld staafdiagram',
+            'Bar Chart': 'Staafdiagram',
+            'Stacked Bar Chart': 'Gestapeld staafdiagram',
+            'Area Chart': 'Gebiedsdiagram',
+            'Scatter Chart': 'Verstrooiingsdiagram',
         },
     };
 })(jQuery);

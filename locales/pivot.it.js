@@ -61,6 +61,12 @@
             'Heatmap': 'Mappa di calore',
             'Row Heatmap': 'Mappa di calore per righe',
             'Col Heatmap': 'Mappa di calore per colonne',
+            'Horizontal Bar Chart': 'Grafico a barre orizzontali',
+            'Horizontal Stacked Bar Chart': 'Grafico a barre orizzontali impilate',
+            'Bar Chart': 'Grafico a barre',
+            'Stacked Bar Chart': 'Grafico a barre impilate',
+            'Area Chart': 'Grafico ad area',
+            'Scatter Chart': 'Grafico a dispersione',
         },
     };
 })(jQuery);

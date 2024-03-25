@@ -61,8 +61,13 @@
             'Table Barchart': 'Tablo Çubuk Grafiği',
             'Heatmap': 'Isı Haritası',
             'Row Heatmap': 'Satır Isı Haritası',
-            'Col Heatmap': 'Sütun Isı Haritası'
-
+            'Col Heatmap': 'Sütun Isı Haritası',
+            'Horizontal Bar Chart': 'Yatay Çubuk Grafiği',
+            'Horizontal Stacked Bar Chart': 'Yatay Yığılmış Çubuk Grafiği',
+            'Bar Chart': 'Çubuk Grafiği',
+            'Stacked Bar Chart': 'Yığılmış Çubuk Grafiği',
+            'Area Chart': 'Alan Grafiği',
+            'Scatter Chart': 'Dağılım Grafiği',
         }
     };
 

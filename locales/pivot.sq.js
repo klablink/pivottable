@@ -58,6 +58,12 @@
             'Heatmap': 'Heatmap',
             'Row Heatmap': 'Heatmap për rresht',
             'Col Heatmap': 'Heatmap për kolonë',
+            'Horizontal Bar Chart': 'Diagrami horizontal i shiritave',
+            'Horizontal Stacked Bar Chart': 'Diagrami horizontal i shiritave me ngarkesë',
+            'Bar Chart': 'Diagrami i shiritave',
+            'Stacked Bar Chart': 'Diagrami i shiritave me ngarkesë',
+            'Area Chart': 'Diagrami i zonës',
+            'Scatter Chart': 'Diagrami i shpërndarjes',
 
         },
     };
