@@ -1,6 +1,5 @@
 "use strict";
 
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 // TODO: This file was created by bulk-decaffeinate.
 // Sanity-check the conversion and remove this comment.
 /*
@@ -11,8 +10,8 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
  * Full docs: https://github.com/decaffeinate/decaffeinate/blob/main/docs/suggestions.md
  */
 
-var callWithJQueryAndPlotty = function callWithJQueryAndPlotty(pivotModule) {
-  if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === "object" && (typeof module === "undefined" ? "undefined" : _typeof(module)) === "object") {
+const callWithJQueryAndPlotty = function (pivotModule) {
+  if (typeof exports === "object" && typeof module === "object") {
     // CommonJS
     return pivotModule(require("jquery"), require("plotly.js"));
   } else if (typeof define === "function" && define.amd) {
@@ -24,7 +23,7 @@ var callWithJQueryAndPlotty = function callWithJQueryAndPlotty(pivotModule) {
   }
 };
 callWithJQueryAndPlotty(function ($, Plotly) {
-  var makePlotlyChart = function makePlotlyChart(traceOptions, layoutOptions, transpose) {
+  const makePlotlyChart = function (traceOptions, layoutOptions, transpose) {
     if (traceOptions == null) {
       traceOptions = {};
     }
@@ -35,8 +34,8 @@ callWithJQueryAndPlotty(function ($, Plotly) {
       transpose = false;
     }
     return function (pivotData, opts) {
-      var groupByTitle, hAxisTitle;
-      var defaults = {
+      let groupByTitle, hAxisTitle;
+      const defaults = {
         localeStrings: {
           vs: "vs",
           by: "by"
@@ -45,30 +44,29 @@ callWithJQueryAndPlotty(function ($, Plotly) {
         plotlyConfig: {}
       };
       opts = $.extend(true, {}, defaults, opts);
-      var rowKeys = pivotData.getRowKeys();
-      var colKeys = pivotData.getColKeys();
-      var traceKeys = transpose ? colKeys : rowKeys;
+      const rowKeys = pivotData.getRowKeys();
+      const colKeys = pivotData.getColKeys();
+      const traceKeys = transpose ? colKeys : rowKeys;
       if (traceKeys.length === 0) {
         traceKeys.push([]);
       }
-      var datumKeys = transpose ? rowKeys : colKeys;
+      const datumKeys = transpose ? rowKeys : colKeys;
       if (datumKeys.length === 0) {
         datumKeys.push([]);
       }
-      var fullAggName = pivotData.aggregatorName;
+      let fullAggName = pivotData.aggregatorName;
       if (pivotData.valAttrs.length) {
-        fullAggName += "(".concat(pivotData.valAttrs.join(", "), ")");
+        fullAggName += `(${pivotData.valAttrs.join(", ")})`;
       }
-      var data = traceKeys.map(function (traceKey) {
-        var values = [];
-        var labels = [];
-        for (var _i = 0, _Array$from = Array.from(datumKeys); _i < _Array$from.length; _i++) {
-          var datumKey = _Array$from[_i];
+      const data = traceKeys.map(function (traceKey) {
+        const values = [];
+        const labels = [];
+        for (var datumKey of Array.from(datumKeys)) {
           var val = parseFloat(pivotData.getAggregator(transpose ? datumKey : traceKey, transpose ? traceKey : datumKey).value());
           values.push(isFinite(val) ? val : null);
           labels.push(datumKey.join('-') || ' ');
         }
-        var trace = {
+        const trace = {
           name: traceKey.join('-') || fullAggName
         };
         if (traceOptions.type === "pie") {
@@ -87,25 +85,25 @@ callWithJQueryAndPlotty(function ($, Plotly) {
         hAxisTitle = pivotData.colAttrs.join("-");
         groupByTitle = pivotData.rowAttrs.join("-");
       }
-      var titleText = fullAggName;
+      let titleText = fullAggName;
       if (hAxisTitle !== "") {
-        titleText += " ".concat(opts.localeStrings.vs, " ").concat(hAxisTitle);
+        titleText += ` ${opts.localeStrings.vs} ${hAxisTitle}`;
       }
       if (groupByTitle !== "") {
-        titleText += " ".concat(opts.localeStrings.by, " ").concat(groupByTitle);
+        titleText += ` ${opts.localeStrings.by} ${groupByTitle}`;
       }
-      var layout = {
+      const layout = {
         title: titleText,
         hovermode: 'closest',
         width: window.innerWidth / 1.4,
         height: window.innerHeight / 1.4 - 50
       };
       if (traceOptions.type === 'pie') {
-        var columns = Math.ceil(Math.sqrt(data.length));
-        var rows = Math.ceil(data.length / columns);
+        const columns = Math.ceil(Math.sqrt(data.length));
+        const rows = Math.ceil(data.length / columns);
         layout.grid = {
-          columns: columns,
-          rows: rows
+          columns,
+          rows
         };
         for (var i in data) {
           var d = data[i];
@@ -130,72 +128,68 @@ callWithJQueryAndPlotty(function ($, Plotly) {
           automargin: true
         };
       }
-      var result = $("<div>").appendTo($("body"));
+      const result = $("<div>").appendTo($("body"));
       Plotly.newPlot(result[0], data, $.extend(layout, layoutOptions, opts.plotly), opts.plotlyConfig);
       return result.detach();
     };
   };
-  var makePlotlyScatterChart = function makePlotlyScatterChart() {
-    return function (pivotData, opts) {
-      var defaults = {
-        localeStrings: {
-          vs: "vs",
-          by: "by"
-        },
-        plotly: {},
-        plotlyConfig: {}
-      };
-      opts = $.extend(true, {}, defaults, opts);
-      var rowKeys = pivotData.getRowKeys();
-      if (rowKeys.length === 0) {
-        rowKeys.push([]);
-      }
-      var colKeys = pivotData.getColKeys();
-      if (colKeys.length === 0) {
-        colKeys.push([]);
-      }
-      var data = {
-        x: [],
-        y: [],
-        text: [],
-        type: 'scatter',
-        mode: 'markers'
-      };
-      for (var _i2 = 0, _Array$from2 = Array.from(rowKeys); _i2 < _Array$from2.length; _i2++) {
-        var rowKey = _Array$from2[_i2];
-        for (var _i3 = 0, _Array$from3 = Array.from(colKeys); _i3 < _Array$from3.length; _i3++) {
-          var colKey = _Array$from3[_i3];
-          var v = pivotData.getAggregator(rowKey, colKey).value();
-          if (v != null) {
-            data.x.push(colKey.join('-'));
-            data.y.push(rowKey.join('-'));
-            data.text.push(v);
-          }
+  const makePlotlyScatterChart = () => function (pivotData, opts) {
+    const defaults = {
+      localeStrings: {
+        vs: "vs",
+        by: "by"
+      },
+      plotly: {},
+      plotlyConfig: {}
+    };
+    opts = $.extend(true, {}, defaults, opts);
+    const rowKeys = pivotData.getRowKeys();
+    if (rowKeys.length === 0) {
+      rowKeys.push([]);
+    }
+    const colKeys = pivotData.getColKeys();
+    if (colKeys.length === 0) {
+      colKeys.push([]);
+    }
+    const data = {
+      x: [],
+      y: [],
+      text: [],
+      type: 'scatter',
+      mode: 'markers'
+    };
+    for (var rowKey of Array.from(rowKeys)) {
+      for (var colKey of Array.from(colKeys)) {
+        var v = pivotData.getAggregator(rowKey, colKey).value();
+        if (v != null) {
+          data.x.push(colKey.join('-'));
+          data.y.push(rowKey.join('-'));
+          data.text.push(v);
         }
       }
-      var layout = {
-        title: pivotData.rowAttrs.join("-") + ' vs ' + pivotData.colAttrs.join("-"),
-        hovermode: 'closest',
-        xaxis: {
-          title: pivotData.colAttrs.join('-'),
-          automargin: true
-        },
-        yaxis: {
-          title: pivotData.rowAttrs.join('-'),
-          automargin: true
-        },
-        width: window.innerWidth / 1.5,
-        height: window.innerHeight / 1.4 - 50
-      };
-      var renderArea = $("<div>", {
-        style: "display:none;"
-      }).appendTo($("body"));
-      var result = $("<div>").appendTo(renderArea);
-      Plotly.newPlot(result[0], [data], $.extend(layout, opts.plotly), opts.plotlyConfig);
-      result.detach();
-      renderArea.remove();
-      return result;
+    }
+    const layout = {
+      title: pivotData.rowAttrs.join("-") + ' vs ' + pivotData.colAttrs.join("-"),
+      hovermode: 'closest',
+      xaxis: {
+        title: pivotData.colAttrs.join('-'),
+        automargin: true
+      },
+      yaxis: {
+        title: pivotData.rowAttrs.join('-'),
+        automargin: true
+      },
+      width: window.innerWidth / 1.5,
+      height: window.innerHeight / 1.4 - 50
     };
+    const renderArea = $("<div>", {
+      style: "display:none;"
+    }).appendTo($("body"));
+    const result = $("<div>").appendTo(renderArea);
+    Plotly.newPlot(result[0], [data], $.extend(layout, opts.plotly), opts.plotlyConfig);
+    result.detach();
+    renderArea.remove();
+    return result;
   };
   return $.pivotUtilities.plotly_renderers = {
     "Horizontal Bar Chart": makePlotlyChart({

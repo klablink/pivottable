@@ -1,18 +1,18 @@
 "use strict";
 
 (function ($) {
-  var nf = $.pivotUtilities.numberFormat;
-  var tpl = $.pivotUtilities.aggregatorTemplates;
-  var plFmt = nf({
+  const nf = $.pivotUtilities.numberFormat;
+  const tpl = $.pivotUtilities.aggregatorTemplates;
+  const plFmt = nf({
     thousandsSep: '.',
     decimalSep: ','
   });
-  var plFmtInt = nf({
+  const plFmtInt = nf({
     digitsAfterDecimal: 0,
     thousandsSep: '.',
     decimalSep: ','
   });
-  var plFmtPct = nf({
+  const plFmtPct = nf({
     digitsAfterDecimal: 1,
     scaler: 100,
     suffix: '%',

@@ -1,22 +1,22 @@
 "use strict";
 
 (function ($) {
-  var nf = $.pivotUtilities.numberFormat;
-  var tpl = $.pivotUtilities.aggregatorTemplates;
-  var r = $.pivotUtilities.renderers;
-  var gcr = $.pivotUtilities.gchart_renderers;
-  var d3r = $.pivotUtilities.d3_renderers;
-  var c3r = $.pivotUtilities.c3_renderers;
-  var frFmt = nf({
+  const nf = $.pivotUtilities.numberFormat;
+  const tpl = $.pivotUtilities.aggregatorTemplates;
+  const r = $.pivotUtilities.renderers;
+  const gcr = $.pivotUtilities.gchart_renderers;
+  const d3r = $.pivotUtilities.d3_renderers;
+  const c3r = $.pivotUtilities.c3_renderers;
+  const frFmt = nf({
     thousandsSep: '.',
     decimalSep: ','
   });
-  var frFmtInt = nf({
+  const frFmtInt = nf({
     digitsAfterDecimal: 0,
     thousandsSep: '.',
     decimalSep: ','
   });
-  var frFmtPct = nf({
+  const frFmtPct = nf({
     digitsAfterDecimal: 2,
     scaler: 100,
     suffix: '%',

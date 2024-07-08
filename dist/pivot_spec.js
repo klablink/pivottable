@@ -1,7 +1,7 @@
 "use strict";
 
-var fixtureData = [['name', 'gender', 'colour', 'birthday', 'trials', 'successes'], ['Nick', 'male', 'blue', '1982-11-07', 103, 12], ['Jane', 'female', 'red', '1982-11-08', 95, 25], ['John', 'male', 'blue', '1982-12-08', 112, 30], ['Carol', 'female', 'yellow', '1983-12-08', 102, 14]];
-var raggedFixtureData = [{
+const fixtureData = [['name', 'gender', 'colour', 'birthday', 'trials', 'successes'], ['Nick', 'male', 'blue', '1982-11-07', 103, 12], ['Jane', 'female', 'red', '1982-11-08', 95, 25], ['John', 'male', 'blue', '1982-12-08', 112, 30], ['Carol', 'female', 'yellow', '1983-12-08', 102, 14]];
+const raggedFixtureData = [{
   name: 'Nick',
   'colour': 'red',
   'age': 34
@@ -19,8 +19,8 @@ var raggedFixtureData = [{
 }];
 describe('$.pivotUI()', function () {
   describe('with no rows/cols, default count aggregator, default TableRenderer', function () {
-    var table = null;
-    beforeEach(function (done) {
+    let table = null;
+    beforeEach(done => {
       table = $('<div>').pivotUI(fixtureData, {
         onRefresh: done,
         multiple: false,
@@ -65,19 +65,17 @@ describe('$.pivotUI()', function () {
     });
   });
   describe('with rows/cols, sum-over-sum aggregator, Heatmap renderer', function () {
-    var table = null;
-    beforeEach(function (done) {
-      return table = $('<div>').pivotUI(fixtureData, {
-        rows: ['gender'],
-        cols: ['colour'],
-        aggregatorName: 'Sum over Sum',
-        vals: ['successes', 'trials'],
-        rendererName: 'Heatmap',
-        onRefresh: done,
-        multiple: false,
-        parametersActive: true
-      });
-    });
+    let table = null;
+    beforeEach(done => table = $('<div>').pivotUI(fixtureData, {
+      rows: ['gender'],
+      cols: ['colour'],
+      aggregatorName: 'Sum over Sum',
+      vals: ['successes', 'trials'],
+      rendererName: 'Heatmap',
+      onRefresh: done,
+      multiple: false,
+      parametersActive: true
+    }));
     it('has all the basic UI elements', function (done) {
       expect(table.find('.pvtAxisContainer').length).toBe(3);
       // noinspection DuplicatedCode
@@ -123,27 +121,21 @@ describe('$.pivotUI()', function () {
     });
   });
   describe('with ragged input', function () {
-    var table = $('<div>').pivotUI(raggedFixtureData, {
+    const table = $('<div>').pivotUI(raggedFixtureData, {
       multiple: false,
       parametersActive: true,
       rows: ['gender'],
       cols: ['age']
     });
-    it('renders a table with the correct textual representation', function () {
-      return expect(table.find('table.pvtTable').text()).toBe(['age', '12', '34', 'null', 'Totals', 'gender', 'female', '1', '1', 'male', '1', '1', 'null', '1', '1', '2', 'Totals', '2', '1', '1', '4'].join(''));
-    });
+    it('renders a table with the correct textual representation', () => expect(table.find('table.pvtTable').text()).toBe(['age', '12', '34', 'null', 'Totals', 'gender', 'female', '1', '1', 'male', '1', '1', 'null', '1', '1', '2', 'Totals', '2', '1', '1', '4'].join('')));
   });
 });
 describe('$.pivot()', function () {
   describe('with no rows/cols, default count aggregator, default TableRenderer', function () {
-    var table = $('<div>').pivot(fixtureData);
-    it('renders a table', function () {
-      return expect(table.find('table.pvtTable').length).toBe(1);
-    });
+    const table = $('<div>').pivot(fixtureData);
+    it('renders a table', () => expect(table.find('table.pvtTable').length).toBe(1));
     describe('its renderer output', function () {
-      it('has the correct textual representation', function () {
-        return expect(table.find('table.pvtTable').text()).toBe(['Totals', '4'].join(''));
-      });
+      it('has the correct textual representation', () => expect(table.find('table.pvtTable').text()).toBe(['Totals', '4'].join('')));
       it('has a correct grand total with data value', function () {
         expect(table.find('td.pvtGrandTotal').text()).toBe('4');
         return expect(table.find('td.pvtGrandTotal').data('value')).toBe(4);
@@ -151,62 +143,61 @@ describe('$.pivot()', function () {
     });
   });
   describe('with rows/cols, sum aggregator, derivedAttributes, filter and sorters', function () {
-    var _$$pivotUtilities = $.pivotUtilities,
-      sortAs = _$$pivotUtilities.sortAs,
-      derivers = _$$pivotUtilities.derivers,
-      aggregators = _$$pivotUtilities.aggregators;
-    var table = $('<div>').pivot(fixtureData, {
+    const {
+      sortAs,
+      derivers,
+      aggregators
+    } = $.pivotUtilities;
+    const table = $('<div>').pivot(fixtureData, {
       rows: ['gender'],
       cols: ['birthyear'],
       aggregator: aggregators['Sum'](['trialbins']),
-      filter: function filter(record) {
+      filter(record) {
         return record.name !== 'Nick';
       },
       derivedAttributes: {
         birthyear: derivers.dateFormat('birthday', '%y'),
         trialbins: derivers.bin('trials', 10)
       },
-      sorters: function sorters(attr) {
+      sorters(attr) {
         if (attr === 'gender') {
           return sortAs(['male', 'female']);
         }
       }
     });
-    it('renders a table with the correct textual representation', function () {
-      return expect(table.find('table.pvtTable').text()).toBe(['birthyear', '1982', '1983', 'Totals', 'gender', 'male', '110.00', '110.00', 'female', '90.00', '100.00', '190.00', 'Totals', '200.00', '100.00', '300.00'].join(''));
-    });
+    it('renders a table with the correct textual representation', () => expect(table.find('table.pvtTable').text()).toBe(['birthyear', '1982', '1983', 'Totals', 'gender', 'male', '110.00', '110.00', 'female', '90.00', '100.00', '190.00', 'Totals', '200.00', '100.00', '300.00'].join('')));
   });
   describe('with rows/cols, fraction-of aggregator', function () {
-    var aggregators = $.pivotUtilities.aggregators;
-    var table = $('<div>').pivot(fixtureData, {
+    const {
+      aggregators
+    } = $.pivotUtilities;
+    const table = $('<div>').pivot(fixtureData, {
       rows: ['gender'],
       aggregator: aggregators['Sum as Fraction of Total'](['trials'])
     });
-    it('renders a table with the correct textual representation', function () {
-      return expect(table.find('table.pvtTable').text()).toBe(['gender', 'Totals', 'female', '47.8%', 'male', '52.2%', 'Totals', '100.0%'].join(''));
-    });
+    it('renders a table with the correct textual representation', () => expect(table.find('table.pvtTable').text()).toBe(['gender', 'Totals', 'female', '47.8%', 'male', '52.2%', 'Totals', '100.0%'].join('')));
   });
   describe('with rows/cols, custom aggregator, custom renderer with options', function () {
-    var received_PivotData = null;
-    var received_rendererOptions = null;
-    var table = $('<div>').pivot(fixtureData, {
+    let received_PivotData = null;
+    let received_rendererOptions = null;
+    const table = $('<div>').pivot(fixtureData, {
       rows: ['name', 'colour'],
       cols: ['trials', 'successes'],
-      aggregator: function aggregator() {
+      aggregator() {
         return {
           count2x: 0,
-          push: function push() {
+          push() {
             return this.count2x += 2;
           },
-          value: function value() {
+          value() {
             return this.count2x;
           },
-          format: function format(x) {
+          format(x) {
             return 'formatted ' + x;
           }
         };
       },
-      renderer: function renderer(a, b) {
+      renderer(a, b) {
         received_PivotData = a;
         received_rendererOptions = b;
         return $('<div>').addClass(b.greeting).text('world');
@@ -215,26 +206,20 @@ describe('$.pivot()', function () {
         greeting: 'hithere'
       }
     });
-    it('renders the custom renderer as per options', function () {
-      return expect(table.find('div.hithere').length).toBe(1);
-    });
-    describe('its received PivotData object', function () {
-      return it('has a correct grand total value and format for custom aggregator', function () {
-        var agg = received_PivotData.getAggregator([], []);
-        var val = agg.value();
-        expect(val).toBe(8);
-        return expect(agg.format(val)).toBe('formatted 8');
-      });
-    });
+    it('renders the custom renderer as per options', () => expect(table.find('div.hithere').length).toBe(1));
+    describe('its received PivotData object', () => it('has a correct grand total value and format for custom aggregator', function () {
+      const agg = received_PivotData.getAggregator([], []);
+      const val = agg.value();
+      expect(val).toBe(8);
+      return expect(agg.format(val)).toBe('formatted 8');
+    }));
   });
   describe('with ragged input', function () {
-    var table = $('<div>').pivot(raggedFixtureData, {
+    const table = $('<div>').pivot(raggedFixtureData, {
       rows: ['gender'],
       cols: ['age']
     });
-    it('renders a table with the correct textual representation', function () {
-      return expect(table.find('table.pvtTable').text()).toBe(['age', '12', '34', 'null', 'Totals', 'gender', 'female', '1', '1', 'male', '1', '1', 'null', '1', '1', '2', 'Totals', '2', '1', '1', '4'].join(''));
-    });
+    it('renders a table with the correct textual representation', () => expect(table.find('table.pvtTable').text()).toBe(['age', '12', '34', 'null', 'Totals', 'gender', 'female', '1', '1', 'male', '1', '1', 'null', '1', '1', '2', 'Totals', '2', '1', '1', '4'].join('')));
   });
 });
 describe('$.pivot()', function () {
@@ -244,10 +229,10 @@ describe('$.pivot()', function () {
     cols: ['colour'],
     aggregatorName: ['Count'],
     rendererOptions: {
-      headCellRenderer: function headCellRenderer(value, type) {
+      headCellRenderer: function (value, type) {
         return document.createTextNode('h_' + type + '_' + value);
       },
-      dataCellRenderer: function dataCellRenderer(value) {
+      dataCellRenderer: function (value) {
         return document.createTextNode('d_' + value);
       }
     }
@@ -258,38 +243,32 @@ describe('$.pivot()', function () {
 });
 describe('$.pivotUtilities', function () {
   describe('.PivotData()', function () {
-    var sumOverSumOpts = {
+    const sumOverSumOpts = {
       aggregator: $.pivotUtilities.aggregators['Sum over Sum'](['a', 'b'])
     };
     describe('with no options', function () {
-      var aoaInput = [['a', 'b'], [1, 2], [3, 4]];
-      var pd = new $.pivotUtilities.PivotData(aoaInput);
-      it('has the correct grand total value', function () {
-        return expect(pd.getAggregator([], []).value()).toBe(2);
-      });
+      const aoaInput = [['a', 'b'], [1, 2], [3, 4]];
+      const pd = new $.pivotUtilities.PivotData(aoaInput);
+      it('has the correct grand total value', () => expect(pd.getAggregator([], []).value()).toBe(2));
     });
     describe('with array-of-array input', function () {
-      var aoaInput = [['a', 'b'], [1, 2], [3, 4]];
-      var pd = new $.pivotUtilities.PivotData(aoaInput, sumOverSumOpts);
-      it('has the correct grand total value', function () {
-        return expect(pd.getAggregator([], []).value()).toBe((1 + 3) / (2 + 4));
-      });
+      const aoaInput = [['a', 'b'], [1, 2], [3, 4]];
+      const pd = new $.pivotUtilities.PivotData(aoaInput, sumOverSumOpts);
+      it('has the correct grand total value', () => expect(pd.getAggregator([], []).value()).toBe((1 + 3) / (2 + 4)));
     });
     describe('with array-of-object input', function () {
-      var aosInput = [{
+      const aosInput = [{
         a: 1,
         b: 2
       }, {
         a: 3,
         b: 4
       }];
-      var pd = new $.pivotUtilities.PivotData(aosInput, sumOverSumOpts);
-      it('has the correct grand total value', function () {
-        return expect(pd.getAggregator([], []).value()).toBe((1 + 3) / (2 + 4));
-      });
+      const pd = new $.pivotUtilities.PivotData(aosInput, sumOverSumOpts);
+      it('has the correct grand total value', () => expect(pd.getAggregator([], []).value()).toBe((1 + 3) / (2 + 4)));
     });
     describe('with ragged array-of-object input', function () {
-      var raggedAosInput = [{
+      const raggedAosInput = [{
         a: 1
       }, {
         b: 4
@@ -297,13 +276,11 @@ describe('$.pivotUtilities', function () {
         a: 3,
         b: 2
       }];
-      var pd = new $.pivotUtilities.PivotData(raggedAosInput, sumOverSumOpts);
-      it('has the correct grand total value', function () {
-        return expect(pd.getAggregator([], []).value()).toBe((1 + 3) / (2 + 4));
-      });
+      const pd = new $.pivotUtilities.PivotData(raggedAosInput, sumOverSumOpts);
+      it('has the correct grand total value', () => expect(pd.getAggregator([], []).value()).toBe((1 + 3) / (2 + 4)));
     });
     describe('with function input', function () {
-      var functionInput = function functionInput(record) {
+      const functionInput = function (record) {
         record({
           a: 1,
           b: 2
@@ -313,36 +290,36 @@ describe('$.pivotUtilities', function () {
           b: 4
         });
       };
-      var pd = new $.pivotUtilities.PivotData(functionInput, sumOverSumOpts);
-      it('has the correct grand total value', function () {
-        return expect(pd.getAggregator([], []).value()).toBe((1 + 3) / (2 + 4));
-      });
+      const pd = new $.pivotUtilities.PivotData(functionInput, sumOverSumOpts);
+      it('has the correct grand total value', () => expect(pd.getAggregator([], []).value()).toBe((1 + 3) / (2 + 4)));
     });
     describe('with jQuery table element input', function () {
-      var tableInput = $("<table>\n    <thead>\n        <tr> <th>a</th><th>b</th> </tr>\n    </thead>\n    <tbody>\n        <tr> <td>1</td> <td>2</td> </tr>\n        <tr> <td>3</td> <td>4</td> </tr>\n    </tbody>\n</table>");
-      var pd = new $.pivotUtilities.PivotData(tableInput, sumOverSumOpts);
-      it('has the correct grand total value', function () {
-        return expect(pd.getAggregator([], []).value()).toBe((1 + 3) / (2 + 4));
-      });
+      const tableInput = $(`\
+<table>
+    <thead>
+        <tr> <th>a</th><th>b</th> </tr>
+    </thead>
+    <tbody>
+        <tr> <td>1</td> <td>2</td> </tr>
+        <tr> <td>3</td> <td>4</td> </tr>
+    </tbody>
+</table>\
+`);
+      const pd = new $.pivotUtilities.PivotData(tableInput, sumOverSumOpts);
+      it('has the correct grand total value', () => expect(pd.getAggregator([], []).value()).toBe((1 + 3) / (2 + 4)));
     });
     describe('with rows/cols', function () {
-      var pd = new $.pivotUtilities.PivotData(fixtureData, {
+      const pd = new $.pivotUtilities.PivotData(fixtureData, {
         rows: ['name', 'colour'],
         cols: ['trials', 'successes']
       });
-      it('has correctly-ordered row keys', function () {
-        return expect(pd.getRowKeys()).toEqual([['Carol', 'yellow'], ['Jane', 'red'], ['John', 'blue'], ['Nick', 'blue']]);
-      });
-      it('has correctly-ordered col keys', function () {
-        return expect(pd.getColKeys()).toEqual([[95, 25], [102, 14], [103, 12], [112, 30]]);
-      });
+      it('has correctly-ordered row keys', () => expect(pd.getRowKeys()).toEqual([['Carol', 'yellow'], ['Jane', 'red'], ['John', 'blue'], ['Nick', 'blue']]));
+      it('has correctly-ordered col keys', () => expect(pd.getColKeys()).toEqual([[95, 25], [102, 14], [103, 12], [112, 30]]));
       it('can be iterated over', function () {
-        var numNotNull = 0;
-        var numNull = 0;
-        for (var _i = 0, _Array$from = Array.from(pd.getRowKeys()); _i < _Array$from.length; _i++) {
-          var r = _Array$from[_i];
-          for (var _i2 = 0, _Array$from2 = Array.from(pd.getColKeys()); _i2 < _Array$from2.length; _i2++) {
-            var c = _Array$from2[_i2];
+        let numNotNull = 0;
+        let numNull = 0;
+        for (const r of Array.from(pd.getRowKeys())) {
+          for (const c of Array.from(pd.getColKeys())) {
             if (pd.getAggregator(r, c).value() != null) {
               numNotNull++;
             } else {
@@ -354,179 +331,119 @@ describe('$.pivotUtilities', function () {
         return expect(numNull).toBe(12);
       });
       it('returns matching records', function () {
-        var records = [];
+        const records = [];
         pd.forEachMatchingRecord({
           gender: 'male'
-        }, function (x) {
-          return records.push(x.name);
-        });
+        }, x => records.push(x.name));
         return expect(records).toEqual(['Nick', 'John']);
       });
       it('has a correct spot-checked aggregator', function () {
-        var agg = pd.getAggregator(['Carol', 'yellow'], [102, 14]);
-        var val = agg.value();
+        const agg = pd.getAggregator(['Carol', 'yellow'], [102, 14]);
+        const val = agg.value();
         expect(val).toBe(1);
         return expect(agg.format(val)).toBe('1');
       });
       it('has a correct grand total aggregator', function () {
-        var agg = pd.getAggregator([], []);
-        var val = agg.value();
+        const agg = pd.getAggregator([], []);
+        const val = agg.value();
         expect(val).toBe(4);
         return expect(agg.format(val)).toBe('4');
       });
     });
   });
   describe('.aggregatorTemplates', function () {
-    var getVal = function getVal(aggregator) {
-      var pd = new $.pivotUtilities.PivotData(fixtureData, {
-        aggregator: aggregator
+    const getVal = function (aggregator) {
+      const pd = new $.pivotUtilities.PivotData(fixtureData, {
+        aggregator
       });
       return pd.getAggregator([], []).value();
     };
-    var tpl = $.pivotUtilities.aggregatorTemplates;
-    describe('.count', function () {
-      return it('works', function () {
-        return expect(getVal(tpl.count()())).toBe(4);
-      });
-    });
-    describe('.countUnique', function () {
-      return it('works', function () {
-        return expect(getVal(tpl.countUnique()(['gender']))).toBe(2);
-      });
-    });
-    describe('.listUnique', function () {
-      return it('works', function () {
-        return expect(getVal(tpl.listUnique()(['gender']))).toBe('female,male');
-      });
-    });
-    describe('.average', function () {
-      return it('works', function () {
-        return expect(getVal(tpl.average()(['trials']))).toBe(103);
-      });
-    });
-    describe('.sum', function () {
-      return it('works', function () {
-        return expect(getVal(tpl.sum()(['trials']))).toBe(412);
-      });
-    });
-    describe('.min', function () {
-      return it('works', function () {
-        return expect(getVal(tpl.min()(['trials']))).toBe(95);
-      });
-    });
-    describe('.max', function () {
-      return it('works', function () {
-        return expect(getVal(tpl.max()(['trials']))).toBe(112);
-      });
-    });
-    describe('.first', function () {
-      return it('works', function () {
-        return expect(getVal(tpl.first()(['name']))).toBe('Carol');
-      });
-    });
-    describe('.last', function () {
-      return it('works', function () {
-        return expect(getVal(tpl.last()(['name']))).toBe('Nick');
-      });
-    });
-    describe('.average', function () {
-      return it('works', function () {
-        return expect(getVal(tpl.average()(['trials']))).toBe(103);
-      });
-    });
-    describe('.median', function () {
-      return it('works', function () {
-        return expect(getVal(tpl.median()(['trials']))).toBe(102.5);
-      });
-    });
-    describe('.quantile', function () {
-      return it('works', function () {
-        expect(getVal(tpl.quantile(0)(['trials']))).toBe(95);
-        expect(getVal(tpl.quantile(0.1)(['trials']))).toBe(98.5);
-        expect(getVal(tpl.quantile(0.25)(['trials']))).toBe(98.5);
-        expect(getVal(tpl.quantile(1 / 3)(['trials']))).toBe(102);
-        return expect(getVal(tpl.quantile(1)(['trials']))).toBe(112);
-      });
-    });
-    describe('.var', function () {
-      return it('works', function () {
-        return expect(getVal(tpl.var()(['trials']))).toBe(48.666666666666686);
-      });
-    });
-    describe('.stdev', function () {
-      return it('works', function () {
-        return expect(getVal(tpl.stdev()(['trials']))).toBe(6.976149845485451);
-      });
-    });
-    describe('.sumOverSum', function () {
-      return it('works', function () {
-        return expect(getVal(tpl.sumOverSum()(['successes', 'trials']))).toBe((12 + 25 + 30 + 14) / (95 + 102 + 103 + 112));
-      });
-    });
+    const tpl = $.pivotUtilities.aggregatorTemplates;
+    describe('.count', () => it('works', () => expect(getVal(tpl.count()())).toBe(4)));
+    describe('.countUnique', () => it('works', () => expect(getVal(tpl.countUnique()(['gender']))).toBe(2)));
+    describe('.listUnique', () => it('works', () => expect(getVal(tpl.listUnique()(['gender']))).toBe('female,male')));
+    describe('.average', () => it('works', () => expect(getVal(tpl.average()(['trials']))).toBe(103)));
+    describe('.sum', () => it('works', () => expect(getVal(tpl.sum()(['trials']))).toBe(412)));
+    describe('.min', () => it('works', () => expect(getVal(tpl.min()(['trials']))).toBe(95)));
+    describe('.max', () => it('works', () => expect(getVal(tpl.max()(['trials']))).toBe(112)));
+    describe('.first', () => it('works', () => expect(getVal(tpl.first()(['name']))).toBe('Carol')));
+    describe('.last', () => it('works', () => expect(getVal(tpl.last()(['name']))).toBe('Nick')));
+    describe('.average', () => it('works', () => expect(getVal(tpl.average()(['trials']))).toBe(103)));
+    describe('.median', () => it('works', () => expect(getVal(tpl.median()(['trials']))).toBe(102.5)));
+    describe('.quantile', () => it('works', function () {
+      expect(getVal(tpl.quantile(0)(['trials']))).toBe(95);
+      expect(getVal(tpl.quantile(0.1)(['trials']))).toBe(98.5);
+      expect(getVal(tpl.quantile(0.25)(['trials']))).toBe(98.5);
+      expect(getVal(tpl.quantile(1 / 3)(['trials']))).toBe(102);
+      return expect(getVal(tpl.quantile(1)(['trials']))).toBe(112);
+    }));
+    describe('.var', () => it('works', () => expect(getVal(tpl.var()(['trials']))).toBe(48.666666666666686)));
+    describe('.stdev', () => it('works', () => expect(getVal(tpl.stdev()(['trials']))).toBe(6.976149845485451)));
+    describe('.sumOverSum', () => it('works', () => expect(getVal(tpl.sumOverSum()(['successes', 'trials']))).toBe((12 + 25 + 30 + 14) / (95 + 102 + 103 + 112))));
   });
   describe('.naturalSort()', function () {
-    var naturalSort = $.pivotUtilities.naturalSort;
-    var sortedArr = [null, NaN, -Infinity, '-Infinity', -3, '-3', -2, '-2', -1, '-1', 0, '2e-1', 1, '01', '1', 2, '002', '002e0', '02', '2', '2e-0', 3, 10, '10', '11', '12', '1e2', '112', Infinity, 'Infinity', '1a', '2a', '12a', '20a', 'A', 'A', 'NaN', 'a', 'a', 'a01', 'a012', 'a02', 'a1', 'a2', 'a12', 'a12', 'a21', 'a21', 'b', 'c', 'd', 'null'];
-    it('sorts naturally (null, NaN, numbers & numbery strings, Alphanum for text strings)', function () {
-      return expect(sortedArr.slice().sort(naturalSort)).toEqual(sortedArr);
-    });
+    const {
+      naturalSort
+    } = $.pivotUtilities;
+    const sortedArr = [null, NaN, -Infinity, '-Infinity', -3, '-3', -2, '-2', -1, '-1', 0, '2e-1', 1, '01', '1', 2, '002', '002e0', '02', '2', '2e-0', 3, 10, '10', '11', '12', '1e2', '112', Infinity, 'Infinity', '1a', '2a', '12a', '20a', 'A', 'A', 'NaN', 'a', 'a', 'a01', 'a012', 'a02', 'a1', 'a2', 'a12', 'a12', 'a21', 'a21', 'b', 'c', 'd', 'null'];
+    it('sorts naturally (null, NaN, numbers & numbery strings, Alphanum for text strings)', () => expect(sortedArr.slice().sort(naturalSort)).toEqual(sortedArr));
   });
   describe('.sortAs()', function () {
-    var sortAs = $.pivotUtilities.sortAs;
-    it('sorts with unknown values sorted at the end', function () {
-      return expect([5, 2, 3, 4, 1].sort(sortAs([4, 3, 2]))).toEqual([4, 3, 2, 1, 5]);
-    });
-    it('sorts lowercase after uppercase', function () {
-      return expect(['Ab', 'aA', 'aa', 'ab'].sort(sortAs(['Ab', 'Aa']))).toEqual(['Ab', 'ab', 'aa', 'aA']);
-    });
+    const {
+      sortAs
+    } = $.pivotUtilities;
+    it('sorts with unknown values sorted at the end', () => expect([5, 2, 3, 4, 1].sort(sortAs([4, 3, 2]))).toEqual([4, 3, 2, 1, 5]));
+    it('sorts lowercase after uppercase', () => expect(['Ab', 'aA', 'aa', 'ab'].sort(sortAs(['Ab', 'Aa']))).toEqual(['Ab', 'ab', 'aa', 'aA']));
   });
   describe('.numberFormat()', function () {
-    var numberFormat = $.pivotUtilities.numberFormat;
+    const {
+      numberFormat
+    } = $.pivotUtilities;
     it('formats numbers', function () {
-      var nf = numberFormat();
+      const nf = numberFormat();
       return expect(nf(1234567.89123456)).toEqual('1,234,567.89');
     });
     it('formats booleans', function () {
-      var nf = numberFormat();
+      const nf = numberFormat();
       return expect(nf(true)).toEqual('1.00');
     });
     it('formats numbers in strings', function () {
-      var nf = numberFormat();
+      const nf = numberFormat();
       return expect(nf('1234567.89123456')).toEqual('1,234,567.89');
     });
     it('doesn\'t formats strings', function () {
-      var nf = numberFormat();
+      const nf = numberFormat();
       return expect(nf('hi there')).toEqual('');
     });
     it('doesn\'t formats objects', function () {
-      var nf = numberFormat();
+      const nf = numberFormat();
       return expect(nf({
         a: 1
       })).toEqual('');
     });
     it('formats percentages', function () {
-      var nf = numberFormat({
+      const nf = numberFormat({
         scaler: 100,
         suffix: '%'
       });
       return expect(nf(0.12345)).toEqual('12.35%');
     });
     it('adds separators', function () {
-      var nf = numberFormat({
+      const nf = numberFormat({
         thousandsSep: 'a',
         decimalSep: 'b'
       });
       return expect(nf(1234567.89123456)).toEqual('1a234a567b89');
     });
     it('adds prefixes and suffixes', function () {
-      var nf = numberFormat({
+      const nf = numberFormat({
         prefix: 'a',
         suffix: 'b'
       });
       return expect(nf(1234567.89123456)).toEqual('a1,234,567.89b');
     });
     it('scales and rounds', function () {
-      var nf = numberFormat({
+      const nf = numberFormat({
         digitsAfterDecimal: 3,
         scaler: 1000
       });
@@ -534,33 +451,29 @@ describe('$.pivotUtilities', function () {
     });
     describe('.date', function () {
       it('from date', function () {
-        var nf = numberFormat({});
+        const nf = numberFormat({});
         return expect(nf(new Date('2024-01-01'), $.pivotUtilities.fieldsType.date)).toEqual('01/01/2024');
       });
       it('from ISO string', function () {
-        var nf = numberFormat({});
+        const nf = numberFormat({});
         return expect(nf(new Date('2024-01-01').toISOString(), $.pivotUtilities.fieldsType.date)).toEqual('01/01/2024');
       });
       it('to integer', function () {
-        var nf = numberFormat({});
+        const nf = numberFormat({});
         return expect(nf(10, $.pivotUtilities.fieldsType.integer)).toEqual(10);
       });
       it('to integer', function () {
-        var nf = numberFormat({});
-        return expect(nf(10, function (val) {
-          return "hello_".concat(val);
-        })).toEqual('hello_10');
+        const nf = numberFormat({});
+        return expect(nf(10, val => `hello_${val}`)).toEqual('hello_10');
       });
     });
   });
   describe('.derivers', function () {
     describe('.dateFormat()', function () {
-      var df = $.pivotUtilities.derivers.dateFormat('x', 'abc % %% %%% %a %y %m %n %d %w %x %H %M %S', true);
-      it('formats date objects', function () {
-        return expect(df({
-          x: new Date('2015-01-02T23:43:11Z')
-        })).toBe('abc % %% %%% %a 2015 01 Jan 02 Fri 5 23 43 11');
-      });
+      const df = $.pivotUtilities.derivers.dateFormat('x', 'abc % %% %%% %a %y %m %n %d %w %x %H %M %S', true);
+      it('formats date objects', () => expect(df({
+        x: new Date('2015-01-02T23:43:11Z')
+      })).toBe('abc % %% %%% %a 2015 01 Jan 02 Fri 5 23 43 11'));
       it('formats input parsed by Date.parse()', function () {
         expect(df({
           x: '2015-01-02T23:43:11Z'
@@ -571,7 +484,7 @@ describe('$.pivotUtilities', function () {
       });
     });
     describe('.bin()', function () {
-      var binner = $.pivotUtilities.derivers.bin('x', 10);
+      const binner = $.pivotUtilities.derivers.bin('x', 10);
       it('bins numbers', function () {
         expect(binner({
           x: 11
@@ -583,41 +496,29 @@ describe('$.pivotUtilities', function () {
           x: 111
         })).toBe(110);
       });
-      it('bins booleans', function () {
-        return expect(binner({
-          x: true
-        })).toBe(0);
-      });
-      it('bins negative numbers', function () {
-        return expect(binner({
-          x: -12
-        })).toBe(-10);
-      });
-      it('doesn\'t bin strings', function () {
-        return expect(binner({
-          x: 'a'
-        })).toBeNaN();
-      });
-      it('doesn\'t bin objects', function () {
-        return expect(binner({
-          x: {
-            a: 1
-          }
-        })).toBeNaN();
-      });
+      it('bins booleans', () => expect(binner({
+        x: true
+      })).toBe(0));
+      it('bins negative numbers', () => expect(binner({
+        x: -12
+      })).toBe(-10));
+      it('doesn\'t bin strings', () => expect(binner({
+        x: 'a'
+      })).toBeNaN());
+      it('doesn\'t bin objects', () => expect(binner({
+        x: {
+          a: 1
+        }
+      })).toBeNaN());
     });
   });
   describe('.cellRenderers', function () {
-    it('cellRenderers string', function () {
-      return expect($.pivotUtilities.cellRenderers.text.call({}, 'x').data).toBe('x');
-    });
-    it('cellRenderers string', function () {
-      return expect($.pivotUtilities.cellRenderers.text.call({
-        fieldsType: {
-          fname: $.pivotUtilities.fieldsType.date
-        }
-      }, new Date('2024-01-01'), 'fname').data).toBe('01/01/2024');
-    });
+    it('cellRenderers string', () => expect($.pivotUtilities.cellRenderers.text.call({}, 'x').data).toBe('x'));
+    it('cellRenderers string', () => expect($.pivotUtilities.cellRenderers.text.call({
+      fieldsType: {
+        fname: $.pivotUtilities.fieldsType.date
+      }
+    }, new Date('2024-01-01'), 'fname').data).toBe('01/01/2024'));
   });
 });
 //# sourceMappingURL=pivot_spec.js.map

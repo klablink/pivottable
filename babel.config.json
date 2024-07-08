@@ -1,0 +1,3 @@
+{
+  "targets": "last 2 versions, not dead, not < 2%, not ie 11, not op_mini all"
+}

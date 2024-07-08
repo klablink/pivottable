@@ -1,30 +1,24 @@
 "use strict";
 
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 (function ($) {
-  var c3;
-  if ((typeof exports === "undefined" ? "undefined" : _typeof(exports)) === 'object' && (typeof module === "undefined" ? "undefined" : _typeof(module)) === 'object') {
+  let c3;
+  if (typeof exports === 'object' && typeof module === 'object') {
     // CommonJS
     c3 = require('c3');
   } else if (typeof define === 'function' && define.amd) {
     // AMD
-    define(['c3'], function (_c3) {
-      return c3 = _c3;
-    });
+    define(['c3'], _c3 => c3 = _c3);
   } else {
     c3 = window.c3;
   }
-  var makeC3Chart = function makeC3Chart(chartOpts) {
+  const makeC3Chart = function (chartOpts) {
     if (chartOpts == null) {
       chartOpts = {};
     }
     return function (pivotData, opts) {
-      var colKey, columns, groupByTitle, hAxisTitle, rowKey, scatterData, series, titleText, vAxisTitle, y;
-      var c, x;
-      var defaults = {
+      let colKey, columns, groupByTitle, hAxisTitle, rowKey, scatterData, series, titleText, vAxisTitle, y;
+      let c, x;
+      const defaults = {
         localeStrings: {
           vs: 'vs',
           by: 'by'
@@ -50,21 +44,19 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       if (chartOpts.stacked == null) {
         chartOpts.stacked = false;
       }
-      var rowKeys = pivotData.getRowKeys();
+      const rowKeys = pivotData.getRowKeys();
       if (rowKeys.length === 0) {
         rowKeys.push([]);
       }
-      var colKeys = pivotData.getColKeys();
+      const colKeys = pivotData.getColKeys();
       if (colKeys.length === 0) {
         colKeys.push([]);
       }
-      var headers = colKeys.map(function (h) {
-        return h.join('-');
-      });
-      var rotationAngle = 0;
-      var fullAggName = pivotData.aggregatorName;
+      let headers = colKeys.map(h => h.join('-'));
+      let rotationAngle = 0;
+      let fullAggName = pivotData.aggregatorName;
       if (pivotData.valAttrs.length) {
-        fullAggName += "(".concat(pivotData.valAttrs.join(', '), ")");
+        fullAggName += `(${pivotData.valAttrs.join(', ')})`;
       }
       if (chartOpts.type === 'scatter') {
         scatterData = {
@@ -72,96 +64,67 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           y: {},
           t: {}
         };
-        var attrs = pivotData.rowAttrs.concat(pivotData.colAttrs);
+        const attrs = pivotData.rowAttrs.concat(pivotData.colAttrs);
         vAxisTitle = attrs[0] != null ? attrs[0] : '';
         hAxisTitle = attrs[1] != null ? attrs[1] : '';
         groupByTitle = attrs.slice(2).join('-');
         titleText = vAxisTitle;
         if (hAxisTitle !== '') {
-          titleText += " ".concat(opts.localeStrings.vs, " ").concat(hAxisTitle);
+          titleText += ` ${opts.localeStrings.vs} ${hAxisTitle}`;
         }
         if (groupByTitle !== '') {
-          titleText += " ".concat(opts.localeStrings.by, " ").concat(groupByTitle);
+          titleText += ` ${opts.localeStrings.by} ${groupByTitle}`;
         }
-        var _iterator = _createForOfIteratorHelper(rowKeys),
-          _step;
-        try {
-          for (_iterator.s(); !(_step = _iterator.n()).done;) {
-            rowKey = _step.value;
-            var _iterator2 = _createForOfIteratorHelper(colKeys),
-              _step2;
-            try {
-              for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-                colKey = _step2.value;
-                var agg = pivotData.getAggregator(rowKey, colKey);
-                if (agg.value() != null) {
-                  var vals = rowKey.concat(colKey);
-                  series = vals.slice(2).join('-');
-                  if (series === '') {
-                    series = 'series';
-                  }
-                  if (scatterData.x[series] == null) {
-                    scatterData.x[series] = [];
-                  }
-                  if (scatterData.y[series] == null) {
-                    scatterData.y[series] = [];
-                  }
-                  y = vals[0] != null ? vals[0] : 0;
-                  x = vals[1] != null ? vals[1] : 0;
-                  scatterData.y[series].push(y);
-                  scatterData.x[series].push(x);
-                  if (scatterData.t[series] == null) {
-                    scatterData.t[series] = {};
-                  }
-                  if (scatterData.t[series][x] == null) {
-                    scatterData.t[series][x] = {};
-                  }
-                  scatterData.t[series][x][y] = agg.value();
-                }
+        for (rowKey of rowKeys) {
+          for (colKey of colKeys) {
+            var agg = pivotData.getAggregator(rowKey, colKey);
+            if (agg.value() != null) {
+              var vals = rowKey.concat(colKey);
+              series = vals.slice(2).join('-');
+              if (series === '') {
+                series = 'series';
               }
-            } catch (err) {
-              _iterator2.e(err);
-            } finally {
-              _iterator2.f();
+              if (scatterData.x[series] == null) {
+                scatterData.x[series] = [];
+              }
+              if (scatterData.y[series] == null) {
+                scatterData.y[series] = [];
+              }
+              y = vals[0] != null ? vals[0] : 0;
+              x = vals[1] != null ? vals[1] : 0;
+              scatterData.y[series].push(y);
+              scatterData.x[series].push(x);
+              if (scatterData.t[series] == null) {
+                scatterData.t[series] = {};
+              }
+              if (scatterData.t[series][x] == null) {
+                scatterData.t[series][x] = {};
+              }
+              scatterData.t[series][x][y] = agg.value();
             }
           }
-        } catch (err) {
-          _iterator.e(err);
-        } finally {
-          _iterator.f();
         }
       } else {
-        var numCharsInHAxis = 0;
-        for (var _i = 0, _Array$from = Array.from(headers); _i < _Array$from.length; _i++) {
-          x = _Array$from[_i];
+        let numCharsInHAxis = 0;
+        for (x of Array.from(headers)) {
           numCharsInHAxis += x.length;
         }
         if (numCharsInHAxis > 50) {
           rotationAngle = 45;
         }
         columns = [];
-        var _iterator3 = _createForOfIteratorHelper(rowKeys),
-          _step3;
-        try {
-          for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-            rowKey = _step3.value;
-            var rowHeader = rowKey.join('-');
-            var row = [rowHeader === '' ? fullAggName : rowHeader];
-            for (var _i2 = 0, _Array$from2 = Array.from(colKeys); _i2 < _Array$from2.length; _i2++) {
-              colKey = _Array$from2[_i2];
-              var val = parseFloat(pivotData.getAggregator(rowKey, colKey).value());
-              if (isFinite(val)) {
-                row.push(val);
-              } else {
-                row.push(null);
-              }
+        for (rowKey of rowKeys) {
+          var rowHeader = rowKey.join('-');
+          var row = [rowHeader === '' ? fullAggName : rowHeader];
+          for (colKey of Array.from(colKeys)) {
+            var val = parseFloat(pivotData.getAggregator(rowKey, colKey).value());
+            if (isFinite(val)) {
+              row.push(val);
+            } else {
+              row.push(null);
             }
-            columns.push(row);
           }
-        } catch (err) {
-          _iterator3.e(err);
-        } finally {
-          _iterator3.f();
+          columns.push(row);
         }
         vAxisTitle = fullAggName;
         if (chartOpts.horizontal) {
@@ -173,18 +136,18 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
         }
         titleText = fullAggName;
         if (hAxisTitle !== '') {
-          titleText += " ".concat(opts.localeStrings.vs, " ").concat(hAxisTitle);
+          titleText += ` ${opts.localeStrings.vs} ${hAxisTitle}`;
         }
         if (groupByTitle !== '') {
-          titleText += " ".concat(opts.localeStrings.by, " ").concat(groupByTitle);
+          titleText += ` ${opts.localeStrings.by} ${groupByTitle}`;
         }
       }
-      var title = $('<p>', {
+      const title = $('<p>', {
         style: 'text-align: center; font-weight: bold'
       });
       title.text(titleText);
-      var formatter = pivotData.getAggregator([], []).format;
-      var params = {
+      const formatter = pivotData.getAggregator([], []).format;
+      let params = {
         axis: {
           rotated: chartOpts.horizontal,
           y: {
@@ -212,9 +175,9 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       };
       params = $.extend(true, {}, params, opts.c3);
       if (chartOpts.type === 'scatter') {
-        var xs = {};
-        var numSeries = 0;
-        var dataColumns = [];
+        const xs = {};
+        let numSeries = 0;
+        const dataColumns = [];
         for (var s in scatterData.x) {
           numSeries += 1;
           xs[s] = s + '_x';
@@ -232,37 +195,35 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
           };
         }
         params.tooltip.format = {
-          title: function title() {
+          title() {
             return fullAggName;
           },
-          name: function name() {
+          name() {
             return '';
           },
-          value: function value(a, b, c, d, e) {
-            var _e$ = e[0];
-            series = _e$.name;
-            y = _e$.value;
-            x = _e$.x;
+          value(a, b, c, d, e) {
+            ({
+              name: series,
+              value: y,
+              x
+            } = e[0]);
             return formatter(scatterData.t[series][x][y]);
           }
         };
       } else {
-        var categories;
+        let categories;
         params.axis.x.type = 'category';
         if (params.axis.y.tick.format == null) {
-          params.axis.y.tick.format = function (v) {
-            return formatter(v);
-          };
+          params.axis.y.tick.format = v => formatter(v);
         }
         params.tooltip.format = {
-          value: function value(v) {
+          value(v) {
             return formatter(v);
           }
         };
         if (chartOpts.horizontal) {
           categories = [];
-          for (var _i3 = 0, _Array$from3 = Array.from(columns); _i3 < _Array$from3.length; _i3++) {
-            c = _Array$from3[_i3];
+          for (c of Array.from(columns)) {
             categories.push(c.shift());
           }
           if (categories.length === 1 && categories[0] === fullAggName) {
@@ -281,33 +242,23 @@ function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == 
       }
       if (chartOpts.stacked) {
         if (chartOpts.horizontal) {
-          var _result = [];
-          for (var _i4 = 0, _Array$from4 = Array.from(colKeys); _i4 < _Array$from4.length; _i4++) {
-            x = _Array$from4[_i4];
-            _result.push(x.join('-'));
+          const result = [];
+          for (x of Array.from(colKeys)) {
+            result.push(x.join('-'));
           }
-          params.data.groups = [_result];
+          params.data.groups = [result];
         } else {
-          var _result2 = [];
-          var _iterator4 = _createForOfIteratorHelper(rowKeys),
-            _step4;
-          try {
-            for (_iterator4.s(); !(_step4 = _iterator4.n()).done;) {
-              x = _step4.value;
-              _result2.push(x.join('-'));
-            }
-          } catch (err) {
-            _iterator4.e(err);
-          } finally {
-            _iterator4.f();
+          const result = [];
+          for (x of rowKeys) {
+            result.push(x.join('-'));
           }
-          params.data.groups = [_result2];
+          params.data.groups = [result];
         }
       }
-      var renderArea = $('<div>', {
+      const renderArea = $('<div>', {
         style: 'display:none;'
       }).appendTo($('body'));
-      var result = $('<div>').appendTo(renderArea);
+      const result = $('<div>').appendTo(renderArea);
       params.bindto = result[0];
       c3.generate(params);
       result.detach();
