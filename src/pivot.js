@@ -474,7 +474,7 @@
         },
     };
 
-    var regionalSettings = '';
+    var regionalSettings = 'en';
     const locales = {
         en: {
             formatters: {

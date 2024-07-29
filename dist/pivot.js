@@ -461,7 +461,7 @@
       return $(pivotTableRenderer(data, opts)).heatmap('colheatmap', opts);
     }
   };
-  var regionalSettings = '';
+  var regionalSettings = 'en';
   const locales = {
     en: {
       formatters: {
