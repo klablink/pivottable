@@ -4,19 +4,19 @@
   const nf = $.pivotUtilities.numberFormat;
   const tpl = $.pivotUtilities.aggregatorTemplates;
   const frFmt = nf({
-    thousandsSep: '.',
+    thousandsSep: ' ',
     decimalSep: ','
   });
   const frFmtInt = nf({
     digitsAfterDecimal: 0,
-    thousandsSep: '.',
+    thousandsSep: ' ',
     decimalSep: ','
   });
   const frFmtPct = nf({
     digitsAfterDecimal: 1,
     scaler: 100,
     suffix: '%',
-    thousandsSep: '.',
+    thousandsSep: ' ',
     decimalSep: ','
   });
   return $.pivotUtilities.locales.fr = {

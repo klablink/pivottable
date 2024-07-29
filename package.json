@@ -32,6 +32,7 @@
   },
   "homepage": "https://github.com/nicolaskruchten/pivottable",
   "dependencies": {
+    "@babel/core": "^7.24.9",
     "jquery": ">=1.9.0"
   },
   "devDependencies": {

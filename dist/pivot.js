@@ -46,7 +46,7 @@
           month: '2-digit',
           day: '2-digit'
         };
-        date = new Date(value).toLocaleDateString(localeGlobal, options);
+        date = new Date(value).toLocaleDateString(regionalSettings || localeGlobal, options);
       } catch (e) {
         date = value;
       }
@@ -461,6 +461,7 @@
       return $(pivotTableRenderer(data, opts)).heatmap('colheatmap', opts);
     }
   };
+  var regionalSettings = '';
   const locales = {
     en: {
       formatters: {
@@ -1312,11 +1313,19 @@
 
   $.fn.pivot = function (input, inputOpts, locale) {
     let e;
+    if (locale.indexOf('/') > -1) {
+      let split = locale.split('/');
+      locale = split[0];
+      regionalSettings = split[1];
+    }
     if (locale == null) {
       locale = 'en';
     }
     if (locales[locale] == null) {
       locale = 'en';
+    }
+    if (regionalSettings.length === 0) {
+      regionalSettings = locale;
     }
     localeGlobal = locale;
     inputOpts = inputOpts || {};
@@ -1382,6 +1391,11 @@
     if (overwrite == null) {
       overwrite = false;
     }
+    if (locale.indexOf('/') > -1) {
+      let split = locale.split('/');
+      locale = split[0];
+      regionalSettings = split[1];
+    }
     if (locale == null) {
       locale = 'fr';
     }
@@ -1430,8 +1444,8 @@
     } else {
       opts = existingOpts;
     }
-    if (!inputOpts?.aggregators && locales[locale].formatters) {
-      opts.aggregators = makeAggregators(locales[locale].formatters.format, locales[locale].formatters.formatInt, locales[locale].formatters.formatPct);
+    if (!inputOpts?.aggregators && locales[regionalSettings].formatters) {
+      opts.aggregators = makeAggregators(locales[regionalSettings].formatters.format, locales[regionalSettings].formatters.formatInt, locales[regionalSettings].formatters.formatPct);
     }
     try {
       // do a first pass on the data to cache a materialized copy of any
