@@ -1313,16 +1313,16 @@
 
   $.fn.pivot = function (input, inputOpts, locale) {
     let e;
-    if (locale.indexOf('/') > -1) {
-      let split = locale.split('/');
-      locale = split[0];
-      regionalSettings = split[1];
-    }
     if (locale == null) {
       locale = 'en';
     }
     if (locales[locale] == null) {
       locale = 'en';
+    }
+    if (locale.indexOf('/') > -1) {
+      let split = locale.split('/');
+      locale = split[0];
+      regionalSettings = split[1];
     }
     if (regionalSettings.length === 0) {
       regionalSettings = locale;
@@ -1391,16 +1391,16 @@
     if (overwrite == null) {
       overwrite = false;
     }
-    if (locale.indexOf('/') > -1) {
-      let split = locale.split('/');
-      locale = split[0];
-      regionalSettings = split[1];
-    }
     if (locale == null) {
       locale = 'fr';
     }
     if (locales[locale] == null) {
       locale = 'en';
+    }
+    if (locale.indexOf('/') > -1) {
+      let split = locale.split('/');
+      locale = split[0];
+      regionalSettings = split[1];
     }
     const defaults = {
       derivedAttributes: {},
